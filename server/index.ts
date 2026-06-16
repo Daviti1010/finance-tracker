@@ -4,6 +4,7 @@ dotenv.config();
 import express from 'express';
 import pool from './db';
 import authRoutes from './routes/auth'
+import transactionRoutes from './routes/transactions'
 
 const app = express();
 const PORT = 3000;
@@ -15,6 +16,7 @@ pool.connect()
 app.use(express.json())
 
 app.use('/auth', authRoutes)
+app.use('/transactions', transactionRoutes)
 
 
 

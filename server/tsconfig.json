@@ -36,11 +36,13 @@
     // Recommended Options
     "esModuleInterop": true,
     "strict": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
     "jsx": "react-jsx",
     // "verbatimModuleSyntax": true,
     "isolatedModules": true,
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-  }
+  },
+  "include": ["./**/*.ts"]
 }
