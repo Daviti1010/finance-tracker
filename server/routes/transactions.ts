@@ -103,4 +103,37 @@ router.put("/:id", authMiddleware, async (req: any, res: any) => {
 
 
 
+
+router.delete("/:id", authMiddleware, async (req: any, res: any) => {
+    const transactionId: number = req.params.id;
+    const userId = req.user?.id;
+
+    try {
+        const result = await pool.query("SELECT * FROM transactions WHERE id = $1", [transactionId])
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: "Error" })
+        }
+
+        const transactionUserId = result.rows[0].user_id
+
+        if (userId === transactionUserId) {
+
+            const deleteTransaction = await pool.query("DELETE FROM transactions WHERE id = $1", [transactionId])
+
+            return res.status(200).json({success: true, message: "Successfully deleted"})
+
+        } else {
+            return res.status(404).json({ success: false, message: "Error" })
+        }
+
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: "Server error" })
+    }
+})
+
+
+
 export default router
