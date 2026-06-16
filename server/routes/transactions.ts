@@ -54,4 +54,53 @@ router.post("/", authMiddleware, async (req: any, res: any) => {
 
 
 
+router.put("/:id", authMiddleware, async (req: any, res: any) => {
+    const transactionId: number = req.params.id;
+    const {type, amount, category, description, date} = req.body;
+    const userId = req.user?.id;
+
+    if (!type || !amount || !category || !date) {
+        return res.status(400).json({success: false, message: "Missing a field" })
+    }
+
+    if (type !== "income" && type !== "expense" ) {
+        return res.status(400).json({success: false, message: "Invalid information" })
+    }
+
+    if (amount <= 0) {
+        return res.status(400).json({success: false, message: "Invalid number" })
+    }
+
+    try {
+        const result = await pool.query("SELECT * FROM transactions WHERE id = $1", [transactionId])
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ success: false, message: "Error" })
+        }
+
+        const transactionUserId = result.rows[0].user_id
+
+        if (userId === transactionUserId) {
+
+            const updateTable = await pool.query
+                ("UPDATE transactions SET type = $1, amount = $2, category = $3, description = $4, date = $5 WHERE id = $6 RETURNING *", [
+                    type, amount, category, description, date, transactionId
+                ])
+
+            return res.status(200).json(updateTable.rows[0])
+
+        } else {
+            return res.status(404).json({ success: false, message: "Error" })
+        }
+        
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false, message: "Server error" })
+    }
+
+})
+
+
+
 export default router
