@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
 import React, { useState } from 'react';
 import { register } from '../../api'
-import './Register.css'
+import './Auth.css'
 // import { faL } from '@fortawesome/free-solid-svg-icons';
 
 export function Register() {

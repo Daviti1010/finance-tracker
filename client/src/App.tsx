@@ -1,7 +1,7 @@
 // import { useState } from 'react'
 import { Routes, Route, Navigate } from "react-router";
 // import { HomePage } from './pages/home/HomePage'
-import { Login } from './pages/Login'
+import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { ProtectedRoute } from "./components/ProtectedRoute";
