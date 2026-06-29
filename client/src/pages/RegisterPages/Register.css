@@ -97,3 +97,9 @@
     text-decoration: none;
     font-weight: 500;
 }
+
+.error-text {
+    color: #e05c5c;
+    font-size: 13px;
+    text-align: center;
+}
