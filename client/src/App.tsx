@@ -2,7 +2,7 @@
 import { Routes, Route, Navigate } from "react-router";
 // import { HomePage } from './pages/home/HomePage'
 import { Login } from './pages/Login'
-import { Register } from "./pages/Register";
+import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import './App.css'
