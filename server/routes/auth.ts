@@ -3,6 +3,7 @@ import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { log } from "node:console";
 
 dotenv.config()
 
@@ -66,7 +67,7 @@ router.post("/login", async (req, res) => {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
         }
 
-        const user = result.rows[0];
+        const user = result.rows[0];        
         const passwordSavedInDB = user.password_hash;
 
         const userInfo = { id: user.id, name: user.name }
@@ -79,7 +80,7 @@ router.post("/login", async (req, res) => {
                 expiresIn: '7d'
             })
 
-            res.status(200).json({ accessToken: accessToken })
+            res.status(200).json({ success: true, accessToken: accessToken })
 
         } else {
             return res.status(401).json({ success: false, message: "Invalid credentials" });
