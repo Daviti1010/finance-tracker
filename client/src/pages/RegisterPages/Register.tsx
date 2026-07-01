@@ -12,6 +12,7 @@ export function Register() {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [buttonText, setButtonText] = useState("Create Account")
 
     const navigate = useNavigate();
 
@@ -51,12 +52,17 @@ export function Register() {
             const response = await register(username, email, password)
             const data = await response.json()
 
-            if (!response.ok) {
-                setError(data.message)
-                return
+            if (data.success === true) {
+                setButtonText("Creating account...")
 
+                setTimeout(() => {
+                    navigate("/login")
+                }, 1500);
+                
             } else {
-                navigate("/login")
+                console.log("Registration Error!")
+                setError(data.message)
+                return;
             }
 
 
@@ -95,9 +101,7 @@ export function Register() {
 
                 {error && <p className="error-text">{error}</p>}
 
-                <button type="submit" className="submit-btn" disabled={loading}>
-                    {loading ? "Creating account..." : "Create account"}
-                </button>
+                <button type="submit" className="submit-btn" disabled={loading}>{buttonText}</button>
 
                 <p className="footer-text">Already have an account? <Link to="/login">Sign in</Link></p>
             </form>
