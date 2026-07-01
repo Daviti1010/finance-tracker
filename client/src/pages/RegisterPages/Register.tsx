@@ -11,8 +11,11 @@ export function Register() {
     const [password, setPassword] = useState("")
 
     const [error, setError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
     const [loading, setLoading] = useState(false);
     const [buttonText, setButtonText] = useState("Create Account")
+
+    const [clickedOnScreen, setClickedOnScreen] = useState(false)
 
     const navigate = useNavigate();
 
@@ -28,11 +31,31 @@ export function Register() {
         // console.log(e.target.value);
     }
 
+    function validatePassword(value: string) {
+        if (value.length === 0) {
+            setPasswordError("");
+        } else if (value.length < 8) {
+            setPasswordError("Password must be at least 8 characters")
+        } else {
+            setPasswordError("")
+        }
+    }
+
     function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
-        setPassword(e.target.value);
+        const value = e.target.value;
+        setPassword(value);
         // console.log(e.target.value);
+
+        if (clickedOnScreen) {
+            validatePassword(value);
+        }
     }
+
+    function handleBlur() {
+        setClickedOnScreen(true);
+        validatePassword(password)
+    } 
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
@@ -41,9 +64,6 @@ export function Register() {
         if (!username || !email || !password) {
             setError("All fields are required")
             return
-        } else if (password.length < 8) {
-            setError("Password must be at least 8 characters")
-            return;
         } else {
             setLoading(true);
         }
@@ -61,10 +81,15 @@ export function Register() {
                 
             } else {
                 console.log("Registration Error!")
-                setError(data.message)
+                if (data.error === "Field Error") {
+                    setError(data.message)
+                } else if (data.error === "Password Error") {
+                    setError("")   // this error already exists in ValidatePassword 
+                } else {
+                    setError(data.message)
+                }
                 return;
             }
-
 
         } catch (err) {
             console.log(err)
@@ -95,11 +120,12 @@ export function Register() {
 
                 <div className="field">
                     <label htmlFor="password">Password</label>
-                    <input value={password} onChange={handlePasswordChange} type="password" 
+                    <input value={password} onChange={handlePasswordChange} onBlur={handleBlur} type="password" 
                         id="password" name="password" placeholder="At least 8 characters" />
                 </div>
 
                 {error && <p className="error-text">{error}</p>}
+                {passwordError && <p className="password-error-text">{passwordError}</p>}
 
                 <button type="submit" className="submit-btn" disabled={loading}>{buttonText}</button>
 

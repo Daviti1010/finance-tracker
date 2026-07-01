@@ -103,3 +103,9 @@
     font-size: 15px;
     text-align: center;
 }
+
+.password-error-text {
+    color: #e05c5c;
+    font-size: 15px;
+    text-align: center;
+}

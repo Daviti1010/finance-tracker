@@ -3,7 +3,7 @@ import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { log } from "node:console";
+import { error, log } from "node:console";
 
 dotenv.config()
 
@@ -17,18 +17,18 @@ router.post("/register", async (req, res) => {
     const password = req.body.password;
 
     if (!name || !email || !password) {
-        return res.status(400).json({ success: false, message: "All fields are required" })
+        return res.status(400).json({ success: false, error: "Field Error", message: "All fields are required" })
     }
 
-    if (password.length < 6) {
-        return res.status(400).json({ success: false, message: "Password must be at least 6 characters" })
+    if (password.length < 8) {
+        return res.status(400).json({ success: false, error: "Password Error", message: "Password must be at least 8 characters" })
     }
 
     try {
         const checkResult = await pool.query("SELECT * FROM users WHERE email = $1", [email])
 
         if (checkResult.rows.length > 0) {
-            return res.json({ success: false, message: "Email already in use" });
+            return res.json({ success: false, error: "Email Exists", message: "Email already in use" });
         } 
 
         const hash = await bcrypt.hash(password, salt_rounds);
