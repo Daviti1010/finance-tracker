@@ -10,12 +10,13 @@ export function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
 
-    const [error, setError] = useState("");
-    const [passwordError, setPasswordError] = useState("");
     const [loading, setLoading] = useState(false);
     const [buttonText, setButtonText] = useState("Create Account")
 
-    const [clickedOnScreen, setClickedOnScreen] = useState(false)
+    const [error, setError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+
+    const [touchedPassword, setTouchedPassword] = useState(false)
 
     const navigate = useNavigate();
 
@@ -31,6 +32,17 @@ export function Register() {
         // console.log(e.target.value);
     }
 
+    function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
+        e.preventDefault()
+        const value = e.target.value;
+        setPassword(value);
+        // console.log(e.target.value);
+
+        if (touchedPassword) {
+            validatePassword(value);
+        }
+    }
+
     function validatePassword(value: string) {
         if (value.length === 0) {
             setPasswordError("");
@@ -41,19 +53,8 @@ export function Register() {
         }
     }
 
-    function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
-        e.preventDefault()
-        const value = e.target.value;
-        setPassword(value);
-        // console.log(e.target.value);
-
-        if (clickedOnScreen) {
-            validatePassword(value);
-        }
-    }
-
-    function handleBlur() {
-        setClickedOnScreen(true);
+    function handlePasswordBlur() {
+        setTouchedPassword(true);
         validatePassword(password)
     } 
 
@@ -120,7 +121,7 @@ export function Register() {
 
                 <div className="field">
                     <label htmlFor="password">Password</label>
-                    <input value={password} onChange={handlePasswordChange} onBlur={handleBlur} type="password" 
+                    <input value={password} onChange={handlePasswordChange} onBlur={handlePasswordBlur} type="password" 
                         id="password" name="password" placeholder="At least 8 characters" />
                 </div>
 
