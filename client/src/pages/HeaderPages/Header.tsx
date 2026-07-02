@@ -1,8 +1,17 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faRightFromBracket, faCircleUser } from '@fortawesome/free-solid-svg-icons'
+import { useNavigate } from 'react-router-dom';
 import './Header.css'
 
 export function Header() {
+
+    const navigate = useNavigate();
+
+    function clearToken() {
+        localStorage.removeItem('accessToken');
+        navigate('/login')
+    }
+
     return (
         <>
           <header className='header'>
@@ -17,7 +26,7 @@ export function Header() {
                     </div>
 
                     <div className='logout'>
-                        <button className='logout-btn'> <FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
+                        <button className='logout-btn' onClick={clearToken}> <FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
                     </div>
                 </div>
             </div>
