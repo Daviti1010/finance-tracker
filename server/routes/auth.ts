@@ -3,7 +3,7 @@ import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { error, log } from "node:console";
+
 
 dotenv.config()
 
@@ -25,6 +25,15 @@ router.post("/register", async (req, res) => {
     }
 
     try {
+        const existing = await pool.query(
+            "SELECT id FROM users WHERE username = $1",
+            [name]
+        );
+
+        if (existing.rows.length > 0) {
+            return res.status(409).json({ message: "Username is already in use." });
+        }
+
         const checkResult = await pool.query("SELECT * FROM users WHERE email = $1", [email])
 
         if (checkResult.rows.length > 0) {
@@ -36,7 +45,7 @@ router.post("/register", async (req, res) => {
         console.log("Hashed Password:", hash);
 
         const result = await pool.query(
-            "INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING id",
+            "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id",
             [name, email, hash]
         );
 
@@ -50,6 +59,29 @@ router.post("/register", async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
 })
+
+
+router.get("/check-username", async (req, res) => {
+    const username = req.query.username;
+
+    // console.log("query:", req.query)
+    // console.log("username:", req.query.username, typeof req.query.username)
+
+    if (!username || typeof username !== "string") {
+        return res.status(400).json({ message: "Username is required" })
+    }
+
+    try {
+        const result = await pool.query("SELECT id FROM users WHERE username = $1", [username])
+
+        const exists = result.rows.length > 0;
+        res.status(200).json({ exists })
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({ message: "Something went wrong" })
+    }
+})
+
 
 
 router.post("/login", async (req, res) => {

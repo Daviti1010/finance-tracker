@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
 import React, { useState } from 'react';
-import { register } from '../../api'
+import { checkUsername, register } from '../../api'
 import './Auth.css'
 // import { faL } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,7 +14,12 @@ export function Register() {
     const [buttonText, setButtonText] = useState("Create Account")
 
     const [error, setError] = useState("");
+    const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
+
+    const [usernameAvailable, setUsernameAvailable] = useState(false);
+
+    const [checkingUsername, setCheckingUsername] = useState(false);
 
     const [touchedPassword, setTouchedPassword] = useState(false)
 
@@ -22,15 +27,57 @@ export function Register() {
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
-        setUsername(e.target.value);
+        const value = e.target.value
+        setUsername(value);
         // console.log(e.target.value);
     }
+
+    async function validateUsername(value: string) {
+        if (value.length === 0) {
+            setUsernameError("");
+            return;
+        }
+
+        setCheckingUsername(true);
+
+        try {
+            const response = await checkUsername(value);
+            const data = await response.json();
+
+            if (data.exists) {
+                setTimeout(() => {
+                    setUsernameError("Username is already in use.")
+                    setUsernameAvailable(false)
+                }, 1500);
+            } else {
+                setTimeout(() => {
+                    setUsernameError("")
+                    setUsernameAvailable(true)
+                }, 1500);
+            }
+
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setTimeout(() => {
+                setCheckingUsername(false)
+            }, 1500);
+        }
+    }
+
+    const handleUsernameBlur = () => {
+        validateUsername(username)
+    }
+
+    ////////////////////
 
     function handleEmailChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
         setEmail(e.target.value);
         // console.log(e.target.value);
     }
+
+    ////////////////////
 
     function handlePasswordChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
@@ -58,6 +105,8 @@ export function Register() {
         validatePassword(password)
     } 
 
+    ////////////////////
+
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault()
         setError("")
@@ -65,9 +114,15 @@ export function Register() {
         if (!username || !email || !password) {
             setError("All fields are required")
             return
+        } else if (usernameError) {
+            return
         } else {
             setLoading(true);
         }
+
+        // if (usernameError) {
+        //     return;
+        // }
 
         try {
             const response = await register(username, email, password)
@@ -77,7 +132,7 @@ export function Register() {
                 setButtonText("Creating account...")
 
                 setTimeout(() => {
-                    navigate("/login")
+                    navigate("/dashboard")
                 }, 1500);
                 
             } else {
@@ -109,9 +164,13 @@ export function Register() {
 
                 <div className="field">
                     <label htmlFor="username">Username</label>
-                    <input value={username} onChange={handleUsernameChange} type="text" 
+                    <input value={username} onChange={handleUsernameChange} onBlur={handleUsernameBlur} type="text" 
                         id="username" name="username" placeholder="Username" />
                 </div>
+                
+                {checkingUsername && <p id="username-text">Checking availability...</p>}
+                {!checkingUsername && usernameError && <p className="username-error-text">{usernameError}</p>}
+                {!checkingUsername && usernameAvailable && <p className="username-available-text">Username is available</p>}
 
                 <div className="field">
                     <label htmlFor="email">Email</label>
@@ -125,8 +184,8 @@ export function Register() {
                         id="password" name="password" placeholder="At least 8 characters" />
                 </div>
 
-                {error && <p className="error-text">{error}</p>}
                 {passwordError && <p className="password-error-text">{passwordError}</p>}
+                {error && <p className="error-text">{error}</p>}
 
                 <button type="submit" className="submit-btn" disabled={loading}>{buttonText}</button>
 

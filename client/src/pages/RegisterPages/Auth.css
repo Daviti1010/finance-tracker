@@ -104,8 +104,17 @@
     text-align: center;
 }
 
-.password-error-text {
+.password-error-text,
+.username-error-text {
     color: #e05c5c;
     font-size: 15px;
-    text-align: center;
+    /* text-align: center; */
+}
+
+#username-text {
+    color: #dbaf00;
+}
+
+.username-available-text {
+    color: rgb(1, 149, 16);
 }
