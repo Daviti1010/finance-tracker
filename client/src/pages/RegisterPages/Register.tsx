@@ -131,6 +131,7 @@ export function Register() {
             if (data.success === true) {
                 setButtonText("Creating account...")
 
+                localStorage.setItem("accessToken", data.accessToken)
                 setTimeout(() => {
                     navigate("/dashboard")
                 }, 1500);

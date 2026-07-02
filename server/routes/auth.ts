@@ -52,7 +52,13 @@ router.post("/register", async (req, res) => {
         const newUserId = result.rows[0].id;
         console.log(`User registered with ID: ${newUserId}`);
 
-        res.status(201).json({ success: true, message: "User registered successfully" });
+        const accessToken = jwt.sign(
+            { id: newUserId },
+            process.env.JWT_SECRET as string,
+            { expiresIn: '7d' }
+        );
+
+        res.status(201).json({ success: true, message: "User registered successfully", accessToken });
 
     } catch (err) {
         console.log(err);
