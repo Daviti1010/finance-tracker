@@ -33,9 +33,6 @@ export function Login() {
         if (!email || !password) {
             setError("All fields are required")
             return
-        } else if (password.length < 8) {
-            setError("Password must be at least 8 characters")
-            return;
         } else {
             setLoading(true);
         }
@@ -83,7 +80,7 @@ export function Login() {
                 <div className="field">
                     <label htmlFor="password">Password</label>
                     <input value={password} onChange={enteringPassword}
-                        type="password" id="password" name="password" placeholder="At least 8 characters" />
+                        type="password" id="password" name="password" placeholder="Your Password" />
                 </div>
 
                 {error && <p className="error-text">{error}</p>}
