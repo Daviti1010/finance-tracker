@@ -3,6 +3,7 @@ import pool from "../db";
 import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { generateToken } from "../utils/generateToken";
 
 
 dotenv.config()
@@ -45,18 +46,17 @@ router.post("/register", async (req, res) => {
         console.log("Hashed Password:", hash);
 
         const result = await pool.query(
-            "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id",
+            "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username",
             [name, email, hash]
         );
 
-        const newUserId = result.rows[0].id;
+        const newUser = result.rows[0];
+        const newUserId = newUser.id;
         console.log(`User registered with ID: ${newUserId}`);
 
-        const accessToken = jwt.sign(
-            { id: newUserId },
-            process.env.JWT_SECRET as string,
-            { expiresIn: '7d' }
-        );
+        const newUserInfo = { id: newUser.id, name: newUser.username }
+
+        const accessToken = generateToken(newUserInfo)
 
         res.status(201).json({ success: true, message: "User registered successfully", accessToken });
 
@@ -114,9 +114,7 @@ router.post("/login", async (req, res) => {
 
         if (isMatch) {
             
-            const accessToken = jwt.sign(userInfo, process.env.JWT_SECRET!, {
-                expiresIn: '7d'
-            })
+            const accessToken = generateToken(userInfo);
 
             res.status(200).json({ success: true, accessToken: accessToken })
 
