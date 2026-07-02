@@ -5,6 +5,7 @@ import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
+import GuestRoute from "./components/GuestRoute";
 import './App.css'
 
 function App() {
@@ -14,9 +15,9 @@ function App() {
     <Routes>
       <Route path='/' element={<Navigate to={"/login"}/>} />
 
-      <Route path='/login' element={<Login />} />
+      <Route path='/login' element={<GuestRoute><Login /></GuestRoute>} />
 
-      <Route path='/register' element={<Register />} />
+      <Route path='/register' element={<GuestRoute><Register /></GuestRoute>} />
 
       <Route path='/dashboard' element={
         <ProtectedRoute>
