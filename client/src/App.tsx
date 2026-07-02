@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from "react-router";
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
-import { ProtectedRoute } from "./components/ProtectedRoute";
+import ProtectedRoute from "./components/ProtectedRoute";
 import './App.css'
 
 function App() {
