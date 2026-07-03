@@ -1,0 +1,83 @@
+body {
+    background-color: rgb(37, 37, 37);
+}
+
+.income-expense-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    /* background-color:antiquewhite; */
+    width: 70%;
+    height: 100px;
+    
+    margin: 0 auto;
+    margin-top: 50px;
+
+    gap: 10px;
+}
+
+.income-expense {
+    display: flex;
+    gap: 40px;
+}
+
+.income {
+    background-color: rgb(73, 73, 73);
+    height: 100px;
+    width: 250px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+}
+
+.expense {
+    background-color: rgb(73, 73, 73);
+    height: 100px;
+    width: 250px;
+    border-radius: 15px;    
+    border: 2px solid rgb(130, 130, 130);
+} 
+
+.net-balance {
+    background-color: rgb(73, 73, 73);
+    height: 100px;
+    width: 250px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+}
+
+#income-text {
+    color: antiquewhite;
+    padding: 5px 17px 2px 17px;
+    margin-top: 10px;
+}
+
+#income-number {
+    color: rgb(3, 181, 3);
+    padding: 5px 17px;
+    font-size: 25px;
+}
+
+#expense-text {
+    color: antiquewhite;
+    padding: 5px 17px 2px 17px;
+    margin-top: 10px;
+}
+
+#expense-number {
+    color: rgb(253, 52, 37);
+    padding: 5px 17px;
+    font-size: 25px;
+}
+
+#net-balance-text {
+    color: antiquewhite;
+    padding: 5px 17px 2px 17px;
+    margin-top: 10px;
+}
+
+#net-balance-number {
+    color: rgb(241, 241, 241);
+    padding: 5px 17px;
+    font-size: 25px;
+}
