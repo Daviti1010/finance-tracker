@@ -1,5 +1,7 @@
 import { Header } from "./HeaderPages/Header"
 import { useState } from "react"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import './Dashboard.css'
 
 
@@ -143,6 +145,69 @@ export function Dashboard() {
                         </div>
 
                         <div className="list">
+                            <div className="transaction">
+                                <div className="transaction-left-side">
+                                    <img src="/green-arrow.png" alt="" className="arrow green-arrow"/>
+                                    <div className="transaction-text">
+                                        <p className="category">Salary</p>
+                                        <p className="description">June paycheck</p>
+                                    </div>
+                                </div>
+
+                                <div className="transaction-right-side">
+                                    <p className="transaction-date">Jun 1</p>
+                                    <p className="transaction-amount positive">+$3,200</p>
+                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                </div>
+                            </div>
+
+                            <div className="transaction">
+                                <div className="transaction-left-side">
+                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
+                                    <div className="transaction-text">
+                                        <p className="category">Rent</p>
+                                        <p className="description">Monthly rent</p>
+                                    </div>
+                                </div>
+
+                                <div className="transaction-right-side">
+                                    <p className="transaction-date">Jun 2</p>
+                                    <p className="transaction-amount negative">-$1,200</p>
+                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                </div>
+                            </div>
+
+                            <div className="transaction">
+                                <div className="transaction-left-side">
+                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
+                                    <div className="transaction-text">
+                                        <p className="category">Food</p>
+                                        <p className="description">Weekly groceries</p>
+                                    </div>
+                                </div>
+
+                                <div className="transaction-right-side">
+                                    <p className="transaction-date">Jun 4</p>
+                                    <p className="transaction-amount negative">-$400</p>
+                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                </div>
+                            </div>
+
+                            <div className="transaction">
+                                <div className="transaction-left-side">
+                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
+                                    <div className="transaction-text">
+                                        <p className="category">Transport</p>
+                                        <p className="description">Bus pass</p>
+                                    </div>
+                                </div>
+
+                                <div className="transaction-right-side">
+                                    <p className="transaction-date">Jun 5</p>
+                                    <p className="transaction-amount negative">-$140</p>
+                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                </div>
+                            </div>
 
                         </div>
                     </div>
