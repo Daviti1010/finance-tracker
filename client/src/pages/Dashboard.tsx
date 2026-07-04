@@ -115,7 +115,38 @@ export function Dashboard() {
                     </div>
                 </div>
 
-                <div className="all-transactions"></div>
+                <div className="all-transactions-container">
+                    <div className="all-transactions">
+                        <div className="upper-part">
+                            <p id="transactions-text">Transactions</p>
+                            <select name="select-income-or-expense" id="select-income-or-expense">
+                                <option value="income">Income</option>
+                                <option value="expense">Expense</option>
+                            </select>
+                            <select name="select-category" id="select-category">
+                                <option value="food">Food & Groceries</option>
+                                <option value="rent">Rent / Housing</option>
+                                <option value="transport">Transport</option>
+                                <option value="utilities">Utilities</option>
+                                <option value="entertainment">Entertainment</option>
+                                <option value="shopping">Shopping</option>
+                                <option value="health">Health & Fitness</option>
+                                <option value="subscriptions">Subscriptions</option>
+                                <option value="education">Education</option>
+                                <option value="salary">Salary</option>
+                                <option value="freelance">Freelance</option>
+                                <option value="investments">Investments</option>
+                                <option value="gifts">Gifts</option>
+                                <option value="other">Other</option>
+                            </select>
+                            <button>Search</button>
+                        </div>
+
+                        <div className="list">
+
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )

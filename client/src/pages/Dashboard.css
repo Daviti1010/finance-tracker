@@ -326,3 +326,67 @@ body {
     color: #ffd194;
     width: 30px;
 }
+
+.all-transactions-container {
+    width: 1000px;
+    height: 500px;
+    background-color: rgb(73, 73, 73);
+    margin: 30px auto 20px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+}
+
+.upper-part {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule, #C9CFC0);
+}
+
+#transactions-text {
+    font-family: var(--font-display, "Fraunces", serif);
+    font-weight: 500;
+    font-size: 20px;
+    color: antiquewhite;
+    margin: 15px 20px 30px;
+    flex-shrink: 0;
+}
+
+
+.upper-part select {
+    font-size: 13.5px;
+    border-radius: 3px;
+    width: 200px;
+    margin-top: -10px;
+
+    color: rgb(251, 253, 255);
+    background: #3e3e3e;
+    border: 2px solid rgb(130, 130, 130);
+    padding: 9px 10px;
+    box-sizing: border-box;
+}
+
+.upper-part select:focus {
+    outline: none;
+    border-color: var(--brass, #8C6D2F);
+    box-shadow: 0 0 0 2px rgba(140, 109, 47, 0.15);
+}
+
+.upper-part button {
+    background: rgb(73, 73, 73);
+    color: var(--paper, #EDEFE7);
+    border: 2px solid rgb(130, 130, 130);
+    border-radius: 3px;
+    padding: 8px 16px;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin: -10px 15px 0px 0px;
+    transition: 0.15s ease;
+}
+
+.upper-part button:hover {
+    opacity: 0.85;
+    background-color: #3e3e3e;
+}
