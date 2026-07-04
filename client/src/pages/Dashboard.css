@@ -89,19 +89,11 @@ body {
     gap: 20px;
 }
 
-.spending-by-category {
-    background-color: rgb(73, 73, 73);
-    width: 330px;
-    height: 415px;
-    border-radius: 15px;
-    border: 2px solid rgb(130, 130, 130);
-}
-
 .add-transaction {
     background-color: rgb(73, 73, 73);
     border: 2px solid rgb(130, 130, 130);
     border-radius: 15px;
-    width: 330px;
+    width: 450px;
     height: 415px;
     padding: 20px 22px 22px;
     max-width: 420px;
@@ -216,4 +208,121 @@ body {
 .date-stepper input[type="date"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     cursor: pointer;
+}
+
+.spending-by-category {
+    background-color: rgb(73, 73, 73);
+    width: 450px;
+    height: 415px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+    padding: 20px 22px 22px;
+}
+
+#spending-text {
+    font-family: var(--font-display, "Fraunces", serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: antiquewhite;
+    margin: 0 0 30px;
+}
+
+.progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rent-progress-bar,
+.food-progress-bar,
+.transport-progress-bar,
+.entertainment-progress-bar {
+    height: 22px;
+    border-radius: 4px;
+}
+
+.rent-progress-bar {
+    width: 65%;
+    background-color: #AFA9EC;
+}
+
+.food-progress-bar {
+    width: 22%;
+    background-color: #9FE1CB;
+}
+
+.transport-progress-bar {
+    width: 8%;
+    background-color: #FAC775;
+}
+
+.entertainment-progress-bar {
+    width: 5%;
+    background-color: #F4C0D1;
+}
+
+.bar-and-text-div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.spending-category {
+    width: 90px;
+    flex-shrink: 0;
+    margin: 0;
+    font-family: var(--font-mono, "IBM Plex Mono", monospace);
+    font-size: 13px;
+    color: wheat;
+}
+
+.rent-progress-bar,
+.food-progress-bar,
+.transport-progress-bar,
+.entertainment-progress-bar {
+    flex: 1;
+    height: 20px;
+    border-radius: 5px;
+    background: var(--rule, #C9CFC0);
+    position: relative;
+    overflow: hidden;
+}
+
+.rent-progress-bar::after,
+.food-progress-bar::after,
+.transport-progress-bar::after,
+.entertainment-progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.rent-progress-bar::after {
+    width: 40%;
+    background: var(--brass, #8C6D2F);
+}
+
+.food-progress-bar::after {
+    width: 25%;
+    background: var(--loss, #A6432F);
+}
+
+.transport-progress-bar::after {
+    width: 20%;
+    background: var(--gain, #2F6F55);
+}
+
+.entertainment-progress-bar::after {
+    width: 15%;
+    background: #6E7F9A;
+}
+
+.percentage {
+    color: #ffd194;
+    width: 30px;
 }
