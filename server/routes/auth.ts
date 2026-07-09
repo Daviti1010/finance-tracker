@@ -147,8 +147,6 @@ router.get("/me", authMiddleware, async (req, res) => {
         console.error(err);
         res.status(500).json({ message: "Something went wrong" })
     }
-    console.log(userId);
-    res.json({ success: true, userId });
 })
 
 
