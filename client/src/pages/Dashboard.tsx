@@ -75,6 +75,8 @@ export function Dashboard() {
             const data = await response.json();
             console.log(data);
 
+            setTransactions((prev) => [data, ...prev])
+
             setAmount("")
             setDescription("")
             setCategory("Food & Groceries")
