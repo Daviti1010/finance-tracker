@@ -50,3 +50,7 @@ export const checkUsername = (username: string) =>
 
 export const getMe = () =>
     api.get("/auth/me")
+
+export const addTransaction = 
+    (transaction: {type: string, amount: number, category: string, description: string, date: string}) =>
+    api.post("/transactions", transaction)

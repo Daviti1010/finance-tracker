@@ -2,17 +2,49 @@ import { Header } from "./HeaderPages/Header"
 import { useState } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { addTransaction } from "../api"
 import './Dashboard.css'
 
 
 export function Dashboard() {
     const [date, setDate] = useState(() => new Date().toISOString().split("T")[0])
 
-    // function shiftDate(days: number) {
-    //     const current = new Date(date)
-    //     current.setDate(current.getDate() + days)
-    //     setDate(current.toISOString().split("T")[0])
-    // }
+    const [type, setType] = useState("expense");
+    const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("Food & Groceries")
+    const [description, setDescription] = useState("")
+
+    async function handleAddTransaction() {
+
+        if (!amount || isNaN(Number(amount))) {
+            console.log("Please enter a valid amount")
+            return
+        }
+
+        try {
+            const response = await addTransaction({
+                type,
+                amount: Number(amount),
+                category,
+                description,
+                date
+            })
+
+            const data = await response.json();
+            console.log(data);
+
+            setAmount("")
+            setDescription("")
+            setCategory("Food & Groceries")
+            setType("Expense")
+            setDate(new Date().toISOString().split("T")[0])
+
+        } catch (err) {
+            console.log(err)
+        }
+
+    }
+
     return (
         <>
             <Header />
@@ -41,7 +73,11 @@ export function Dashboard() {
                         <div className="add-transaction-first-part">
                             <div className="type-div">
                                 <label htmlFor="type">Type</label>
-                                <select name="type" id="type">
+                                <select name="type"
+                                  id="type"
+                                  value={type}
+                                  onChange={(e) => setType(e.target.value)}>
+
                                     <option value="expense">Expense</option>
                                     <option value="income">Income</option>
                                 </select>
@@ -49,26 +85,50 @@ export function Dashboard() {
 
                             <div className="amount-div">
                                 <label htmlFor="amount">Amount($)</label>
-                                <input type="text" name="amount" id="input-amount" placeholder="$0.00"/>
+                                <input type="text"
+                                  name="amount"
+                                  id="input-amount"
+                                  placeholder="$0.00"
+                                  value={amount}
+                                  onChange={(e) => setAmount(e.target.value)}/>
                             </div>
                         </div>
 
                         <div className="add-transaction-second-part">
                             <div className="category-div">
                                 <label htmlFor="category">Category</label>
-                                <select name="category" id="category">
-                                    <option value="food">Food</option>
-                                    <option value="rent">Rent</option>
+                                <select name="category"
+                                  id="category"
+                                  value={category} 
+                                  onChange={(e) => setCategory(e.target.value)}>
+
+                                    <option value="food">Food & Groceries</option>
+                                    <option value="rent">Rent / Housing</option>
                                     <option value="transport">Transport</option>
-                                    <option value="salary">Salary</option>
+                                    <option value="utilities">Utilities</option>
                                     <option value="entertainment">Entertainment</option>
+                                    <option value="shopping">Shopping</option>
+                                    <option value="health">Health & Fitness</option>
+                                    <option value="subscriptions">Subscriptions</option>
+                                    <option value="education">Education</option>
+                                    <option value="salary">Salary</option>
+                                    <option value="freelance">Freelance</option>
+                                    <option value="investments">Investments</option>
+                                    <option value="gifts">Gifts</option>
+                                    <option value="other">Other</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="description-div">
                             <label htmlFor="description">Description</label>
-                            <input type="text" name="description" id="description" placeholder="Optional Note..."/>
+                            <input type="text"
+                              name="description" 
+                              id="description" 
+                              value={description} 
+                              placeholder="Optional Note..."
+                              onChange={(e) => setDescription(e.target.value)}
+                            />
                         </div>
 
                         <div className="date-div">
@@ -84,7 +144,7 @@ export function Dashboard() {
                             </div>
                         </div>
 
-                        <button>Add transaction</button>
+                        <button type="button" onClick={handleAddTransaction}>Add transaction</button>
                     </div>
 
                     <div className="spending-by-category">
