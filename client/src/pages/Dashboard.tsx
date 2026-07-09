@@ -222,8 +222,7 @@ export function Dashboard() {
                 </div>
 
                 <div className="all-transactions-container">
-                    <div className="all-transactions">
-                        <div className="upper-part">
+                    <div className="upper-part">
                             <p id="transactions-text">Transactions</p>
                             <select name="select-income-or-expense" id="select-income-or-expense">
                                 <option value="income">Income</option>
@@ -247,7 +246,8 @@ export function Dashboard() {
                             </select>
                             <button>Search</button>
                         </div>
-
+                        
+                    <div className="all-transactions">
                         <div className="list">
                             {transactions.map((t) => (
                                 <div key={t.id} className="transaction">

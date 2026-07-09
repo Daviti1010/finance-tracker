@@ -338,6 +338,9 @@ body {
     margin: 30px auto 20px;
     border-radius: 15px;
     border: 2px solid rgb(130, 130, 130);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
 }
 
 .upper-part {
@@ -346,7 +349,14 @@ body {
     justify-content: space-between;
     gap: 16px;
     padding: 16px 0;
-    border-bottom: 1px solid var(--rule, #C9CFC0);
+    border-bottom: 1px solid #C9CFC0;
+    flex-shrink: 0;
+}
+
+.all-transactions {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 16px;
 }
 
 #transactions-text {
