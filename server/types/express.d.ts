@@ -4,9 +4,7 @@ declare global {
       user?: {
         id: number;
         name: string;
-      }
+      };
     }
   }
 }
-
-export {}

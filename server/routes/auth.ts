@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import { generateToken } from "../utils/generateToken";
+import authMiddleware from "../middleware/authMiddleware";
 
 
 dotenv.config()
@@ -129,6 +130,26 @@ router.post("/login", async (req, res) => {
     }
 })
 
+
+router.get("/me", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id;;
+
+    try {
+        const result = await pool.query("SELECT username FROM users WHERE id = $1", [userId]);
+
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: "User not found" })
+        }
+
+        res.status(200).json({ username: result.rows[0].username })
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: "Something went wrong" })
+    }
+    console.log(userId);
+    res.json({ success: true, userId });
+})
 
 
 

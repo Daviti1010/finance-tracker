@@ -4,6 +4,10 @@ import jwt from 'jsonwebtoken';
 function authMiddleware(req: any, res: any, next: any) {
     const authHeader = req.headers.authorization;
 
+    if (!authHeader) {
+        return res.status(401).json({ success: false }); 
+    }
+
     if (authHeader) {
         const token: any = authHeader.split(" ")[1]; 
         

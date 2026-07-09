@@ -47,3 +47,6 @@ export const login = (email: string, password: string) =>
 
 export const checkUsername = (username: string) =>
     api.get(`/auth/check-username?username=${username}`)
+
+export const getMe = () =>
+    api.get("/auth/me")
