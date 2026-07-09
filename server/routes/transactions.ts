@@ -12,7 +12,7 @@ router.get("/", authMiddleware, async (req: any, res: any) => {
     }
 
     try {
-        const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 ORDER BY created_at DESC", 
+        const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC", 
             [userId])
 
         return res.status(200).json(result.rows);

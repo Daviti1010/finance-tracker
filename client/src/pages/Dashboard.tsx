@@ -1,18 +1,60 @@
 import { Header } from "./HeaderPages/Header"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { addTransaction } from "../api"
+import { addTransaction, getTransactions } from "../api"
 import './Dashboard.css'
+
+interface Transaction {
+    id: number
+    amount: number
+    category: string
+    description: string
+    type: "income" | "expense"
+    date: string
+}
 
 
 export function Dashboard() {
     const [date, setDate] = useState(() => new Date().toISOString().split("T")[0])
 
+    function formatDate(isoString: string) {
+        return new Date(isoString).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        })
+    }
+
     const [type, setType] = useState("expense");
     const [amount, setAmount] = useState("");
     const [category, setCategory] = useState("Food & Groceries")
     const [description, setDescription] = useState("")
+
+    const [transactions, setTransactions] = useState<Transaction[]>([])
+
+    useEffect(() => {
+        async function fetchTransactions() {
+            try {
+                const response = await getTransactions();
+                const data = await response.json()
+                
+                if (!response.ok) {
+                    console.log(data.message)
+                    return
+                }
+
+                console.log(data[0])
+
+                setTransactions(data)
+
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        fetchTransactions()
+    }, [])
 
     async function handleAddTransaction() {
 
@@ -205,70 +247,29 @@ export function Dashboard() {
                         </div>
 
                         <div className="list">
-                            <div className="transaction">
-                                <div className="transaction-left-side">
-                                    <img src="/green-arrow.png" alt="" className="arrow green-arrow"/>
-                                    <div className="transaction-text">
-                                        <p className="category">Salary</p>
-                                        <p className="description">June paycheck</p>
+                            {transactions.map((t) => (
+                                <div key={t.id} className="transaction">
+                                    <div className="transaction-left-side">
+                                        <img 
+                                          src={t.type === "income" ? "/green-arrow.png" : "/red-arrow.png"}
+                                          alt=""
+                                          className={t.type === "income" ? "arrow green-arrow" : "arrow red-arrow"}/>
+
+                                        <div className="transaction-text">
+                                            <p className="category">{t.category}</p>
+                                            <p className="description">{t.description}</p>
+                                        </div>
+                                    </div>
+
+                                    <div className="transaction-right-side">
+                                        <p className="transaction-date">{formatDate(t.date)}</p>
+                                        <p className={t.type === "income" ?
+                                             "transaction-amount positive" : "transaction-amount negative"}>
+                                                {t.type === "income" ? "+" : "-"}{t.amount}</p>
+                                        <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
                                     </div>
                                 </div>
-
-                                <div className="transaction-right-side">
-                                    <p className="transaction-date">Jun 1</p>
-                                    <p className="transaction-amount positive">+$3,200</p>
-                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
-                                </div>
-                            </div>
-
-                            <div className="transaction">
-                                <div className="transaction-left-side">
-                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
-                                    <div className="transaction-text">
-                                        <p className="category">Rent</p>
-                                        <p className="description">Monthly rent</p>
-                                    </div>
-                                </div>
-
-                                <div className="transaction-right-side">
-                                    <p className="transaction-date">Jun 2</p>
-                                    <p className="transaction-amount negative">-$1,200</p>
-                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
-                                </div>
-                            </div>
-
-                            <div className="transaction">
-                                <div className="transaction-left-side">
-                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
-                                    <div className="transaction-text">
-                                        <p className="category">Food</p>
-                                        <p className="description">Weekly groceries</p>
-                                    </div>
-                                </div>
-
-                                <div className="transaction-right-side">
-                                    <p className="transaction-date">Jun 4</p>
-                                    <p className="transaction-amount negative">-$400</p>
-                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
-                                </div>
-                            </div>
-
-                            <div className="transaction">
-                                <div className="transaction-left-side">
-                                    <img src="/red-arrow.png" alt="" className="arrow red-arrow"/>
-                                    <div className="transaction-text">
-                                        <p className="category">Transport</p>
-                                        <p className="description">Bus pass</p>
-                                    </div>
-                                </div>
-
-                                <div className="transaction-right-side">
-                                    <p className="transaction-date">Jun 5</p>
-                                    <p className="transaction-amount negative">-$140</p>
-                                    <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
-                                </div>
-                            </div>
-
+                            ))}
                         </div>
                     </div>
                 </div>
