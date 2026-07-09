@@ -119,7 +119,7 @@ router.delete("/:id", authMiddleware, async (req: any, res: any) => {
 
         if (userId === transactionUserId) {
 
-            const deleteTransaction = await pool.query("DELETE FROM transactions WHERE id = $1", [transactionId])
+            await pool.query("DELETE FROM transactions WHERE id = $1", [transactionId])
 
             return res.status(200).json({success: true, message: "Successfully deleted"})
 

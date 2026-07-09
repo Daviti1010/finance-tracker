@@ -2,7 +2,7 @@ import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { addTransaction, getTransactions } from "../api"
+import { addTransaction, deleteTransaction, getTransactions } from "../api"
 import './Dashboard.css'
 
 interface Transaction {
@@ -87,6 +87,23 @@ export function Dashboard() {
             console.log(err)
         }
 
+    }
+
+    async function handleDeleteTransaction(id: number) {
+        try { 
+            const response = await deleteTransaction(id);
+            const data = await response.json();
+
+            if (data.success) {
+                console.log("Deleted!")
+                setTransactions((prev) => prev.filter(t => t.id !== id))
+            } else {
+                console.log("Error deleting!")
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
@@ -246,7 +263,7 @@ export function Dashboard() {
                             </select>
                             <button>Search</button>
                         </div>
-                        
+
                     <div className="all-transactions">
                         <div className="list">
                             {transactions.map((t) => (
@@ -268,7 +285,7 @@ export function Dashboard() {
                                         <p className={t.type === "income" ?
                                              "transaction-amount positive" : "transaction-amount negative"}>
                                                 {t.type === "income" ? "+" : "-"}{t.amount}</p>
-                                        <button className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                                        <button onClick={() => handleDeleteTransaction(t.id)} className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
                                     </div>
                                 </div>
                             ))}

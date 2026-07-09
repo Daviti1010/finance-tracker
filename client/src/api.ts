@@ -57,3 +57,6 @@ export const addTransaction =
 
 export const getTransactions = () => 
     api.get("/transactions/") 
+
+export const deleteTransaction = (id: number) =>
+    api.delete(`/transactions/${id}`)
