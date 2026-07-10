@@ -140,7 +140,7 @@ export function Dashboard() {
                 }
 
                 if (data.startingBalance !== null && data.startingBalance !== undefined) {
-                    setNetBalance(data.startingBalance)
+                    setNetBalance(String(data.startingBalance))
                     setBalanceSavedInDB(true)
                 }
 
@@ -205,7 +205,9 @@ export function Dashboard() {
 
                             {balanceSavedInDB && (
                                 <div id="net-balance-number">
-                                    <p id="net-balance-number-p">{formatMoney(netBalance)}</p>
+                                    <p id="net-balance-number-p">
+                                        {formatMoney(Number(netBalance) + totalIncome - totalExpenses)}
+                                    </p>
                                     <button id="edit-balance-btn" onClick={() => setBalanceSavedInDB(false)}>
                                         <FontAwesomeIcon icon={faPen} />
                                     </button>
@@ -218,7 +220,7 @@ export function Dashboard() {
                                     type="number" 
                                     name="enter-number"
                                     id="enter-number"
-                                    placeholder="Enter net balance:"
+                                    placeholder="Enter startingy balance:"
                                     value={netBalance} 
                                     onChange={(e) => setNetBalance(e.target.value)}
                                 />
