@@ -47,6 +47,8 @@ export function Dashboard() {
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
 
+    const [isLoadingBalance, setIsLoadingBalance] = useState(true)
+
     useEffect(() => {
         async function fetchTransactions() {
             try {
@@ -138,6 +140,8 @@ export function Dashboard() {
 
             } catch (err) {
                 console.log(err)
+            } finally {
+                setIsLoadingBalance(false)
             }
         }
 
@@ -189,7 +193,7 @@ export function Dashboard() {
                                 </div>
                             )}
 
-                        {!balanceSaved && (
+                        {!isLoadingBalance && !balanceSaved && (
                             <div className="net-balance-enter">
                                 <input 
                                     type="number" 
