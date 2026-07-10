@@ -2,7 +2,7 @@ import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { addTransaction, deleteTransaction, getTransactions, saveStartingBalance } from "../api"
+import { addTransaction, deleteTransaction, getStartingBalance, getTransactions, saveStartingBalance } from "../api"
 import './Dashboard.css'
 
 interface Transaction {
@@ -119,6 +119,31 @@ export function Dashboard() {
             console.log(err)
         }
     }
+
+    useEffect(() => {
+        async function findStartingBalance() {
+            try {
+                const response = await getStartingBalance();
+                const data = await response.json();
+
+                if (!response.ok) {
+                    console.log(data.message)
+                    return
+                }
+
+                if (data.startingBalance !== null && data.startingBalance !== undefined) {
+                    setNetBalance(data.startingBalance)
+                    setBalanceSaved(true)
+                }
+
+            } catch (err) {
+                console.log(err)
+            }
+        }
+
+        findStartingBalance()
+    }, [])
+
 
     async function saveInputNumber() {
         if (!netBalance) return

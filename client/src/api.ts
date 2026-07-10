@@ -63,3 +63,6 @@ export const deleteTransaction = (id: number) =>
 
 export const saveStartingBalance = (startingBalance: number) => 
     api.put(`/auth/starting-balance`, {startingBalance})
+
+export const getStartingBalance = () =>
+    api.get("/auth/starting-balance")
