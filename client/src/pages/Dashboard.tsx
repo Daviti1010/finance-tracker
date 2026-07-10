@@ -1,7 +1,7 @@
 import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons'
 import { addTransaction, deleteTransaction, getStartingBalance, getTransactions, saveStartingBalance } from "../api"
 import './Dashboard.css'
 
@@ -43,7 +43,7 @@ export function Dashboard() {
     const [description, setDescription] = useState("")
 
     const [netBalance, setNetBalance] = useState("");
-    const [balanceSaved, setBalanceSaved] = useState(false);
+    const [balanceSavedInDB, setBalanceSavedInDB] = useState(false);
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
 
@@ -135,7 +135,7 @@ export function Dashboard() {
 
                 if (data.startingBalance !== null && data.startingBalance !== undefined) {
                     setNetBalance(data.startingBalance)
-                    setBalanceSaved(true)
+                    setBalanceSavedInDB(true)
                 }
 
             } catch (err) {
@@ -161,7 +161,7 @@ export function Dashboard() {
                 return
             }
 
-            setBalanceSaved(true)
+            setBalanceSavedInDB(true)
 
         } catch (err) {
             console.log(err)
@@ -187,13 +187,16 @@ export function Dashboard() {
                         <div className="net-balance">
                             <div id="net-balance-text">Net balance</div>
 
-                            {balanceSaved && (
+                            {balanceSavedInDB && (
                                 <div id="net-balance-number">
                                     <p id="net-balance-number-p">{formatMoney(netBalance)}</p>
+                                    <button id="edit-balance-btn" onClick={() => setBalanceSavedInDB(false)}>
+                                        <FontAwesomeIcon icon={faPen} />
+                                    </button>
                                 </div>
                             )}
 
-                        {!isLoadingBalance && !balanceSaved && (
+                        {!isLoadingBalance && !balanceSavedInDB && (
                             <div className="net-balance-enter">
                                 <input 
                                     type="number" 

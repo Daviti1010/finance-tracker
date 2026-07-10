@@ -121,6 +121,14 @@ body {
     transition: 0.1s ease;
 } 
 
+#edit-balance-btn {
+    background-color: rgb(73, 73, 73);
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    color: whitesmoke;
+}
+
 .transaction-input {
     margin-top: 50px;
     display: flex;
