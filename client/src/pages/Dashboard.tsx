@@ -2,7 +2,7 @@ import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { addTransaction, deleteTransaction, getTransactions } from "../api"
+import { addTransaction, deleteTransaction, getTransactions, saveStartingBalance } from "../api"
 import './Dashboard.css'
 
 interface Transaction {
@@ -32,7 +32,6 @@ export function Dashboard() {
             currency: 'USD',
         });
 
-        // Since amount can be a string, parseFloat safely converts it
         const numericAmount = amount ? parseFloat(amount.toString()) : 0;
 
         return formatter.format(numericAmount);
@@ -121,10 +120,23 @@ export function Dashboard() {
         }
     }
 
-    async function getInputNumber() {
+    async function saveInputNumber() {
         if (!netBalance) return
         
-       setBalanceSaved(true)
+        try {  
+            const response  = await saveStartingBalance(Number(netBalance));
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.log(data.message)
+                return
+            }
+
+            setBalanceSaved(true)
+
+        } catch (err) {
+            console.log(err)
+        }
     }
 
 
@@ -162,7 +174,7 @@ export function Dashboard() {
                                     value={netBalance} 
                                     onChange={(e) => setNetBalance(e.target.value)}
                                 />
-                                <button className="save-net-balance-btn" onClick={getInputNumber}>Save</button>
+                                <button className="save-net-balance-btn" onClick={saveInputNumber}>Save</button>
                             </div>
                         )}
                         </div>

@@ -132,7 +132,7 @@ router.post("/login", async (req, res) => {
 
 
 router.get("/me", authMiddleware, async (req, res) => {
-    const userId = (req as any).user?.id;;
+    const userId = (req as any).user?.id;
 
     try {
         const result = await pool.query("SELECT username FROM users WHERE id = $1", [userId]);
@@ -149,6 +149,24 @@ router.get("/me", authMiddleware, async (req, res) => {
     }
 })
 
+router.put("/starting-balance", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id;
+    const {startingBalance} = req.body;
 
+    if (startingBalance === undefined || isNaN(Number(startingBalance))) {
+        return res.status(400).json({ message: "Invalid starting balance" })
+    }
+
+    try {
+        const result = await pool.query("UPDATE users SET starting_balance = $1 WHERE id = $2", 
+            [startingBalance, userId])
+
+        return res.status(200).json({ success: true })
+
+    } catch (err) {
+        console.error(err)
+        return res.status(500).json({ message: "Something went wrong" })
+    }
+})
 
 export default router;
