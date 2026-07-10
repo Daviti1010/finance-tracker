@@ -49,6 +49,12 @@ export function Dashboard() {
 
     const [isLoadingBalance, setIsLoadingBalance] = useState(true)
 
+    // const [income, setIncome] = useState("");
+
+    // async function getIncome() {
+        
+    // }
+
     useEffect(() => {
         async function fetchTransactions() {
             try {
@@ -168,6 +174,14 @@ export function Dashboard() {
         }
     }
 
+    const totalIncome = transactions
+        .filter(t => t.type === "income")
+        .reduce((sum, t) => sum + Number(t.amount), 0)
+
+    const totalExpenses = transactions
+        .filter(t => t.type === "expense")
+        .reduce((sum, t) => sum + Number(t.amount), 0)
+
 
     return (
         <>
@@ -175,14 +189,16 @@ export function Dashboard() {
 
             <div className="dashboard-page">
                 <div className="income-expense-container">
-                    <div className="income-expense">
-                        <div className="income">
-                            <div id="income-text">Total income</div>
-                            <div id="income-number"><p>$3,200.00</p></div>
-                        </div>
-                        <div className="expense">
-                            <div id="expense-text">Total expenses</div>
-                            <div id="expense-number"><p>$1,840.00</p></div>
+                    <div className="income-expense-balance">
+                        <div className="income-expense">
+                            <div className="income">
+                                <div id="income-text">Total income</div>
+                                <div id="income-number"><p>${totalIncome.toFixed(2)}</p></div>
+                            </div>
+                            <div className="expense">
+                                <div id="expense-text">Total expenses</div>
+                                <div id="expense-number"><p>${totalExpenses.toFixed(2)}</p></div>
+                            </div>
                         </div>
                         <div className="net-balance">
                             <div id="net-balance-text">Net balance</div>
@@ -369,7 +385,7 @@ export function Dashboard() {
                                         <p className="transaction-date">{formatDate(t.date)}</p>
                                         <p className={t.type === "income" ?
                                              "transaction-amount positive" : "transaction-amount negative"}>
-                                                {t.type === "income" ? "+" : "-"}{t.amount}</p>
+                                                {t.type === "income" ? "+$" : "-$"}{t.amount}</p>
                                         <button onClick={() => handleDeleteTransaction(t.id)} className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
                                     </div>
                                 </div>
