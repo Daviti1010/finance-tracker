@@ -80,7 +80,46 @@ body {
     color: rgb(241, 241, 241);
     padding: 5px 17px;
     font-size: 25px;
+    display: flex;
 }
+
+#enter-number::-webkit-outer-spin-button,
+#enter-number::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#enter-number {
+    height: 35px;
+    width: 75%;
+    font-size: 15px;
+    padding: 5px 10px;
+    margin-top: 5px;
+}
+
+.net-balance-enter {
+    display: flex;
+    padding: 0px 10px;
+}
+
+.save-net-balance-btn {
+    margin-left: 10px;
+    padding: 0px 8px;
+    height: 35px;
+    margin-top: 5px;
+    cursor: pointer;
+    border-radius: 3px;
+    border: 2px solid rgb(130, 130, 130);
+    background-color: rgb(73, 73, 73);
+    color: white;
+    transition: 0.1s ease-in;
+}
+
+.save-net-balance-btn:hover {
+    opacity: 0.85;
+    background-color: #3e3e3e;
+    transition: 0.1s ease;
+} 
 
 .transaction-input {
     margin-top: 50px;

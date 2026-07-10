@@ -26,10 +26,25 @@ export function Dashboard() {
         })
     }
 
+    const formatMoney = (amount: number | string) => {
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD',
+        });
+
+        // Since amount can be a string, parseFloat safely converts it
+        const numericAmount = amount ? parseFloat(amount.toString()) : 0;
+
+        return formatter.format(numericAmount);
+    };
+
     const [type, setType] = useState("expense");
     const [amount, setAmount] = useState("");
     const [category, setCategory] = useState("Food & Groceries")
     const [description, setDescription] = useState("")
+
+    const [netBalance, setNetBalance] = useState("");
+    const [balanceSaved, setBalanceSaved] = useState(false);
 
     const [transactions, setTransactions] = useState<Transaction[]>([])
 
@@ -106,6 +121,13 @@ export function Dashboard() {
         }
     }
 
+    async function getInputNumber() {
+        if (!netBalance) return
+        
+       setBalanceSaved(true)
+    }
+
+
     return (
         <>
             <Header />
@@ -115,15 +137,34 @@ export function Dashboard() {
                     <div className="income-expense">
                         <div className="income">
                             <div id="income-text">Total income</div>
-                            <div id="income-number">$3,200.00</div>
+                            <div id="income-number"><p>$3,200.00</p></div>
                         </div>
                         <div className="expense">
                             <div id="expense-text">Total expenses</div>
-                            <div id="expense-number">$1,840.00</div>
+                            <div id="expense-number"><p>$1,840.00</p></div>
                         </div>
                         <div className="net-balance">
                             <div id="net-balance-text">Net balance</div>
-                            <div id="net-balance-number">$1,360.00</div>
+
+                            {balanceSaved && (
+                                <div id="net-balance-number">
+                                    <p id="net-balance-number-p">{formatMoney(netBalance)}</p>
+                                </div>
+                            )}
+
+                        {!balanceSaved && (
+                            <div className="net-balance-enter">
+                                <input 
+                                    type="number" 
+                                    name="enter-number"
+                                    id="enter-number"
+                                    placeholder="Enter net balance:"
+                                    value={netBalance} 
+                                    onChange={(e) => setNetBalance(e.target.value)}
+                                />
+                                <button className="save-net-balance-btn" onClick={getInputNumber}>Save</button>
+                            </div>
+                        )}
                         </div>
                     </div>
                 </div>
