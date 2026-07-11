@@ -18,6 +18,22 @@ interface Transaction {
 export function Dashboard() {
     const [date, setDate] = useState(() => new Date().toISOString().split("T")[0])
 
+    const [type, setType] = useState("expense");
+    const [amount, setAmount] = useState("");
+    const [category, setCategory] = useState("Food & Groceries")
+    const [description, setDescription] = useState("")
+
+    const [netBalance, setNetBalance] = useState("");
+    const [balanceSavedInDB, setBalanceSavedInDB] = useState(false);
+
+    const [transactions, setTransactions] = useState<Transaction[]>([])
+
+    const [isLoadingBalance, setIsLoadingBalance] = useState(true)
+
+    const [amountError, setAmountError] = useState("")
+
+    const [dateError, setDateError] = useState("")
+
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -37,21 +53,28 @@ export function Dashboard() {
         return formatter.format(numericAmount);
     };
 
-    const [type, setType] = useState("expense");
-    const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("Food & Groceries")
-    const [description, setDescription] = useState("")
+    const incomeCategories = [
+        { value: "salary", label: "Salary" },
+        { value: "freelance", label: "Freelance" },
+        { value: "investments", label: "Investments" },
+        { value: "gifts", label: "Gifts" },
+        { value: "other", label: "Other" },
+    ]
 
-    const [netBalance, setNetBalance] = useState("");
-    const [balanceSavedInDB, setBalanceSavedInDB] = useState(false);
+    const expenseCategories = [
+        { value: "food", label: "Food & Groceries" },
+        { value: "rent", label: "Rent / Housing" },
+        { value: "transport", label: "Transport" },
+        { value: "utilities", label: "Utilities" },
+        { value: "entertainment", label: "Entertainment" },
+        { value: "shopping", label: "Shopping" },
+        { value: "health", label: "Health & Fitness" },
+        { value: "subscriptions", label: "Subscriptions" },
+        { value: "education", label: "Education" },
+        { value: "other", label: "Other" },
+    ]
 
-    const [transactions, setTransactions] = useState<Transaction[]>([])
-
-    const [isLoadingBalance, setIsLoadingBalance] = useState(true)
-
-    const [amountError, setAmountError] = useState("")
-
-    const [dateError, setDateError] = useState("")
+    const categoryOptions = type === "income" ? incomeCategories : expenseCategories
 
     useEffect(() => {
         async function fetchTransactions() {
@@ -283,20 +306,10 @@ export function Dashboard() {
                                   value={category} 
                                   onChange={(e) => setCategory(e.target.value)}>
 
-                                    <option value="food">Food & Groceries</option>
-                                    <option value="rent">Rent / Housing</option>
-                                    <option value="transport">Transport</option>
-                                    <option value="utilities">Utilities</option>
-                                    <option value="entertainment">Entertainment</option>
-                                    <option value="shopping">Shopping</option>
-                                    <option value="health">Health & Fitness</option>
-                                    <option value="subscriptions">Subscriptions</option>
-                                    <option value="education">Education</option>
-                                    <option value="salary">Salary</option>
-                                    <option value="freelance">Freelance</option>
-                                    <option value="investments">Investments</option>
-                                    <option value="gifts">Gifts</option>
-                                    <option value="other">Other</option>
+                                    {categoryOptions.map((categ) => (
+                                        <option key={categ.value} value={categ.value}>{categ.label}</option>
+                                    ))}
+
                                 </select>
                             </div>
                         </div>
