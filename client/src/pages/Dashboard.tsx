@@ -49,11 +49,7 @@ export function Dashboard() {
 
     const [isLoadingBalance, setIsLoadingBalance] = useState(true)
 
-    // const [income, setIncome] = useState("");
-
-    // async function getIncome() {
-        
-    // }
+    const [amountError, setAmountError] = useState("")
 
     useEffect(() => {
         async function fetchTransactions() {
@@ -81,9 +77,12 @@ export function Dashboard() {
     async function handleAddTransaction() {
 
         if (!amount || isNaN(Number(amount))) {
+            setAmountError("Please enter a valid amount")
             console.log("Please enter a valid amount")
             return
         }
+
+        setAmountError("")
 
         try {
             const response = await addTransaction({
@@ -254,7 +253,11 @@ export function Dashboard() {
                                   id="input-amount"
                                   placeholder="$0.00"
                                   value={amount}
-                                  onChange={(e) => setAmount(e.target.value)}/>
+                                  onChange={(e) => {
+                                    setAmount(e.target.value)
+                                    setAmountError("")
+                                  }}/>
+                                  {amountError && <p className="amount-error-text">{amountError}</p>}
                             </div>
                         </div>
 

@@ -146,9 +146,14 @@ body {
     border: 2px solid rgb(130, 130, 130);
     border-radius: 15px;
     width: 450px;
-    height: 415px;
+    height: 425px;
     padding: 20px 22px 22px;
     max-width: 420px;
+}
+
+.amount-error-text {
+    color: #ed4827;
+    margin-top: 2px;
 }
 
 #add-transaction-text {
@@ -269,7 +274,7 @@ body {
 .spending-by-category {
     background-color: rgb(73, 73, 73);
     width: 450px;
-    height: 415px;
+    height: 425px;
     border-radius: 15px;
     border: 2px solid rgb(130, 130, 130);
     padding: 20px 22px 22px;
