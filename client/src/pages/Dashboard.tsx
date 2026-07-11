@@ -51,6 +51,8 @@ export function Dashboard() {
 
     const [amountError, setAmountError] = useState("")
 
+    const [dateError, setDateError] = useState("")
+
     useEffect(() => {
         async function fetchTransactions() {
             try {
@@ -82,7 +84,14 @@ export function Dashboard() {
             return
         }
 
+        const today = new Date().toISOString().split("T")[0]
+            if (date > today) {
+                setDateError("Date cannot be in the future")
+            return
+        }
+
         setAmountError("")
+        setDateError("")
 
         try {
             const response = await addTransaction({
@@ -95,6 +104,11 @@ export function Dashboard() {
 
             const data = await response.json();
             console.log(data);
+
+            if (!response.ok) {
+                console.log(data.message)
+                return
+            }
 
             setTransactions((prev) => [data, ...prev])
 
@@ -306,9 +320,14 @@ export function Dashboard() {
                                     id="date"
                                     name="date"
                                     value={date}
-                                    onChange={(e) => setDate(e.target.value)}
+                                    max={new Date().toISOString().split("T")[0]}
+                                    onChange={(e) => {
+                                        setDate(e.target.value)
+                                        setDateError("")
+                                    }}
                                 />
                             </div>
+                            {dateError && <p className="date-error-text">{dateError}</p>}
                         </div>
 
                         <button type="button" onClick={handleAddTransaction}>Add transaction</button>

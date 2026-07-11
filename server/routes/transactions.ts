@@ -40,6 +40,11 @@ router.post("/", authMiddleware, async (req: any, res: any) => {
         return res.status(400).json({success: false, message: "Invalid number" })
     }
 
+    const today = new Date().toISOString().split("T")[0]
+    if (date > today!) {
+        return res.status(400).json({ message: "Date cannot be in the future" })
+    }
+
     try {
         const result = await pool.query("INSERT INTO transactions (user_id, type, amount, category, description, date) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
             [userId, type, amount, category, description, date])

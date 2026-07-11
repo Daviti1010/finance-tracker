@@ -152,7 +152,12 @@ body {
 }
 
 .amount-error-text {
-    color: #ed4827;
+    color: #ff2f06;
+    margin-top: 2px;
+}
+
+.date-error-text {
+    color: #ff2f06;
     margin-top: 2px;
 }
 
