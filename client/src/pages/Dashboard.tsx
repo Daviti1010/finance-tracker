@@ -276,7 +276,7 @@ export function Dashboard() {
                         </div>
 
                         <div className="add-transaction-second-part">
-                            <div className="category-div">
+                            <div className="category-div" style={{ marginTop: amountError ? "-10px" : "0" }}>
                                 <label htmlFor="category">Category</label>
                                 <select name="category"
                                   id="category"
@@ -330,7 +330,7 @@ export function Dashboard() {
                             {dateError && <p className="date-error-text">{dateError}</p>}
                         </div>
 
-                        <button type="button" onClick={handleAddTransaction}>Add transaction</button>
+                        <button type="button" onClick={handleAddTransaction}  style={{ marginTop: dateError ? "-8px" : "8px" }}>Add transaction</button>
                     </div>
 
                     <div className="spending-by-category">
