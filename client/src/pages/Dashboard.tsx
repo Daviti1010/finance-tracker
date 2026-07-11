@@ -273,14 +273,19 @@ export function Dashboard() {
                         <div className="add-transaction-first-part">
                             <div className="type-div">
                                 <label htmlFor="type">Type</label>
-                                <select name="type"
-                                  id="type"
-                                  value={type}
-                                  onChange={(e) => setType(e.target.value)}>
-
-                                    <option value="expense">Expense</option>
-                                    <option value="income">Income</option>
-                                </select>
+                                    <select
+                                        name="type"
+                                        id="type"
+                                        value={type}
+                                        onChange={(e) => {
+                                            const newType = e.target.value
+                                            setType(newType)
+                                            setCategory(newType === "income" ? incomeCategories[0].value : expenseCategories[0].value)
+                                        }}
+                                    >
+                                        <option value="expense">Expense</option>
+                                        <option value="income">Income</option>
+                                    </select>
                             </div>
 
                             <div className="amount-div">
