@@ -83,26 +83,27 @@ export function Dashboard() {
         ...(filterType === "income" ? incomeCategories : expenseCategories)
     ]
 
-    useEffect(() => {
-        async function fetchTransactions() {
-            try {
-                const response = await getTransactions("all", "all");
-                const data = await response.json()
-                
-                if (!response.ok) {
-                    console.log(data.message)
-                    return
-                }
-
-                console.log(data[0])
-
-                setTransactions(data)
-
-            } catch (err) {
-                console.log(err)
+    async function fetchTransactions() {
+        try {
+            const response = await getTransactions("all", "all");
+            const data = await response.json()
+            
+            if (!response.ok) {
+                console.log(data.message)
+                return
             }
-        }
 
+            console.log(data[0])
+
+            setTransactions(data)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchTransactions()
     }, [])
 
@@ -243,6 +244,12 @@ export function Dashboard() {
     const totalExpenses = transactions
         .filter(t => t.type === "expense")
         .reduce((sum, t) => sum + Number(t.amount), 0)
+
+    function handleReset() {
+        setFilterType("expense")
+        setFilterCategory("all")
+        fetchTransactions()
+    }
 
 
     return (
@@ -436,7 +443,7 @@ export function Dashboard() {
 
                             </select>
 
-                            <button id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
+                            <button onClick={handleReset} id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
 
                             <button id="search-btn" type="button" onClick={fetchFilteredTransactions}>Search</button>
                         </div>
