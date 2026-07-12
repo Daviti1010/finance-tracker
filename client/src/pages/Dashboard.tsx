@@ -34,6 +34,9 @@ export function Dashboard() {
 
     const [dateError, setDateError] = useState("")
 
+    const [filterType, setFilterType]= useState("income");
+    const [filterCategory, setFilterCategory] = useState("Salary")
+
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -75,6 +78,7 @@ export function Dashboard() {
     ]
 
     const categoryOptions = type === "income" ? incomeCategories : expenseCategories
+    const filterCategoryOptions = filterType === "income" ? incomeCategories : expenseCategories
 
     useEffect(() => {
         async function fetchTransactions() {
@@ -384,26 +388,32 @@ export function Dashboard() {
                 <div className="all-transactions-container">
                     <div className="upper-part">
                             <p id="transactions-text">Transactions</p>
-                            <select name="select-income-or-expense" id="select-income-or-expense">
-                                <option value="income">Income</option>
+
+                            <select
+                                name="select-income-or-expense"
+                                id="select-income-or-expense"
+                                value={filterType}
+                                onChange={(e) => {
+                                    const newType = e.target.value
+                                    setFilterType(newType)
+                                    setFilterCategory(newType === "income" ? incomeCategories[0].value : expenseCategories[0].value)
+                                }}
+                            >
                                 <option value="expense">Expense</option>
+                                <option value="income">Income</option>
                             </select>
-                            <select name="select-category" id="select-category">
-                                <option value="food">Food & Groceries</option>
-                                <option value="rent">Rent / Housing</option>
-                                <option value="transport">Transport</option>
-                                <option value="utilities">Utilities</option>
-                                <option value="entertainment">Entertainment</option>
-                                <option value="shopping">Shopping</option>
-                                <option value="health">Health & Fitness</option>
-                                <option value="subscriptions">Subscriptions</option>
-                                <option value="education">Education</option>
-                                <option value="salary">Salary</option>
-                                <option value="freelance">Freelance</option>
-                                <option value="investments">Investments</option>
-                                <option value="gifts">Gifts</option>
-                                <option value="other">Other</option>
+
+                            <select name="select-category"
+                                id="select-category"
+                                value={filterCategory} 
+                                onChange={(e) => setFilterCategory(e.target.value)}>
+
+                                {filterCategoryOptions.map((categ) => (
+                                    <option key={categ.value} value={categ.value}>{categ.label}</option>
+                                ))}
+
                             </select>
+                            
                             <button>Search</button>
                         </div>
 
