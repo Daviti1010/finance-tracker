@@ -35,7 +35,7 @@ export function Dashboard() {
     const [dateError, setDateError] = useState("")
 
     const [filterType, setFilterType]= useState("income");
-    const [filterCategory, setFilterCategory] = useState("Salary")
+    const [filterCategory, setFilterCategory] = useState("all")
 
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
@@ -78,7 +78,10 @@ export function Dashboard() {
     ]
 
     const categoryOptions = type === "income" ? incomeCategories : expenseCategories
-    const filterCategoryOptions = filterType === "income" ? incomeCategories : expenseCategories
+    const filterCategoryOptions = [
+        { value: "all", label: "All categories" },
+        ...(filterType === "income" ? incomeCategories : expenseCategories)
+    ]
 
     useEffect(() => {
         async function fetchTransactions() {
@@ -396,7 +399,7 @@ export function Dashboard() {
                                 onChange={(e) => {
                                     const newType = e.target.value
                                     setFilterType(newType)
-                                    setFilterCategory(newType === "income" ? incomeCategories[0].value : expenseCategories[0].value)
+                                    setFilterCategory("all")
                                 }}
                             >
                                 <option value="expense">Expense</option>
@@ -413,7 +416,7 @@ export function Dashboard() {
                                 ))}
 
                             </select>
-                            
+
                             <button>Search</button>
                         </div>
 
