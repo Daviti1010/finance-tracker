@@ -277,12 +277,28 @@ body {
 }
 
 .spending-by-category {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background-color: rgb(73, 73, 73);
     width: 450px;
     height: 425px;
     border-radius: 15px;
     border: 2px solid rgb(130, 130, 130);
-    padding: 20px 22px 22px;
+    /* padding: 20px 22px 22px; */
+    overflow-y: auto;
+    position: relative;
+}
+
+.spending-text {
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    /* z-index: 1; */
+    /* padding: 12px 0; */
+    border-bottom: 1px solid #C9CFC0;
+    flex-shrink: 0;
+    padding: 20px 22px 0px;
 }
 
 #spending-text {
@@ -297,34 +313,16 @@ body {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 22px 22px;
 }
 
-.rent-progress-bar,
-.food-progress-bar,
-.transport-progress-bar,
-.entertainment-progress-bar {
+.progress-bar {
     height: 22px;
     border-radius: 4px;
-}
-
-.rent-progress-bar {
     width: 65%;
     background-color: #AFA9EC;
-}
-
-.food-progress-bar {
-    width: 22%;
-    background-color: #9FE1CB;
-}
-
-.transport-progress-bar {
-    width: 8%;
-    background-color: #FAC775;
-}
-
-.entertainment-progress-bar {
-    width: 5%;
-    background-color: #F4C0D1;
 }
 
 .bar-and-text-div {
@@ -343,10 +341,7 @@ body {
     color: wheat;
 }
 
-.rent-progress-bar,
-.food-progress-bar,
-.transport-progress-bar,
-.entertainment-progress-bar {
+.progress-bar {
     flex: 1;
     height: 20px;
     border-radius: 5px;

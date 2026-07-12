@@ -385,31 +385,17 @@ export function Dashboard() {
                     </div>
 
                     <div className="spending-by-category">
-                        <p id="spending-text">Spending by category</p>
+                        <div className="spending-text">
+                            <p id="spending-text">Spending by category</p>
+                        </div>
                         <div className="progress-bar-container">
-                            <div className="bar-and-text-div">
-                                <p className="spending-category">Rent</p>
-                                <div className="rent-progress-bar"></div>
-                                <p className="percentage">65%</p>
-                            </div>
-
-                            <div className="bar-and-text-div">
-                                <p className="spending-category">Food</p>
-                                <div className="food-progress-bar"></div>
-                                <p className="percentage">35%</p>
-                            </div>
-
-                            <div className="bar-and-text-div">
-                                <p className="spending-category">Transport</p>
-                                <div className="transport-progress-bar"></div>
-                                <p className="percentage">8%</p>
-                            </div>
-
-                            <div className="bar-and-text-div">
-                                <p className="spending-category">Entertainment</p>
-                                <div className="entertainment-progress-bar"></div>
-                                <p className="percentage">2%</p>
-                            </div>
+                            {expenseCategories.map((categ) => (
+                                <div className="bar-and-text-div">
+                                    <p className="spending-category">{categ.value}</p>
+                                    <div className={`${categ.value}-progress-bar progress-bar`}></div>
+                                    <p className="percentage">65%</p>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
