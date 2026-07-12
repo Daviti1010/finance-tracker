@@ -391,7 +391,7 @@ export function Dashboard() {
                         <div className="progress-bar-container">
                             {expenseCategories.map((categ) => (
                                 <div className="bar-and-text-div">
-                                    <p className="spending-category">{categ.value}</p>
+                                    <p className="spending-category" style={{ textTransform: 'capitalize' }}>{categ.value}</p>
                                     <div className={`${categ.value}-progress-bar progress-bar`}></div>
                                     <p className="percentage">65%</p>
                                 </div>
@@ -445,7 +445,7 @@ export function Dashboard() {
                                           className={t.type === "income" ? "arrow green-arrow" : "arrow red-arrow"}/>
 
                                         <div className="transaction-text">
-                                            <p className="category">{t.category}</p>
+                                            <p className="category" style={{ textTransform: 'capitalize' }}>{t.category}</p>
                                             <p className="description">{t.description}</p>
                                         </div>
                                     </div>
