@@ -20,7 +20,7 @@ export function Dashboard() {
 
     const [type, setType] = useState("expense");
     const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("Food & Groceries")
+    const [category, setCategory] = useState("food")
     const [description, setDescription] = useState("")
 
     const [netBalance, setNetBalance] = useState("");
@@ -34,7 +34,7 @@ export function Dashboard() {
 
     const [dateError, setDateError] = useState("")
 
-    const [filterType, setFilterType]= useState("income");
+    const [filterType, setFilterType]= useState("expense");
     const [filterCategory, setFilterCategory] = useState("all")
 
     function formatDate(isoString: string) {
@@ -86,7 +86,7 @@ export function Dashboard() {
     useEffect(() => {
         async function fetchTransactions() {
             try {
-                const response = await getTransactions();
+                const response = await getTransactions("all", "all");
                 const data = await response.json()
                 
                 if (!response.ok) {
@@ -105,6 +105,25 @@ export function Dashboard() {
 
         fetchTransactions()
     }, [])
+
+    async function fetchFilteredTransactions() {
+        try {
+            const response = await getTransactions(filterType, filterCategory);
+            const data = await response.json()
+            
+            if (!response.ok) {
+                console.log(data.message)
+                return
+            }
+
+            console.log(data[0])
+
+            setTransactions(data)
+
+        } catch (err) {
+            console.log(err)
+        }
+    }
 
     async function handleAddTransaction() {
 
@@ -417,7 +436,7 @@ export function Dashboard() {
 
                             </select>
 
-                            <button>Search</button>
+                            <button type="button" onClick={fetchFilteredTransactions}>Search</button>
                         </div>
 
                     <div className="all-transactions">

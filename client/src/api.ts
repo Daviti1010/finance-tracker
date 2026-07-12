@@ -55,8 +55,8 @@ export const addTransaction =
     (transaction: {type: string, amount: number, category: string, description: string, date: string}) =>
     api.post("/transactions", transaction)
 
-export const getTransactions = () => 
-    api.get("/transactions/") 
+export const getTransactions = (type?: string, category?: string) => 
+    api.get(`/transactions?type=${type}&category=${category}`) 
 
 export const deleteTransaction = (id: number) =>
     api.delete(`/transactions/${id}`)

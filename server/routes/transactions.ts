@@ -6,12 +6,27 @@ const router = express.Router();
 
 router.get("/", authMiddleware, async (req: any, res: any) => {
     const userId = req.user?.id;
+    const type = req.query?.type;
+    const category = req.query?.category;
 
     if (!userId) {
       return res.status(401).json({ error: "Unauthorized access" });
     }
 
     try {
+        if (type && category && category !== "all") {
+            const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 AND type = $2 AND category = $3 ORDER BY date DESC", 
+                [userId, type, category])
+
+            return res.status(200).json(result.rows);
+
+        } else if (type && type !== "all" && category && category === "all") {
+            const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 AND type = $2 ORDER BY date DESC", 
+                [userId, type])
+
+            return res.status(200).json(result.rows);
+        }
+
         const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC", 
             [userId])
 
