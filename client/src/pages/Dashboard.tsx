@@ -1,7 +1,7 @@
 import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faPen } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faPen, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { addTransaction, deleteTransaction, getStartingBalance, getTransactions, saveStartingBalance } from "../api"
 import './Dashboard.css'
 
@@ -436,7 +436,9 @@ export function Dashboard() {
 
                             </select>
 
-                            <button type="button" onClick={fetchFilteredTransactions}>Search</button>
+                            <button id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
+
+                            <button id="search-btn" type="button" onClick={fetchFilteredTransactions}>Search</button>
                         </div>
 
                     <div className="all-transactions">

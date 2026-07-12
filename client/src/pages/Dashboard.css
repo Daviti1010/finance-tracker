@@ -451,22 +451,38 @@ body {
     box-shadow: 0 0 0 2px rgba(140, 109, 47, 0.15);
 }
 
-.upper-part button {
+#search-btn,
+#reset-transactions-btn {
     background: rgb(73, 73, 73);
     color: var(--paper, #EDEFE7);
-    border: 2px solid rgb(130, 130, 130);
-    border-radius: 3px;
     padding: 8px 16px;
-    cursor: pointer;
     flex-shrink: 0;
     margin: -10px 15px 0px 0px;
+    cursor: pointer;
+}
+
+#search-btn {
+    border: 2px solid rgb(130, 130, 130);
+    border-radius: 3px;
     transition: 0.15s ease;
 }
 
-.upper-part button:hover {
+#search-btn:hover {
     opacity: 0.85;
     background-color: #3e3e3e;
 }
+
+#reset-transactions-btn {
+    transition: 0.05s ease;
+    border: none;
+    margin-right: -20px;
+    font-size: 16px;
+}
+
+#reset-transactions-btn:hover {
+    color: #b8b8b8;
+}
+
 
 .list {
     display: flex;
