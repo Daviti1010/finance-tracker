@@ -330,6 +330,7 @@ body {
     align-items: center;
     gap: 12px;
     margin-bottom: 14px;
+    padding-right: 15px;
 }
 
 .spending-category {
@@ -350,10 +351,8 @@ body {
     overflow: hidden;
 }
 
-.rent-progress-bar::after,
-.food-progress-bar::after,
-.transport-progress-bar::after,
-.entertainment-progress-bar::after {
+.progress-bar::after {
+    width: var(--progress);
     content: "";
     position: absolute;
     top: 0;
@@ -363,23 +362,43 @@ body {
     transition: width 0.3s ease;
 }
 
-.rent-progress-bar::after {
-    width: 40%;
-    background: var(--brass, #8C6D2F);
-}
-
 .food-progress-bar::after {
-    width: 25%;
     background: var(--loss, #A6432F);
 }
 
+.rent-progress-bar::after {
+    background: var(--brass, #8C6D2F);
+}
+
 .transport-progress-bar::after {
-    width: 20%;
-    background: var(--gain, #2F6F55);
+    background: var(--loss, #939601);
+}
+
+.utilities-progress-bar::after {
+    background: #027a8f;
 }
 
 .entertainment-progress-bar::after {
-    width: 15%;
+    background: var(--gain, #2F6F55);
+}
+
+.shopping-progress-bar::after {
+    background: #6E7F9A;
+}
+
+.health-progress-bar::after {
+    background: #0b8a05;
+}
+
+.subscriptions-progress-bar::after {
+    background: #c1a103;
+}
+
+.education-progress-bar::after {
+    background: #d2048a;
+}
+
+.other-progress-bar::after {
     background: #6E7F9A;
 }
 

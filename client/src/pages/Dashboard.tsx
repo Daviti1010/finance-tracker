@@ -39,6 +39,12 @@ export function Dashboard() {
     const [filterType, setFilterType]= useState("expense");
     const [filterCategory, setFilterCategory] = useState("all")
 
+    const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
+    const [categoryListLength, setCategoryListLength] = useState(0);
+
+    // console.log("useState" + " " + categoryCounts)
+    // console.log("useState" + " " + categoryListLength)
+
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -95,7 +101,33 @@ export function Dashboard() {
                 return
             }
 
-            console.log(data[0])
+            // console.log(data[0])
+            // console.log(data[1])
+            // console.log(data);
+            const list = [];
+
+            for (let i = 0; i < data.length; i++) {
+                if (data[i].type === 'expense') {
+                    const eachCategory = data[i].category;
+                    // console.log("Category:" + " " + eachCategory)
+                    // const list = [];
+                    list.push(eachCategory);
+                    // console.log(list)
+                }
+            }
+
+            console.log(list)
+            // console.log(Number(list.length))
+            setCategoryListLength(Number(list.length))
+
+            const counts = list.reduce((acc, str) => {
+                acc[str] = (acc[str] || 0) + 1;
+                return acc;
+            }, {});
+
+            console.log(counts); 
+            // console.log(typeof(counts)); 
+            setCategoryCounts(counts);
 
             // setTransactions(data)
             setAllTransactions(data); // to get all
@@ -404,15 +436,25 @@ export function Dashboard() {
                         <div className="spending-text">
                             <p id="spending-text">Spending by category</p>
                         </div>
-                        <div className="progress-bar-container">
-                            {expenseCategories.map((categ) => (
-                                <div className="bar-and-text-div">
-                                    <p className="spending-category" style={{ textTransform: 'capitalize' }}>{categ.value}</p>
-                                    <div className={`${categ.value}-progress-bar progress-bar`}></div>
-                                    <p className="percentage">65%</p>
-                                </div>
-                            ))}
-                        </div>
+                            <div className="progress-bar-container">
+                                {expenseCategories.map((categ) => {
+                                    const hasCount = categoryCounts[categ.value] !== undefined;
+                                    const progressPercentage = ((categoryCounts[categ.value]) / categoryListLength * 100);
+
+                                    return hasCount ? (
+                                        <div className="bar-and-text-div" key={categ.value}>
+                                            <p className="spending-category" style={{ textTransform: 'capitalize' }}>
+                                                {categ.value}
+                                            </p>
+                                            <div className={`${categ.value}-progress-bar progress-bar`}
+                                            style={{ "--progress": `${progressPercentage}%` } as React.CSSProperties}
+                                            ></div>
+                                            
+                                            <p className="percentage">{progressPercentage.toFixed(2)}%</p> 
+                                        </div>
+                                    ) : null;
+                                })}
+                            </div>
                     </div>
                 </div>
 
