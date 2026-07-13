@@ -39,11 +39,6 @@ export function Dashboard() {
     const [filterType, setFilterType]= useState("expense");
     const [filterCategory, setFilterCategory] = useState("all")
 
-    const [categoryCounts, setCategoryCounts] = useState<Record<string, number>>({});
-    const [categoryListLength, setCategoryListLength] = useState(0);
-
-    // console.log("useState" + " " + categoryCounts)
-    // console.log("useState" + " " + categoryListLength)
 
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
@@ -91,6 +86,17 @@ export function Dashboard() {
         ...(filterType === "income" ? incomeCategories : expenseCategories)
     ]
 
+    const expenseCategoryList = allTransactions
+        .filter(t => t.type === "expense")
+        .map(t => t.category)
+
+    const categoryListLength = expenseCategoryList.length;
+
+    const categoryCounts = expenseCategoryList.reduce((acc, str) => {
+        acc[str] = (acc[str] || 0) + 1
+        return acc
+    }, {} as Record<string, number>)
+
     async function fetchTransactions() {
         try {
             const response = await getTransactions("all", "all");
@@ -100,34 +106,6 @@ export function Dashboard() {
                 console.log(data.message)
                 return
             }
-
-            // console.log(data[0])
-            // console.log(data[1])
-            // console.log(data);
-            const list = [];
-
-            for (let i = 0; i < data.length; i++) {
-                if (data[i].type === 'expense') {
-                    const eachCategory = data[i].category;
-                    // console.log("Category:" + " " + eachCategory)
-                    // const list = [];
-                    list.push(eachCategory);
-                    // console.log(list)
-                }
-            }
-
-            console.log(list)
-            // console.log(Number(list.length))
-            setCategoryListLength(Number(list.length))
-
-            const counts = list.reduce((acc, str) => {
-                acc[str] = (acc[str] || 0) + 1;
-                return acc;
-            }, {});
-
-            console.log(counts); 
-            // console.log(typeof(counts)); 
-            setCategoryCounts(counts);
 
             // setTransactions(data)
             setAllTransactions(data); // to get all
