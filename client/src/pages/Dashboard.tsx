@@ -166,8 +166,15 @@ export function Dashboard() {
             }
 
             // setTransactions((prev) => [data, ...prev])
-            setAllTransactions((prev) => [data, ...prev])
-            setDisplayedTransactions((prev) => [data, ...prev])
+            setAllTransactions((prev) => {
+                const updated = [data, ...prev]
+                return updated.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            })
+
+            setDisplayedTransactions((prev) => {
+                const updated = [data, ...prev]
+                return updated.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+            })
 
             setAmount("")
             setDescription("")
