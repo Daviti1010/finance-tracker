@@ -26,7 +26,9 @@ export function Dashboard() {
     const [netBalance, setNetBalance] = useState("");
     const [balanceSavedInDB, setBalanceSavedInDB] = useState(false);
 
-    const [transactions, setTransactions] = useState<Transaction[]>([])
+    // const [transactions, setTransactions] = useState<Transaction[]>([])
+    const [allTransactions, setAllTransactions] = useState<Transaction[]>([])
+    const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
 
     const [isLoadingBalance, setIsLoadingBalance] = useState(true)
 
@@ -95,7 +97,9 @@ export function Dashboard() {
 
             console.log(data[0])
 
-            setTransactions(data)
+            // setTransactions(data)
+            setAllTransactions(data); // to get all
+            setDisplayedTransactions(data);
 
         } catch (err) {
             console.log(err)
@@ -119,7 +123,8 @@ export function Dashboard() {
 
             console.log(data[0])
 
-            setTransactions(data)
+            // setTransactions(data) // to filter 
+            setDisplayedTransactions(data);
 
         } catch (err) {
             console.log(err)
@@ -160,7 +165,9 @@ export function Dashboard() {
                 return
             }
 
-            setTransactions((prev) => [data, ...prev])
+            // setTransactions((prev) => [data, ...prev])
+            setAllTransactions((prev) => [data, ...prev])
+            setDisplayedTransactions((prev) => [data, ...prev])
 
             setAmount("")
             setDescription("")
@@ -181,7 +188,9 @@ export function Dashboard() {
 
             if (data.success) {
                 console.log("Deleted!")
-                setTransactions((prev) => prev.filter(t => t.id !== id))
+                // setTransactions((prev) => prev.filter(t => t.id !== id))
+                setDisplayedTransactions((prev) => prev.filter(t => t.id !== id))
+                setAllTransactions((prev) => prev.filter(t => t.id !== id))
             } else {
                 console.log("Error deleting!")
             }
@@ -237,11 +246,11 @@ export function Dashboard() {
         }
     }
 
-    const totalIncome = transactions
+    const totalIncome = allTransactions
         .filter(t => t.type === "income")
         .reduce((sum, t) => sum + Number(t.amount), 0)
 
-    const totalExpenses = transactions
+    const totalExpenses = allTransactions
         .filter(t => t.type === "expense")
         .reduce((sum, t) => sum + Number(t.amount), 0)
 
@@ -436,7 +445,7 @@ export function Dashboard() {
 
                     <div className="all-transactions">
                         <div className="list">
-                            {transactions.map((t) => (
+                            {displayedTransactions.map((t) => (
                                 <div key={t.id} className="transaction">
                                     <div className="transaction-left-side">
                                         <img 
