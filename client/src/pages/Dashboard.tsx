@@ -178,8 +178,8 @@ export function Dashboard() {
 
             setAmount("")
             setDescription("")
-            setCategory("Food & Groceries")
-            setType("Expense")
+            setType("expense")
+            setCategory(expenseCategories[0].value)
             setDate(new Date().toISOString().split("T")[0])
 
         } catch (err) {
