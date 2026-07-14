@@ -2,8 +2,9 @@ import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
-import { addTransaction, deleteTransaction, getTransactions } from "../api"
+import { deleteTransaction, getTransactions } from "../api"
 import { FinancialSummary } from "./Dashboard/FinancialSummary/FinancialSummary"
+import { AddTransaction } from "./Dashboard/TransactionInput/AddTransaction/AddTransactions"
 import './Dashboard.css'
 
 interface Transaction {
@@ -17,25 +18,9 @@ interface Transaction {
 
 
 export function Dashboard() {
-    const [date, setDate] = useState(() => new Date().toISOString().split("T")[0])
-
-    const [type, setType] = useState("expense");
-    const [amount, setAmount] = useState("");
-    const [category, setCategory] = useState("food")
-    const [description, setDescription] = useState("")
-
-    // const [netBalance, setNetBalance] = useState("");
-    // const [balanceSavedInDB, setBalanceSavedInDB] = useState(false);
-
-    // const [transactions, setTransactions] = useState<Transaction[]>([])
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([])
     const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
 
-    // const [isLoadingBalance, setIsLoadingBalance] = useState(true)
-
-    const [amountError, setAmountError] = useState("")
-
-    const [dateError, setDateError] = useState("")
 
     const [filterType, setFilterType]= useState("expense");
     const [filterCategory, setFilterCategory] = useState("all")
@@ -48,17 +33,6 @@ export function Dashboard() {
             day: "numeric"
         })
     }
-
-    // const formatMoney = (amount: number | string) => {
-    //     const formatter = new Intl.NumberFormat('en-US', {
-    //         style: 'currency',
-    //         currency: 'USD',
-    //     });
-
-    //     const numericAmount = amount ? parseFloat(amount.toString()) : 0;
-
-    //     return formatter.format(numericAmount);
-    // };
 
     const incomeCategories = [
         { value: "salary", label: "Salary" },
@@ -81,7 +55,7 @@ export function Dashboard() {
         { value: "other", label: "Other" },
     ]
 
-    const categoryOptions = type === "income" ? incomeCategories : expenseCategories
+
     const filterCategoryOptions = [
         { value: "all", label: "All categories" },
         ...(filterType === "income" ? incomeCategories : expenseCategories)
@@ -142,62 +116,6 @@ export function Dashboard() {
         }
     }
 
-    async function handleAddTransaction() {
-
-        if (!amount || isNaN(Number(amount))) {
-            setAmountError("Please enter a valid amount")
-            console.log("Please enter a valid amount")
-            return
-        }
-
-        const today = new Date().toISOString().split("T")[0]
-            if (date > today) {
-                setDateError("Date cannot be in the future")
-            return
-        }
-
-        setAmountError("")
-        setDateError("")
-
-        try {
-            const response = await addTransaction({
-                type,
-                amount: Number(amount),
-                category,
-                description,
-                date
-            })
-
-            const data = await response.json();
-            console.log(data);
-
-            if (!response.ok) {
-                console.log(data.message)
-                return
-            }
-
-            // setTransactions((prev) => [data, ...prev])
-            setAllTransactions((prev) => {
-                const updated = [data, ...prev]
-                return updated.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            })
-
-            setDisplayedTransactions((prev) => {
-                const updated = [data, ...prev]
-                return updated.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-            })
-
-            setAmount("")
-            setDescription("")
-            setType("expense")
-            setCategory(expenseCategories[0].value)
-            setDate(new Date().toISOString().split("T")[0])
-
-        } catch (err) {
-            console.log(err)
-        }
-
-    }
 
     async function handleDeleteTransaction(id: number) {
         try { 
@@ -235,88 +153,9 @@ export function Dashboard() {
                 <FinancialSummary allTransactions={allTransactions}/>
 
                 <div className="transaction-input">
-                    <div className="add-transaction">
-                        <p id="add-transaction-text">Add transaction</p>
-                        <div className="add-transaction-first-part">
-                            <div className="type-div">
-                                <label htmlFor="type">Type</label>
-                                    <select
-                                        name="type"
-                                        id="type"
-                                        value={type}
-                                        onChange={(e) => {
-                                            const newType = e.target.value
-                                            setType(newType)
-                                            setCategory(newType === "income" ? incomeCategories[0].value : expenseCategories[0].value)
-                                        }}
-                                    >
-                                        <option value="expense">Expense</option>
-                                        <option value="income">Income</option>
-                                    </select>
-                            </div>
-
-                            <div className="amount-div">
-                                <label htmlFor="amount">Amount($)</label>
-                                <input type="text"
-                                  name="amount"
-                                  id="input-amount"
-                                  placeholder="$0.00"
-                                  value={amount}
-                                  onChange={(e) => {
-                                    setAmount(e.target.value)
-                                    setAmountError("")
-                                  }}/>
-                                  {amountError && <p className="amount-error-text">{amountError}</p>}
-                            </div>
-                        </div>
-
-                        <div className="add-transaction-second-part">
-                            <div className="category-div" style={{ marginTop: amountError ? "-10px" : "0" }}>
-                                <label htmlFor="category">Category</label>
-                                <select name="category"
-                                  id="category"
-                                  value={category} 
-                                  onChange={(e) => setCategory(e.target.value)}>
-
-                                    {categoryOptions.map((categ) => (
-                                        <option key={categ.value} value={categ.value}>{categ.label}</option>
-                                    ))}
-
-                                </select>
-                            </div>
-                        </div>
-
-                        <div className="description-div">
-                            <label htmlFor="description">Description</label>
-                            <input type="text"
-                              name="description" 
-                              id="description" 
-                              value={description} 
-                              placeholder="Optional Note..."
-                              onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </div>
-
-                        <div className="date-div">
-                            <label htmlFor="date">Date</label>
-                            <div className="date-stepper">
-                                <input
-                                    type="date"
-                                    id="date"
-                                    name="date"
-                                    value={date}
-                                    max={new Date().toISOString().split("T")[0]}
-                                    onChange={(e) => {
-                                        setDate(e.target.value)
-                                        setDateError("")
-                                    }}
-                                />
-                            </div>
-                            {dateError && <p className="date-error-text">{dateError}</p>}
-                        </div>
-
-                        <button type="button" onClick={handleAddTransaction}  style={{ marginTop: dateError ? "-8px" : "8px" }}>Add transaction</button>
-                    </div>
+                    
+                    <AddTransaction expenseCategories={expenseCategories} incomeCategories={incomeCategories}
+                    setAllTransactions={setAllTransactions} setDisplayedTransactions={setDisplayedTransactions} />
 
                     <div className="spending-by-category">
                         <div className="spending-text">
