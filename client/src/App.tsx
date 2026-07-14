@@ -6,6 +6,7 @@ import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
+import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import './App.css'
 
 function App() {
@@ -24,6 +25,8 @@ function App() {
           <Dashboard />
         </ProtectedRoute>
       } />
+
+      <Route path="*" element={<PageNotFound/>} />
       
     </Routes>
   )
