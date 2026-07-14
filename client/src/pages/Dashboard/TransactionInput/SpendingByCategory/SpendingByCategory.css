@@ -1,0 +1,130 @@
+.spending-by-category {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background-color: rgb(73, 73, 73);
+    width: 450px;
+    height: 425px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+    /* padding: 20px 22px 22px; */
+    overflow-y: auto;
+    position: relative;
+}
+
+.spending-text {
+    position: sticky;
+    top: 0;
+    background-color: inherit;
+    /* z-index: 1; */
+    /* padding: 12px 0; */
+    border-bottom: 1px solid #C9CFC0;
+    flex-shrink: 0;
+    padding: 20px 22px 0px;
+}
+
+#spending-text {
+    font-family: var(--font-display, "Fraunces", serif);
+    font-weight: 500;
+    font-size: 17px;
+    color: antiquewhite;
+    margin: 0 0 30px;
+}
+
+.progress-bar-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 22px 22px;
+}
+
+.progress-bar {
+    height: 22px;
+    border-radius: 4px;
+    width: 65%;
+    background-color: #AFA9EC;
+}
+
+.bar-and-text-div {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding-right: 15px;
+}
+
+.spending-category {
+    width: 90px;
+    flex-shrink: 0;
+    margin: 0;
+    font-family: var(--font-mono, "IBM Plex Mono", monospace);
+    font-size: 13px;
+    color: wheat;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 20px;
+    border-radius: 5px;
+    background: var(--rule, #C9CFC0);
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-bar::after {
+    width: var(--progress);
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.food-progress-bar::after {
+    background: var(--loss, #A6432F);
+}
+
+.rent-progress-bar::after {
+    background: var(--brass, #8C6D2F);
+}
+
+.transport-progress-bar::after {
+    background: var(--loss, #939601);
+}
+
+.utilities-progress-bar::after {
+    background: #027a8f;
+}
+
+.entertainment-progress-bar::after {
+    background: var(--gain, #2F6F55);
+}
+
+.shopping-progress-bar::after {
+    background: #6E7F9A;
+}
+
+.health-progress-bar::after {
+    background: #0b8a05;
+}
+
+.subscriptions-progress-bar::after {
+    background: #c1a103;
+}
+
+.education-progress-bar::after {
+    background: #d2048a;
+}
+
+.other-progress-bar::after {
+    background: #6E7F9A;
+}
+
+.percentage {
+    color: #ffd194;
+    width: 30px;
+}

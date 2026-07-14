@@ -5,6 +5,7 @@ import { faTrashCan, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons
 import { deleteTransaction, getTransactions } from "../api"
 import { FinancialSummary } from "./Dashboard/FinancialSummary/FinancialSummary"
 import { AddTransaction } from "./Dashboard/TransactionInput/AddTransaction/AddTransactions"
+import { SpendingByCategory } from "./Dashboard/TransactionInput/SpendingByCategory/SpendingByCategory"
 import './Dashboard.css'
 
 interface Transaction {
@@ -18,7 +19,7 @@ interface Transaction {
 
 
 export function Dashboard() {
-    const [allTransactions, setAllTransactions] = useState<Transaction[]>([])
+    const [allTransactions, setAllTransactions] = useState<Transaction[]>([]) // +
     const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
 
 
@@ -61,16 +62,6 @@ export function Dashboard() {
         ...(filterType === "income" ? incomeCategories : expenseCategories)
     ]
 
-    const expenseCategoryList = allTransactions
-        .filter(t => t.type === "expense")
-        .map(t => t.category)
-
-    const categoryListLength = expenseCategoryList.length;
-
-    const categoryCounts = expenseCategoryList.reduce((acc, str) => {
-        acc[str] = (acc[str] || 0) + 1
-        return acc
-    }, {} as Record<string, number>)
 
     async function fetchTransactions() {
         try {
@@ -157,30 +148,8 @@ export function Dashboard() {
                     <AddTransaction expenseCategories={expenseCategories} incomeCategories={incomeCategories}
                     setAllTransactions={setAllTransactions} setDisplayedTransactions={setDisplayedTransactions} />
 
-                    <div className="spending-by-category">
-                        <div className="spending-text">
-                            <p id="spending-text">Spending by category</p>
-                        </div>
-                            <div className="progress-bar-container">
-                                {expenseCategories.map((categ) => {
-                                    const hasCount = categoryCounts[categ.value] !== undefined;
-                                    const progressPercentage = ((categoryCounts[categ.value]) / categoryListLength * 100);
+                    <SpendingByCategory allTransactions={allTransactions} expenseCategories={expenseCategories}/>
 
-                                    return hasCount ? (
-                                        <div className="bar-and-text-div" key={categ.value}>
-                                            <p className="spending-category" style={{ textTransform: 'capitalize' }}>
-                                                {categ.value}
-                                            </p>
-                                            <div className={`${categ.value}-progress-bar progress-bar`}
-                                            style={{ "--progress": `${progressPercentage}%` } as React.CSSProperties}
-                                            ></div>
-                                            
-                                            <p className="percentage">{progressPercentage.toFixed(2)}%</p> 
-                                        </div>
-                                    ) : null;
-                                })}
-                            </div>
-                    </div>
                 </div>
 
                 <div className="all-transactions-container">
