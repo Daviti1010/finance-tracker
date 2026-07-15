@@ -1,12 +1,11 @@
 import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
-import { deleteTransaction, getTransactions } from "../api"
-import { FinancialSummary } from "./Dashboard/FinancialSummary/FinancialSummary"
-import { AddTransaction } from "./Dashboard/TransactionInput/AddTransaction/AddTransactions"
-import { SpendingByCategory } from "./Dashboard/TransactionInput/SpendingByCategory/SpendingByCategory"
-import { UpperPart } from "./Dashboard/AllTransactions/UpperPart/UpperPart"
+import { getTransactions } from "../api"
+import { FinancialSummary } from "./DashboardComponents/FinancialSummary/FinancialSummary"
+import { AddTransaction } from "./DashboardComponents/TransactionInput/AddTransaction/AddTransactions"
+import { SpendingByCategory } from "./DashboardComponents/TransactionInput/SpendingByCategory/SpendingByCategory"
+import { UpperPart } from "./DashboardComponents/AllTransactions/UpperPart/UpperPart"
+import { AllTransactions } from "./DashboardComponents/AllTransactions/Transactions/AllTransactions"
 import './Dashboard.css'
 
 interface Transaction {
@@ -21,16 +20,7 @@ interface Transaction {
 
 export function Dashboard() {
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([]) // +
-    const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
-
-
-    function formatDate(isoString: string) {
-        return new Date(isoString).toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric"
-        })
-    }
+    const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([]) // +
 
     const incomeCategories = [
         { value: "salary", label: "Salary" },
@@ -79,26 +69,6 @@ export function Dashboard() {
         fetchTransactions()
     }, [])
 
-    async function handleDeleteTransaction(id: number) {
-        try { 
-            const response = await deleteTransaction(id);
-            const data = await response.json();
-
-            if (data.success) {
-                console.log("Deleted!")
-                // setTransactions((prev) => prev.filter(t => t.id !== id))
-                setDisplayedTransactions((prev) => prev.filter(t => t.id !== id))
-                setAllTransactions((prev) => prev.filter(t => t.id !== id))
-            } else {
-                console.log("Error deleting!")
-            }
-
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-
     return (
         <>
             <Header />
@@ -117,38 +87,13 @@ export function Dashboard() {
                 </div>
 
                 <div className="all-transactions-container">
-                    
+
                     <UpperPart expenseCategories={expenseCategories} incomeCategories={incomeCategories}
                     setDisplayedTransactions={setDisplayedTransactions} fetchTransactions={fetchTransactions}/>
 
-
-                    <div className="all-transactions">
-                        <div className="list">
-                            {displayedTransactions.map((t) => (
-                                <div key={t.id} className="transaction">
-                                    <div className="transaction-left-side">
-                                        <img 
-                                          src={t.type === "income" ? "/green-arrow.png" : "/red-arrow.png"}
-                                          alt=""
-                                          className={t.type === "income" ? "arrow green-arrow" : "arrow red-arrow"}/>
-
-                                        <div className="transaction-text">
-                                            <p className="category" style={{ textTransform: 'capitalize' }}>{t.category}</p>
-                                            <p className="description">{t.description}</p>
-                                        </div>
-                                    </div>
-
-                                    <div className="transaction-right-side">
-                                        <p className="transaction-date">{formatDate(t.date)}</p>
-                                        <p className={t.type === "income" ?
-                                             "transaction-amount positive" : "transaction-amount negative"}>
-                                                {t.type === "income" ? "+$" : "-$"}{t.amount}</p>
-                                        <button onClick={() => handleDeleteTransaction(t.id)} className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
+                    <AllTransactions setDisplayedTransactions={setDisplayedTransactions} setAllTransactions={setAllTransactions}
+                    displayedTransactions={displayedTransactions}/>
+                    
                 </div>
             </div>
         </>
