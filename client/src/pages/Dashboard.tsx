@@ -1,11 +1,12 @@
 import { Header } from "./HeaderPages/Header"
 import { useState, useEffect } from "react"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan, faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { deleteTransaction, getTransactions } from "../api"
 import { FinancialSummary } from "./Dashboard/FinancialSummary/FinancialSummary"
 import { AddTransaction } from "./Dashboard/TransactionInput/AddTransaction/AddTransactions"
 import { SpendingByCategory } from "./Dashboard/TransactionInput/SpendingByCategory/SpendingByCategory"
+import { UpperPart } from "./Dashboard/AllTransactions/UpperPart/UpperPart"
 import './Dashboard.css'
 
 interface Transaction {
@@ -21,10 +22,6 @@ interface Transaction {
 export function Dashboard() {
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([]) // +
     const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
-
-
-    const [filterType, setFilterType]= useState("expense");
-    const [filterCategory, setFilterCategory] = useState("all")
 
 
     function formatDate(isoString: string) {
@@ -57,11 +54,6 @@ export function Dashboard() {
     ]
 
 
-    const filterCategoryOptions = [
-        { value: "all", label: "All categories" },
-        ...(filterType === "income" ? incomeCategories : expenseCategories)
-    ]
-
 
     async function fetchTransactions() {
         try {
@@ -87,27 +79,6 @@ export function Dashboard() {
         fetchTransactions()
     }, [])
 
-    async function fetchFilteredTransactions() {
-        try {
-            const response = await getTransactions(filterType, filterCategory);
-            const data = await response.json()
-            
-            if (!response.ok) {
-                console.log(data.message)
-                return
-            }
-
-            console.log(data[0])
-
-            // setTransactions(data) // to filter 
-            setDisplayedTransactions(data);
-
-        } catch (err) {
-            console.log(err)
-        }
-    }
-
-
     async function handleDeleteTransaction(id: number) {
         try { 
             const response = await deleteTransaction(id);
@@ -125,13 +96,6 @@ export function Dashboard() {
         } catch (err) {
             console.log(err)
         }
-    }
-
-
-    function handleReset() {
-        setFilterType("expense")
-        setFilterCategory("all")
-        fetchTransactions()
     }
 
 
@@ -153,38 +117,10 @@ export function Dashboard() {
                 </div>
 
                 <div className="all-transactions-container">
-                    <div className="upper-part">
-                            <p id="transactions-text">Transactions</p>
+                    
+                    <UpperPart expenseCategories={expenseCategories} incomeCategories={incomeCategories}
+                    setDisplayedTransactions={setDisplayedTransactions} fetchTransactions={fetchTransactions}/>
 
-                            <select
-                                name="select-income-or-expense"
-                                id="select-income-or-expense"
-                                value={filterType}
-                                onChange={(e) => {
-                                    const newType = e.target.value
-                                    setFilterType(newType)
-                                    setFilterCategory("all")
-                                }}
-                            >
-                                <option value="expense">Expense</option>
-                                <option value="income">Income</option>
-                            </select>
-
-                            <select name="select-category"
-                                id="select-category"
-                                value={filterCategory} 
-                                onChange={(e) => setFilterCategory(e.target.value)}>
-
-                                {filterCategoryOptions.map((categ) => (
-                                    <option key={categ.value} value={categ.value}>{categ.label}</option>
-                                ))}
-
-                            </select>
-
-                            <button onClick={handleReset} id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
-
-                            <button id="search-btn" type="button" onClick={fetchFilteredTransactions}>Search</button>
-                        </div>
 
                     <div className="all-transactions">
                         <div className="list">
