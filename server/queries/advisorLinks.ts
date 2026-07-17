@@ -62,6 +62,20 @@ export async function getLinkStatus(advisorId: number, clientId: number): Promis
       console.error(err);
       throw err;
     }
+}
+
+export async function getLinkById(linkId: number): Promise<AdvisorClientLink | null> {
+  
+  try {
+    const result = await pool.query("SELECT * FROM advisor_client_links WHERE id = $1", [linkId])
+
+    const row = result.rows[0];
+    return row ? mapLinkRow(row) : null;
+
+  } catch (err) {
+    console.error(err)
+    throw err;
+  }
 
 }
 
@@ -145,4 +159,3 @@ export async function updateLinkStatus(linkId: number, newStatus: LinkStatus): P
   }
 
 }
-
