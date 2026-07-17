@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import pool from "../db";
+import { getTransactions } from "../queries/transactions";
 
 const router = express.Router();
 
@@ -14,23 +15,8 @@ router.get("/", authMiddleware, async (req: any, res: any) => {
     }
 
     try {
-        if (type && category && category !== "all") {
-            const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 AND type = $2 AND category = $3 ORDER BY date DESC", 
-                [userId, type, category])
-
-            return res.status(200).json(result.rows);
-
-        } else if (type && type !== "all" && category && category === "all") {
-            const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 AND type = $2 ORDER BY date DESC", 
-                [userId, type])
-
-            return res.status(200).json(result.rows);
-        }
-
-        const result = await pool.query("SELECT * FROM transactions WHERE user_id = $1 ORDER BY date DESC", 
-            [userId])
-
-        return res.status(200).json(result.rows);
+        const transactions = await getTransactions(userId, type as string, category as string);
+        return res.status(200).json(transactions);
 
     } catch (err) {
         console.log(err);
