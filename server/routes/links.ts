@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
-import { createLinkRequest } from "../queries/advisorLinks";
+import { createLinkRequest, getIncomingRequests, getOutgoingRequests } from "../queries/advisorLinks";
 import { getUserByEmail } from "../queries/users";
 
 const router = express.Router();
@@ -26,7 +26,7 @@ router.post("/", authMiddleware, async (req, res) => {
 
         await createLinkRequest(advisorId, client.id);
 
-        res.status(201).json({ success: true, message: "Link request sent" });
+        res.status(201).json({ success: true, message: "Link request sent." });
 
     } catch (err) {
         console.error(err);
@@ -36,11 +36,29 @@ router.post("/", authMiddleware, async (req, res) => {
 })
 
 router.get("/incoming", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id; // logged in user plays the client's role
 
+    try {
+        const links = await getIncomingRequests(userId);
+        res.status(200).json({success: true, data: links})
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
 })
 
 router.get("/outgoing", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id; // logged in user plays the advisor's role
 
+    try {
+        const links = await getOutgoingRequests(userId);
+        res.status(200).json({success: true, data: links})
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
 })
 
 router.patch("/:id/accept", authMiddleware, async (req, res) => {
