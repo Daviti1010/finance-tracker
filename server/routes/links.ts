@@ -5,6 +5,10 @@ import { getUserByEmail } from "../queries/users";
 
 const router = express.Router();
 
+
+
+// the advisor sends a connection request to a client, identified by email
+
 router.post("/", authMiddleware, async (req, res) => {
     const clientEmail = req.body.clientEmail;
     const advisorId = (req as any).user?.id;
@@ -35,6 +39,9 @@ router.post("/", authMiddleware, async (req, res) => {
 
 })
 
+
+// client checks if anyone has sent a request to be their advisor
+
 router.get("/incoming", authMiddleware, async (req, res) => {
     const userId = (req as any).user?.id; // logged in user plays the client's role
 
@@ -48,6 +55,10 @@ router.get("/incoming", authMiddleware, async (req, res) => {
     }
 })
 
+
+
+// advisor checks the status of requests they've sent
+
 router.get("/outgoing", authMiddleware, async (req, res) => {
     const userId = (req as any).user?.id; // logged in user plays the advisor's role
 
@@ -60,6 +71,9 @@ router.get("/outgoing", authMiddleware, async (req, res) => {
         return res.status(500).json({ success: false, message: "Server error" });
     }
 })
+
+
+// client to accept the request sent by the advisor using request id
 
 router.patch("/:id/accept", authMiddleware, async (req, res) => { // the client to accept the request 
     const linkId = Number(req.params.id);
@@ -95,6 +109,9 @@ router.patch("/:id/accept", authMiddleware, async (req, res) => { // the client 
         return res.status(500).json({ success: false, message: "Server error" });
     }
 })
+
+
+// client or advisor to revoke/cancel the incoming, outgoing or accepted request using request id
 
 router.patch("/:id/revoke", authMiddleware, async (req, res) => { // both to revoke the request
     const linkId = Number(req.params.id);
