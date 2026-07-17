@@ -1,6 +1,6 @@
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
-import { createLinkRequest, getIncomingRequests, getLinkById, getOutgoingRequests, updateLinkStatus } from "../queries/advisorLinks";
+import { createLinkRequest, getIncomingRequests, getLinkById, getMyAdvisors, getMyClients, getOutgoingRequests, updateLinkStatus } from "../queries/advisorLinks";
 import { getUserByEmail } from "../queries/users";
 
 const router = express.Router();
@@ -69,7 +69,7 @@ router.patch("/:id/accept", authMiddleware, async (req, res) => { // the client 
         if (isNaN(linkId)) {
             return res.status(400).json({ success: false, message: "Invalid link id" });
         }
-        
+
         const link = await getLinkById(linkId);
 
         if (link === null) {
@@ -131,12 +131,39 @@ router.patch("/:id/revoke", authMiddleware, async (req, res) => { // both to rev
 
 })
 
-router.get("/api/get/clients", authMiddleware, async (req, res) => {
+
+
+// the advisor, asking "who are my current accepted clients?"
+
+router.get("/clients", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id;
+
+    try {
+        const clients = await getMyClients(userId);
+        return res.status(200).json({success: true, data: clients})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
 
 })
 
-router.get("/api/get/advisors", authMiddleware, async (req, res) => {
-    
+
+// the client, asking "who currently has access to my data?"
+
+router.get("/advisors", authMiddleware, async (req, res) => {
+    const userId = (req as any).user?.id;
+
+    try {
+        const advisors = await getMyAdvisors(userId);
+        return res.status(200).json({success: true, data: advisors})
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+
 })
 
 
