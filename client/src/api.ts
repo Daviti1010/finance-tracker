@@ -30,6 +30,16 @@ export const api = {
             body: JSON.stringify(body)
         }),
 
+    patch: (endpoint: string, body: Record<string, unknown>) => 
+        fetch(`${BASE_URL}${endpoint}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getToken()}`
+            },
+            body: body ? JSON.stringify(body) : undefined
+        }),
+
     delete: (endpoint: string) =>
         fetch(`${BASE_URL}${endpoint}`, {
             method: "DELETE",
@@ -66,3 +76,31 @@ export const saveStartingBalance = (startingBalance: number) =>
 
 export const getStartingBalance = () =>
     api.get("/auth/starting-balance")
+
+
+
+
+
+export const sendLinkRequest = (clientEmail: string) =>
+    api.post("/api/links", {clientEmail})
+
+export const getIncomingRequests = () =>
+    api.get("/api/links/incoming")
+
+export const getOutgoingRequests = () =>
+    api.get("/api/links/outgoing")
+
+export const acceptLinkRequest = (linkId: number) => 
+    api.patch(`/api/links/${linkId}/accept`, {linkId})
+
+export const revokeLink = (linkId: number) => 
+    api.patch(`/api/links/${linkId}/revoke`, {linkId})
+
+export const getMyClients = () => 
+    api.get("/api/links/clients")
+
+export const getMyAdvisors = () => 
+    api.get("/api/links/advisors")
+
+export const getClientTransactions = (clientId: number, type?: string, category?: string) =>
+    api.get(`/api/links/clients/${clientId}/transactions?type=${type}&category=${category}`)
