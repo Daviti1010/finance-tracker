@@ -4,9 +4,10 @@ import { Routes, Route, Navigate } from "react-router";
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
+import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
+import { AdvisorsPage } from "./pages/Advisors";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
-import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import './App.css'
 
 function App() {
@@ -23,6 +24,12 @@ function App() {
       <Route path='/dashboard' element={
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/links' element={
+        <ProtectedRoute>
+          <AdvisorsPage />
         </ProtectedRoute>
       } />
 
