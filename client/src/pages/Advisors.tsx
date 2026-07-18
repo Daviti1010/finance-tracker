@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest } from "../api"
+import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
 import type { AdvisorClientLink } from "../types";
 import './Advisors.css'
 
@@ -12,6 +12,10 @@ export function AdvisorsPage() {
     const [isLoading, setIsLoading] = useState(true);
 
     const [incomingRequests, setIncomingRequests] = useState<AdvisorClientLink[]>([]);
+
+    const [acceptedClients, setAcceptedClients] = useState<AdvisorClientLink[]>([]);
+    const [acceptedAdvisors, setAcceptedAdvisors] = useState<AdvisorClientLink[]>([]);
+    
 
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -107,8 +111,8 @@ export function AdvisorsPage() {
     function fetchAll() {
         fetchOutgoingRequests();
         fetchIncomingRequests();
-        // fetchIncomingRequests();
-        // fetchOutgoingRequests(); 
+        fetchMyClients();
+        fetchMyAdvisors(); 
     }
 
     useEffect(() => {
@@ -127,6 +131,49 @@ export function AdvisorsPage() {
             window.removeEventListener('focus', handleFocus);
         };
     });
+
+    async function fetchMyClients() {
+        try {
+            const response = await getMyClients();
+            const data = await response.json();
+
+            if (data.success) {
+                setAcceptedClients(data.data);
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+    async function fetchMyAdvisors() {
+        try {
+            const response = await getMyAdvisors();
+            const data = await response.json();
+
+            if (data.success) {
+                setAcceptedAdvisors(data.data);
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+    }
+
+
+    async function handleRevoke(linkId: number) {
+        try {
+            const response = await revokeLink(linkId);
+            const data = await response.json();
+
+            if (data.success) {
+                fetchAll();
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
+    }
 
     return (
         <>
@@ -150,6 +197,27 @@ export function AdvisorsPage() {
                     Request from advisor id {req.advisorId} — {req.status}
                     <button onClick={() => handleAccept(req.id)}>Accept</button>
                     <button onClick={() => handleReject(req.id)}>Reject</button>
+                </li>
+            ))}
+        </ul>
+
+        <h3>My clients</h3>
+            <ul>
+                {acceptedClients.map((link) => (
+                    <li key={link.id}>
+                        Client Id: {link.clientId}
+                        <button onClick={() => handleRevoke(link.id)}>Revoke</button>
+                    </li>
+                ))}
+
+            </ul>
+
+        <h3>My Advisors</h3>
+        <ul>
+            {acceptedAdvisors.map((link) => (
+                <li key={link.id}>
+                    Client Id: {link.clientId}
+                    <button onClick={() => handleRevoke(link.id)}>Revoke</button>
                 </li>
             ))}
         </ul>
