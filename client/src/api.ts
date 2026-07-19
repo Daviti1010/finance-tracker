@@ -109,3 +109,6 @@ export const getClientTransactions = (clientId: number, type?: string, category?
     const query = params.toString();
     return api.get(`/clients/${clientId}/transactions${query ? `?${query}` : ""}`);
 };
+
+export const getClientStartingBalance = (clientId: number) =>
+    api.get(`/clients/${clientId}/starting-balance`)

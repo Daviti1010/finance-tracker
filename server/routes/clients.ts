@@ -1,8 +1,8 @@
-import pool from "../db";
 import express from "express";
 import { requireClientAccess } from "../middleware/accessMiddleware";
 import authMiddleware from "../middleware/authMiddleware";
 import { getTransactions } from "../queries/transactions";
+import { getUserById } from "../queries/users";
 
 const router = express.Router();
 
@@ -24,6 +24,19 @@ router.get("/:clientId/transactions", authMiddleware, requireClientAccess, async
 
 })
 
+router.get("/:clientId/starting-balance", authMiddleware, requireClientAccess, async (req, res) => {
+    const clientId = Number(req.params.clientId);
+
+    try {
+        const user = await getUserById(clientId);
+        return res.status(200).json({ startingBalance: user?.starting_balance ?? null });
+
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+
+})
 
 
 
