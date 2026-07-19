@@ -102,5 +102,10 @@ export const getMyClients = () =>
 export const getMyAdvisors = () => 
     api.get("/api/links/advisors")
 
-export const getClientTransactions = (clientId: number, type?: string, category?: string) =>
-    api.get(`/api/links/clients/${clientId}/transactions?type=${type}&category=${category}`)
+export const getClientTransactions = (clientId: number, type?: string, category?: string) => {
+    const params = new URLSearchParams();
+    if (type) params.append("type", type);
+    if (category) params.append("category", category);
+    const query = params.toString();
+    return api.get(`/clients/${clientId}/transactions${query ? `?${query}` : ""}`);
+};
