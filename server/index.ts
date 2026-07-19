@@ -25,7 +25,7 @@ app.use(cors({
 app.use('/auth', authRoutes)
 app.use('/transactions', transactionRoutes)
 app.use('/api/links', linksRouter)
-app.use('/api/clients', clientsRouter)
+app.use('/clients', clientsRouter)
 
 
 

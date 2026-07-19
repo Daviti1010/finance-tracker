@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { Link } from "react-router-dom";
 import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
 import type { AdvisorClientLink } from "../types";
 import './Advisors.css'
@@ -78,7 +79,7 @@ export function AdvisorsPage() {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchIncomingRequests();
     }, [fetchOutgoingRequests, fetchIncomingRequests]);
-    
+
 
     async function handleAccept(linkId: number) {
         try {
@@ -205,12 +206,10 @@ export function AdvisorsPage() {
         <h3 id="my-clients">My clients</h3>
             <ul>
                 {acceptedClients.map((link) => (
-                    <a href="">
-                        <li className="client" key={link.id}>
-                            Client Id: {link.clientId}
-                            <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
-                        </li>
-                    </a>
+                    <li className="client" key={link.id}>
+                        <Link to={`/clients/${link.clientId}/transactions`}>Client Id: {link.clientId}</Link>
+                        <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                    </li>
                 ))}
 
             </ul>
@@ -218,12 +217,10 @@ export function AdvisorsPage() {
         <h3 id="my-advisors">My Advisors</h3>
         <ul>
             {acceptedAdvisors.map((link) => (
-                <a href="">
-                    <li className="advisor" key={link.id}>
-                        Client Id: {link.clientId}
-                        <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
-                    </li>
-                </a>
+                <li className="advisor" key={link.id}>
+                    Client Id: {link.clientId}
+                    <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                </li>
             ))}
         </ul>
         </>
