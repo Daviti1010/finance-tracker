@@ -1,14 +1,6 @@
-
+import type { Transaction } from "../../../../types";
 import "./SpendingByCategory.css";
 
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 interface SpendingByCategoryProps {
     allTransactions: Transaction[]

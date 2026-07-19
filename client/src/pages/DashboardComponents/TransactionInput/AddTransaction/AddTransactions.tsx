@@ -1,16 +1,9 @@
 import { useState } from 'react'
 import type { Dispatch, SetStateAction } from "react"
 import { addTransaction } from "../../../../api"
+import type { Transaction } from '../../../../types'
 import './AddTransaction.css'
 
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 interface AddTransactionProps {
   expenseCategories: { value: string; label: string }[]

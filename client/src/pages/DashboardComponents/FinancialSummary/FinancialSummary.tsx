@@ -2,16 +2,9 @@ import { useState, useEffect } from "react"
 import { saveStartingBalance, getStartingBalance } from "../../../api"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
+import type { Transaction } from "../../../types"
 import './FinancialSummary.css'
 
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 interface FinancialSummaryProps {
   allTransactions: Transaction[]

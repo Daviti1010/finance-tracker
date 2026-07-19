@@ -6,16 +6,8 @@ import { AddTransaction } from "./DashboardComponents/TransactionInput/AddTransa
 import { SpendingByCategory } from "./DashboardComponents/TransactionInput/SpendingByCategory/SpendingByCategory"
 import { UpperPart } from "./DashboardComponents/AllTransactions/UpperPart/UpperPart"
 import { AllTransactions } from "./DashboardComponents/AllTransactions/Transactions/AllTransactions"
+import type { Transaction } from "../types"
 import './Dashboard.css'
-
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 
 export function Dashboard() {

@@ -3,17 +3,10 @@ import type { Dispatch, SetStateAction } from "react"
 import { getTransactions } from '../../../../api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import type { Transaction } from '../../../../types';
 import './UpperPart.css'
 
 
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 interface UpperPartProps {
     expenseCategories: { value: string; label: string }[]
@@ -21,6 +14,8 @@ interface UpperPartProps {
     setDisplayedTransactions: Dispatch<SetStateAction<Transaction[]>>
     fetchTransactions: () => Promise<void>
 }
+
+
 
 export function UpperPart({expenseCategories, incomeCategories, setDisplayedTransactions, fetchTransactions}: UpperPartProps) {
 

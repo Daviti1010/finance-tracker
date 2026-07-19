@@ -2,16 +2,8 @@ import type { Dispatch, SetStateAction } from "react"
 import { deleteTransaction } from "../../../../api"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import type { Transaction } from "../../../../types"
 import './AllTransactions.css'
-
-interface Transaction {
-    id: number
-    amount: number
-    category: string
-    description: string
-    type: "income" | "expense"
-    date: string
-}
 
 interface AddTransactionProps {
   setAllTransactions: Dispatch<SetStateAction<Transaction[]>>
