@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
 import type { AdvisorClientLink } from "../types";
 import './Advisors.css'
@@ -44,7 +44,7 @@ export function AdvisorsPage() {
 
     };
 
-    async function fetchOutgoingRequests() {
+    const fetchOutgoingRequests = useCallback(async () => {
         try {
             const response = await getOutgoingRequests();
             const data = await response.json();
@@ -58,27 +58,27 @@ export function AdvisorsPage() {
         } finally {
             setIsLoading(false)
         }
-    }
+    }, [])
 
-    async function fetchIncomingRequests() {
+    const fetchIncomingRequests = useCallback(async () => {
         try {
             const response = await getIncomingRequests();
             const data = await response.json();
-
             if (data.success) {
                 setIncomingRequests(data.data);
             }
-            
         } catch (err) {
-            console.error(err)
+            console.error(err);
         }
-    }
+    }, []);
+
 
     useEffect(() => {
         fetchOutgoingRequests();
         // eslint-disable-next-line react-hooks/set-state-in-effect
         fetchIncomingRequests();
-    }, []);
+    }, [fetchOutgoingRequests, fetchIncomingRequests]);
+    
 
     async function handleAccept(linkId: number) {
         try {
@@ -108,31 +108,7 @@ export function AdvisorsPage() {
         }
     }
 
-    function fetchAll() {
-        fetchOutgoingRequests();
-        fetchIncomingRequests();
-        fetchMyClients();
-        fetchMyAdvisors(); 
-    }
-
-    useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        fetchAll();
-    });
-
-    useEffect(() => {
-        function handleFocus() {
-            fetchAll();
-        }
-
-        window.addEventListener('focus', handleFocus);
-
-        return () => {
-            window.removeEventListener('focus', handleFocus);
-        };
-    });
-
-    async function fetchMyClients() {
+    const fetchMyClients = useCallback(async () => {
         try {
             const response = await getMyClients();
             const data = await response.json();
@@ -144,9 +120,10 @@ export function AdvisorsPage() {
         } catch (err) {
             console.error(err)
         }
-    }
+    }, [])
 
-    async function fetchMyAdvisors() {
+
+    const fetchMyAdvisors = useCallback(async () => {
         try {
             const response = await getMyAdvisors();
             const data = await response.json();
@@ -158,7 +135,7 @@ export function AdvisorsPage() {
         } catch (err) {
             console.error(err)
         }
-    }
+    }, [])
 
 
     async function handleRevoke(linkId: number) {
@@ -174,6 +151,30 @@ export function AdvisorsPage() {
             console.error(err);
         }
     }
+
+    const fetchAll = useCallback(() => {
+        fetchOutgoingRequests();
+        fetchIncomingRequests();
+        fetchMyClients();
+        fetchMyAdvisors();
+    }, [fetchOutgoingRequests, fetchIncomingRequests, fetchMyClients, fetchMyAdvisors]);
+
+    
+    useEffect(() => {
+        fetchAll();
+    }, [fetchAll]);
+
+    useEffect(() => {
+        function handleFocus() {
+            fetchAll();
+        }
+
+        window.addEventListener('focus', handleFocus);
+
+        return () => {
+            window.removeEventListener('focus', handleFocus);
+        };
+    }, [fetchAll]);
 
     return (
         <>
@@ -201,24 +202,28 @@ export function AdvisorsPage() {
             ))}
         </ul>
 
-        <h3>My clients</h3>
+        <h3 id="my-clients">My clients</h3>
             <ul>
                 {acceptedClients.map((link) => (
-                    <li key={link.id}>
-                        Client Id: {link.clientId}
-                        <button onClick={() => handleRevoke(link.id)}>Revoke</button>
-                    </li>
+                    <a href="">
+                        <li className="client" key={link.id}>
+                            Client Id: {link.clientId}
+                            <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                        </li>
+                    </a>
                 ))}
 
             </ul>
 
-        <h3>My Advisors</h3>
+        <h3 id="my-advisors">My Advisors</h3>
         <ul>
             {acceptedAdvisors.map((link) => (
-                <li key={link.id}>
-                    Client Id: {link.clientId}
-                    <button onClick={() => handleRevoke(link.id)}>Revoke</button>
-                </li>
+                <a href="">
+                    <li className="advisor" key={link.id}>
+                        Client Id: {link.clientId}
+                        <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                    </li>
+                </a>
             ))}
         </ul>
         </>
