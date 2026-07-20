@@ -5,6 +5,8 @@ export interface AdvisorClientLink {
     status: "pending" | "accepted" | "revoked";
     createdAt: string;
     updatedAt: string;
+    advisorEmail?: string | undefined;
+    clientEmail?: string | undefined;
 }
 
 

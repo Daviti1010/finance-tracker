@@ -18,7 +18,6 @@ export function AdvisorsPage() {
 
     const [acceptedClients, setAcceptedClients] = useState<AdvisorClientLink[]>([]);
     const [acceptedAdvisors, setAcceptedAdvisors] = useState<AdvisorClientLink[]>([]);
-    
 
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -200,7 +199,7 @@ export function AdvisorsPage() {
                         {outgoingRequests.map((req) => (
                             <>
                             <div className="outgoing-reqs-div">
-                                <p className="sent-requests" key={req.id}>Request to client id {req.clientId} — {req.status}</p>
+                                <p className="sent-requests" key={req.id}>Request to {req.clientEmail} — {req.status}</p>
                             
                                 <div className="outgoing-reqs-div-right">
                                     <button>Cancel</button>
@@ -219,7 +218,7 @@ export function AdvisorsPage() {
             <div className="sent-requests-first-div">
                 {incomingRequests.map((req) => (
                     <div className="incoming-reqs-div" key={req.id}>
-                        <p className="awaiting-response">Request from advisor id {req.advisorId} — {req.status}</p>
+                        <p className="awaiting-response">Request from {req.advisorEmail} — {req.status}</p>
 
                         <div className="incoming-reqs-div-right">
                             <button id="accept-btn" onClick={() => handleAccept(req.id)}>Accept</button>
@@ -237,13 +236,13 @@ export function AdvisorsPage() {
                     <div className="my-clients-second-div">
                         <span className="client" key={link.id}>
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
-                            <p>Client Id: {link.clientId}</p>
+                            <p>{link.clientEmail}</p>
 
                         </span>
 
                         <div className="clients-div-right">
                             <Link to={`/clients/${link.clientId}/transactions`}>View transactions
-                                <FontAwesomeIcon icon={faArrowRight}  className="span-icon span-icon-arrow"/>
+                                <FontAwesomeIcon icon={faArrowRight} className="span-icon span-icon-arrow"/>
                             </Link>
 
                             <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
@@ -260,7 +259,7 @@ export function AdvisorsPage() {
                     <div className="my-advisors-second-div">
                         <span className="advisor" key={link.id}>
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
-                            <p>Advisor Id: {link.clientId}</p>
+                            <p>{link.advisorEmail}</p>
                         </span>
 
                         <div className="clients-div-right">

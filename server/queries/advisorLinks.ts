@@ -9,6 +9,8 @@ interface AdvisorClientLink {
   status: LinkStatus;
   createdAt: Date;
   updatedAt: Date;
+  advisorEmail?: string | undefined;
+  clientEmail?: string | undefined;
 }
 
 interface AdvisorClientLinkRow {
@@ -18,6 +20,8 @@ interface AdvisorClientLinkRow {
   status: LinkStatus;
   created_at: Date;
   updated_at: Date;
+  advisor_email?: string;
+  client_email?: string;
 }
 
 function mapLinkRow(row: AdvisorClientLinkRow): AdvisorClientLink {
@@ -28,6 +32,8 @@ function mapLinkRow(row: AdvisorClientLinkRow): AdvisorClientLink {
     status: row.status,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    advisorEmail: row.advisor_email,
+    clientEmail: row.client_email,
   };
 }
 
@@ -82,9 +88,15 @@ export async function getLinkById(linkId: number): Promise<AdvisorClientLink | n
 export async function getIncomingRequests(clientId: number): Promise<AdvisorClientLink[]> {
 
   try {
-    const result = await pool.query(`SELECT * FROM advisor_client_links
-      WHERE client_id = $1 AND status = 'pending'`,
-      [clientId])
+    // const result = await pool.query(`SELECT * FROM advisor_client_links
+    //   WHERE client_id = $1 AND status = 'pending'`,
+    //   [clientId])
+
+    const result = await pool.query
+      (`SELECT acl.*, u.email AS advisor_email
+        FROM advisor_client_links acl
+        JOIN users u ON u.id = acl.advisor_id
+        WHERE acl.client_id = $1 AND acl.status = 'pending'`, [clientId])
 
     return result.rows.map(mapLinkRow);
 
@@ -98,9 +110,16 @@ export async function getIncomingRequests(clientId: number): Promise<AdvisorClie
 export async function getOutgoingRequests(advisorId: number): Promise<AdvisorClientLink[]> {
     
   try {
-      const result = await pool.query(`SELECT * FROM advisor_client_links
-        WHERE advisor_id = $1 AND status = 'pending'`,
-        [advisorId])
+      // const result = await pool.query(`SELECT * FROM advisor_client_links
+      //   WHERE advisor_id = $1 AND status = 'pending'`,
+      //   [advisorId])
+
+      const result = await pool.query
+      (`SELECT acl.*, u.email AS client_email
+        FROM advisor_client_links acl
+        JOIN users u ON u.id = acl.client_id
+        WHERE acl.advisor_id = $1 AND acl.status = 'pending'`, [advisorId])
+
 
       return result.rows.map(mapLinkRow);
 
@@ -114,9 +133,16 @@ export async function getOutgoingRequests(advisorId: number): Promise<AdvisorCli
 export async function getMyClients(advisorId: number): Promise<AdvisorClientLink[]> {
 
     try {
-      const result = await pool.query(`SELECT * FROM advisor_client_links
-        WHERE advisor_id = $1 AND status = 'accepted'`,
-        [advisorId])
+      // const result = await pool.query(`SELECT * FROM advisor_client_links
+      //   WHERE advisor_id = $1 AND status = 'accepted'`,
+      //   [advisorId])
+
+      const result = await pool.query(
+        `SELECT acl.*, u.email AS client_email
+        FROM advisor_client_links acl
+        JOIN users u ON u.id = acl.client_id
+        WHERE acl.advisor_id = $1 AND acl.status = 'accepted'`, [advisorId]
+      )
 
       return result.rows.map(mapLinkRow);
 
@@ -129,9 +155,16 @@ export async function getMyClients(advisorId: number): Promise<AdvisorClientLink
 export async function getMyAdvisors(clientId: number): Promise<AdvisorClientLink[]> {
     
   try {
-    const result = await pool.query(`SELECT * FROM advisor_client_links
-      WHERE client_id = $1 AND status = 'accepted'`,
-      [clientId])
+    // const result = await pool.query(`SELECT * FROM advisor_client_links
+    //   WHERE client_id = $1 AND status = 'accepted'`,
+    //   [clientId])
+
+      const result = await pool.query(
+        `SELECT acl.*, u.email AS advisor_email
+        FROM advisor_client_links acl
+        JOIN users u ON u.id = acl.advisor_id
+        WHERE acl.client_id = $1 AND acl.status = 'accepted'`, [clientId]
+      )
 
     return result.rows.map(mapLinkRow);
 
