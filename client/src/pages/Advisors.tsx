@@ -2,6 +2,8 @@ import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
 import type { AdvisorClientLink } from "../types";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons'
 import './Advisors.css'
 
 
@@ -179,50 +181,95 @@ export function AdvisorsPage() {
 
     return (
         <>
-        <form onSubmit={handleSubmit}>
-            <input value={inputValue} onChange={handleChange} type="text" name="clientEmail" id="client-email-input" />
+        <div className="advisor-form">
+            <form onSubmit={handleSubmit}>
+                <p>Send a request</p>
+                <div className="client-input-div">
+                    <input value={inputValue} onChange={handleChange} type="text" name="clientEmail" id="client-email-input" />
 
-            <button type="submit">Submit</button>
-        </form>
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
 
-        {isLoading ? <p>Loading...</p> : (
-            <ul>
-                {outgoingRequests.map((req) => (
-                    <li className="requests" key={req.id}>Request to client id {req.clientId} — {req.status}</li>
+        <div className="sent-requests-container">
+            {isLoading ? <p>Loading...</p> : (
+                <>
+                <p id="sent-response-text">Sent — awaiting response ({outgoingRequests.length})</p>
+                <div className="sent-requests-first-div">
+                        {outgoingRequests.map((req) => (
+                            <>
+                            <div className="outgoing-reqs-div">
+                                <p className="sent-requests" key={req.id}>Request to client id {req.clientId} — {req.status}</p>
+                            
+                                <div className="outgoing-reqs-div-right">
+                                    <button>Cancel</button>
+                                </div>
+
+                            </div>
+                            </>
+                        ))}
+                </div>
+                </>
+            )}
+        </div>
+
+        <div className="incoming-requests-container">
+            <p id="pending-response-text">Pending — awaiting for your response ({incomingRequests.length})</p>
+            <div className="sent-requests-first-div">
+                {incomingRequests.map((req) => (
+                    <div className="incoming-reqs-div" key={req.id}>
+                        <p className="awaiting-response">Request from advisor id {req.advisorId} — {req.status}</p>
+
+                        <div className="incoming-reqs-div-right">
+                            <button id="accept-btn" onClick={() => handleAccept(req.id)}>Accept</button>
+                            <button id="reject-btn" onClick={() => handleReject(req.id)}>Reject</button>
+                        </div>
+                    </div>
                 ))}
-            </ul>
-        )}
+            </div>
+        </div>
 
-        <ul>
-            {incomingRequests.map((req) => (
-                <li className="incoming-request" key={req.id}>
-                    Request from advisor id {req.advisorId} — {req.status}
-                    <button onClick={() => handleAccept(req.id)}>Accept</button>
-                    <button onClick={() => handleReject(req.id)}>Reject</button>
-                </li>
-            ))}
-        </ul>
-
-        <h3 id="my-clients">My clients</h3>
-            <ul>
+        <div className="my-clients-div">
+            <h3 id="my-clients">My clients ({acceptedClients.length})</h3>
+            <div className="my-clients-first-div">
                 {acceptedClients.map((link) => (
-                    <li className="client" key={link.id}>
-                        <Link to={`/clients/${link.clientId}/transactions`}>Client Id: {link.clientId}</Link>
-                        <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
-                    </li>
+                    <div className="my-clients-second-div">
+                        <span className="client" key={link.id}>
+                            <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
+                            <p>Client Id: {link.clientId}</p>
+
+                        </span>
+
+                        <div className="clients-div-right">
+                            <Link to={`/clients/${link.clientId}/transactions`}>View transactions
+                                <FontAwesomeIcon icon={faArrowRight}  className="span-icon span-icon-arrow"/>
+                            </Link>
+
+                            <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                        </div>
+                    </div>
                 ))}
+            </div>
+        </div>
 
-            </ul>
+        <div className="my-advisors-div">
+            <h3 id="my-advisors">My Advisors ({acceptedAdvisors.length})</h3>
+            <div className="my-advisors-first-div">
+                {acceptedAdvisors.map((link) => (
+                    <div className="my-advisors-second-div">
+                        <span className="advisor" key={link.id}>
+                            <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
+                            <p>Advisor Id: {link.clientId}</p>
+                        </span>
 
-        <h3 id="my-advisors">My Advisors</h3>
-        <ul>
-            {acceptedAdvisors.map((link) => (
-                <li className="advisor" key={link.id}>
-                    Client Id: {link.clientId}
-                    <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
-                </li>
-            ))}
-        </ul>
+                        <div className="clients-div-right">
+                            <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
         </>
     )
 }
