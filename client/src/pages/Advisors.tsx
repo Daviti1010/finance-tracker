@@ -89,7 +89,7 @@ export function AdvisorsPage() {
             const data = await response.json();
 
             if (data.success) {
-                fetchIncomingRequests()
+                fetchAll();
             }
 
         } catch (err) {
@@ -103,7 +103,7 @@ export function AdvisorsPage() {
             const data = await response.json();
 
             if (data.success) {
-                fetchIncomingRequests();
+                fetchAll();
             }
 
         } catch (err) {
