@@ -5,7 +5,7 @@ import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
-import { AdvisorsPage } from "./pages/Advisors";
+import { LinksPage } from "./pages/LinksPage";
 import { ClientTransactionsPage } from './pages/ClientTransactionsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
@@ -30,7 +30,7 @@ function App() {
 
       <Route path='/links' element={
         <ProtectedRoute>
-          <AdvisorsPage />
+          <LinksPage />
         </ProtectedRoute>
       } />
 

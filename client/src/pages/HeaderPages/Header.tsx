@@ -1,5 +1,6 @@
+import { Link, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRightFromBracket, faCircleUser } from '@fortawesome/free-solid-svg-icons'
+import { faRightFromBracket, faCircleUser, faLink, faHouse } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getMe } from '../../api';
@@ -36,6 +37,9 @@ export function Header() {
         navigate('/login')
     }
 
+    const location = useLocation();
+    const isClientTransactions = /^\/clients\/[^/]+\/transactions$/.test(location.pathname);
+
     return (
         <>
           <header className='header'>
@@ -47,6 +51,25 @@ export function Header() {
                 <div className='right-part'>
                     <div className='profile'>
                         <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
+                    </div>
+
+                    <div className='links'>
+                    {location.pathname === '/dashboard' ? (
+                        <Link to="/links">
+                            <FontAwesomeIcon icon={faLink} className="link-icon" />
+                            {" "} View Links
+                        </Link>
+                    ) : isClientTransactions ? (
+                        <Link to="/links">
+                            <FontAwesomeIcon icon={faLink} className="link-icon" />
+                            {" "} View Links
+                        </Link>
+                    ) : (
+                        <Link to="/dashboard">
+                            <FontAwesomeIcon icon={faHouse} className="link-icon" />
+                            {" "} Go to Dashboard
+                        </Link>
+                    )}
                     </div>
 
                     <div className='logout'>
