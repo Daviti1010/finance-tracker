@@ -205,7 +205,7 @@ export function LinksPage() {
                                 <p className="sent-requests" key={req.id}>Request to {req.clientEmail} — {req.status}</p>
                             
                                 <div className="outgoing-reqs-div-right">
-                                    <button>Cancel</button>
+                                    <button onClick={() => handleRevoke(req.id)}>Cancel</button>
                                 </div>
 
                             </div>
