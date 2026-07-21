@@ -8,3 +8,9 @@ CREATE TABLE advisor_client_links (
   CONSTRAINT no_self_link CHECK (advisor_id != client_id),
   CONSTRAINT unique_active_link UNIQUE (advisor_id, client_id)
 );
+
+ALTER TABLE advisor_client_links DROP CONSTRAINT unique_active_link;
+
+CREATE UNIQUE INDEX unique_active_link
+ON advisor_client_links (advisor_id, client_id)
+WHERE status != 'revoked';
