@@ -1,0 +1,320 @@
+.advisor-form {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    background-color: rgb(50, 50, 50);
+    margin-top: 30px;
+    border-radius: 10px;
+    border: 1.5px solid rgb(130, 130, 130);
+
+    p {
+        font-size: 16px;
+        margin: 0 0 8px;
+        color: #e5e5e5;
+    }
+}
+
+.client-input-div {
+    display: flex;
+    gap: 8px;
+
+    input {
+        flex: 1;
+        width: 100%;
+        height: 36px;
+        padding: 8px 12px;
+        font-size: 17px;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 6px;
+        outline: none;
+        transition: border-color 0.15s, box-shadow 0.15s;
+        background-color: rgb(50, 50, 50);
+        color: aliceblue;
+    }
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: transparent;
+        color: rgb(212, 209, 209);;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        
+    }
+
+    button:hover {
+        background-color: rgb(60, 60, 60);
+    }
+
+}
+
+
+/* My clients */
+
+.my-clients-div {
+    max-width: 700px;
+    margin: 0 auto;
+    margin: 20px auto 0;
+
+    h3 {
+        font-size: 16px;
+        color: #c3c2b7;
+        margin: 0 0 8px;
+    }
+
+    p {
+        color: white;
+        margin-left: 5px;
+    }
+
+    span {
+        display: flex;
+    }
+
+}
+
+.my-clients-first-div {
+    border: 0.5px solid rgb(130, 130, 130);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.my-clients-second-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgb(130, 130, 130);
+    background: transparent;
+}
+
+.clients-div-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: transparent;
+    text-decoration: none;
+
+    a {
+        text-decoration: none;
+        color: #6da7ec;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: transparent;
+        color: #ffffff;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        margin: 0 -10px 0 20px;
+    }
+
+    button:hover {
+        background-color: #363636;
+    }
+
+}
+
+
+/* My advisors */
+
+.my-advisors-div {
+    max-width: 700px;
+    margin: 0 auto;
+    margin: 20px auto 0;
+
+    h3 {
+        font-size: 16px;
+        color: #c3c2b7;
+        margin: 0 0 8px;
+    }
+
+    p {
+        color: white;
+        margin-left: 5px;
+    }
+
+    span {
+        display: flex;
+    }
+}
+
+.my-advisors-first-div {
+    border: 0.5px solid rgb(130, 130, 130);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.my-advisors-second-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgb(130, 130, 130);
+    background: transparent;
+}
+
+.advisors-div-right {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    cursor: pointer;
+    background: transparent;
+    text-decoration: none;
+
+    a {
+        text-decoration: none;
+        color: #6da7ec;
+    }
+    
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: transparent;
+        color: #ffffff;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        margin: 0 -10px 0 20px;
+    }
+
+    button:hover {
+        background-color: #363636;
+    }
+
+}
+
+.span-icon-user {
+    color: white;
+}
+
+.span-icon-arrow {
+    font-size: 12px;
+}
+
+/* Sent Requests */
+
+.sent-requests-container {
+    max-width: 700px;
+    margin: 0 auto;
+    margin: 20px auto 0;
+}
+
+.sent-requests-first-div {
+    border: 0.5px solid rgb(130, 130, 130);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#sent-response-text {
+    font-size: 16px;
+    color: #c3c2b7;
+    margin: 0 0 8px;
+}
+
+.outgoing-reqs-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgb(130, 130, 130);
+    background: transparent;
+}
+
+.sent-requests {
+    color: white;
+}
+
+.outgoing-reqs-div-right {
+    padding: 12px 16px;
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: transparent;
+        color: #ffffff;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        margin: 0 -10px 0 20px;
+    }
+
+    button:hover {
+        background-color: #363636;
+    }
+
+}
+
+
+/* Incoming Requests */
+
+.incoming-requests-container {
+    max-width: 700px;
+    margin: 0 auto;
+    margin: 20px auto 0;
+}
+
+.incoming-requests-first-div {
+    border: 0.5px solid rgb(130, 130, 130);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#pending-response-text {
+    font-size: 16px;
+    color: #c3c2b7;
+    margin: 0 0 8px;
+}
+
+.incoming-reqs-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid rgb(130, 130, 130);
+    background: transparent;
+}
+
+.awaiting-response {
+    color: white;
+}
+
+.incoming-reqs-div-right {
+    padding: 12px 16px;
+
+    button {
+        padding: 8px 16px;
+        font-size: 14px;
+        background: transparent;
+        color: #ffffff;
+        border: 0.5px solid rgb(130, 130, 130);
+        border-radius: 7px;
+        cursor: pointer;
+        transition: background 0.15s, transform 0.1s;
+        margin: 0 -10px 0 20px;
+    }
+
+    button:hover {
+        background-color: #363636;
+    }
+}
+
+#accept-btn {
+    background: #173415;
+    color: #0fb50f;
+    border-color: #074506;
+}
+
+#accept-btn:hover {
+    background-color: #014e01;
+}

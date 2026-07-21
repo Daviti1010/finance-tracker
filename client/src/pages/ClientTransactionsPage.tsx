@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
+import { Header } from "./HeaderPages/Header"
 import { getClientTransactions, getClientStartingBalance } from "../api";
 import type { Transaction } from "../types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -157,6 +158,8 @@ export function ClientTransactionsPage() {
 
     return (
         <>
+        <Header />
+        
         <div className="income-expense-container">
                 <div className="income-expense-balance">
                     <div className="income-expense">
