@@ -2,10 +2,9 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
 import { Header } from "./HeaderPages/Header"
 import { ClientFinancialSummary } from "./ClientTransactionsPages/FinancialSummary/ClientFinancialSummary";
+import { ClientTransactionsUpperPart } from "./ClientTransactionsPages/AllTransactions/ClientTransactionsUpperPart/ClientTransactionsUpperPart";
 import { getClientTransactions } from "../api";
 import type { Transaction } from "../types";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRotateLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 export function ClientTransactionsPage() {
@@ -14,56 +13,54 @@ export function ClientTransactionsPage() {
 
     // console.log(clientIdNum);
 
-    const [filterType, setFilterType] = useState("expense");
-    const [filterCategory, setFilterCategory] = useState("all")
 
     const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([])
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([])
 
-    const incomeCategories = [
-        { value: "salary", label: "Salary" },
-        { value: "freelance", label: "Freelance" },
-        { value: "investments", label: "Investments" },
-        { value: "gifts", label: "Gifts" },
-        { value: "other", label: "Other" },
-    ]
+    // const incomeCategories = [
+    //     { value: "salary", label: "Salary" },
+    //     { value: "freelance", label: "Freelance" },
+    //     { value: "investments", label: "Investments" },
+    //     { value: "gifts", label: "Gifts" },
+    //     { value: "other", label: "Other" },
+    // ]
 
-    const expenseCategories = [
-        { value: "food", label: "Food & Groceries" },
-        { value: "rent", label: "Rent / Housing" },
-        { value: "transport", label: "Transport" },
-        { value: "utilities", label: "Utilities" },
-        { value: "entertainment", label: "Entertainment" },
-        { value: "shopping", label: "Shopping" },
-        { value: "health", label: "Health & Fitness" },
-        { value: "subscriptions", label: "Subscriptions" },
-        { value: "education", label: "Education" },
-        { value: "other", label: "Other" },
-    ]
+    // const expenseCategories = [
+    //     { value: "food", label: "Food & Groceries" },
+    //     { value: "rent", label: "Rent / Housing" },
+    //     { value: "transport", label: "Transport" },
+    //     { value: "utilities", label: "Utilities" },
+    //     { value: "entertainment", label: "Entertainment" },
+    //     { value: "shopping", label: "Shopping" },
+    //     { value: "health", label: "Health & Fitness" },
+    //     { value: "subscriptions", label: "Subscriptions" },
+    //     { value: "education", label: "Education" },
+    //     { value: "other", label: "Other" },
+    // ]
 
-    const filterCategoryOptions = [
-        { value: "all", label: "All categories" },
-        ...(filterType === "income" ? incomeCategories : expenseCategories)
-    ]
+    // const filterCategoryOptions = [
+    //     { value: "all", label: "All categories" },
+    //     ...(filterType === "income" ? incomeCategories : expenseCategories)
+    // ]
 
-    async function fetchFilteredTransactions() {
-        try {
-            const response = await getClientTransactions(clientIdNum, filterType, filterCategory);
-            const data = await response.json()
+    // async function fetchFilteredTransactions() {
+    //     try {
+    //         const response = await getClientTransactions(clientIdNum, filterType, filterCategory);
+    //         const data = await response.json()
             
-            if (!response.ok) {
-                console.log(data.message)
-                return
-            }
+    //         if (!response.ok) {
+    //             console.log(data.message)
+    //             return
+    //         }
 
-            console.log(data[0])
+    //         console.log(data[0])
 
-            setDisplayedTransactions(data);
+    //         setDisplayedTransactions(data);
 
-        } catch (err) {
-            console.log(err)
-        }
-    }
+    //     } catch (err) {
+    //         console.log(err)
+    //     }
+    // }
 
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
@@ -102,12 +99,6 @@ export function ClientTransactionsPage() {
         fetchClientTransactions();
     }, [fetchClientTransactions]);
 
-    function handleReset() {
-        setFilterType("expense")
-        setFilterCategory("all")
-        fetchClientTransactions()
-    }
-
     return (
         <>
         <Header />
@@ -116,38 +107,9 @@ export function ClientTransactionsPage() {
         
 
         <div className="all-transactions-container">
-            <div className="upper-part">
-                <p id="transactions-text">Transactions</p>
-
-                <select
-                    name="select-income-or-expense"
-                    id="select-income-or-expense"
-                    value={filterType}
-                    onChange={(e) => {
-                        const newType = e.target.value
-                        setFilterType(newType)
-                        setFilterCategory("all")
-                    }}
-                >
-                    <option value="expense">Expense</option>
-                    <option value="income">Income</option>
-                </select>
-
-                <select name="select-category"
-                    id="select-category"
-                    value={filterCategory} 
-                    onChange={(e) => setFilterCategory(e.target.value)}>
-
-                    {filterCategoryOptions.map((categ) => (
-                        <option key={categ.value} value={categ.value}>{categ.label}</option>
-                    ))}
-
-                </select>
-
-                <button onClick={handleReset} id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
-
-                <button id="search-btn" type="button" onClick={fetchFilteredTransactions}>Search</button>
-            </div>
+            
+            <ClientTransactionsUpperPart clientIdNum={clientIdNum} setDisplayedTransactions={setDisplayedTransactions}
+            fetchClientTransactions={fetchClientTransactions}/>
 
             <div className="all-transactions">
                 <div className="list">
