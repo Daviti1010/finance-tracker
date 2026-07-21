@@ -1,12 +1,11 @@
 // import { useState } from 'react'
 import { Routes, Route, Navigate } from "react-router";
-// import { HomePage } from './pages/home/HomePage'
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
-import { Dashboard } from "./pages/Dashboard";
+import { Dashboard } from "./pages/DashboardComponents/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import { LinksPage } from "./pages/LinksPage";
-import { ClientTransactionsPage } from './pages/ClientTransactionsPage';
+import { ClientTransactionsPage } from './pages/ClientTransactionsPages/ClientTransactionsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import './App.css'

@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
-import { Header } from "./HeaderPages/Header"
-import { ClientFinancialSummary } from "./ClientTransactionsPages/FinancialSummary/ClientFinancialSummary";
-import { ClientTransactionsUpperPart } from "./ClientTransactionsPages/AllTransactions/ClientTransactionsUpperPart/ClientTransactionsUpperPart";
-import { ClientAllTransactions } from "./ClientTransactionsPages/AllTransactions/ClientTransactions/ClientAllTransactions";
-import { getClientTransactions } from "../api";
-import type { Transaction } from "../types";
+import { Header } from "../HeaderPages/Header"
+import { ClientFinancialSummary } from "./FinancialSummary/ClientFinancialSummary";
+import { ClientTransactionsUpperPart } from "./AllTransactions/ClientTransactionsUpperPart/ClientTransactionsUpperPart";
+import { ClientAllTransactions } from "./AllTransactions/ClientTransactions/ClientAllTransactions";
+import { getClientTransactions } from "../../api";
+import type { Transaction } from "../../types";
 
 
 export function ClientTransactionsPage() {

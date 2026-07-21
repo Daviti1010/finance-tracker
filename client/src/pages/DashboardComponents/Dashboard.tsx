@@ -1,12 +1,12 @@
-import { Header } from "./HeaderPages/Header"
+import { Header } from "../HeaderPages/Header"
 import { useState, useEffect } from "react"
-import { getTransactions } from "../api"
-import { FinancialSummary } from "./DashboardComponents/FinancialSummary/FinancialSummary"
-import { AddTransaction } from "./DashboardComponents/TransactionInput/AddTransaction/AddTransactions"
-import { SpendingByCategory } from "./DashboardComponents/TransactionInput/SpendingByCategory/SpendingByCategory"
-import { UpperPart } from "./DashboardComponents/AllTransactions/UpperPart/UpperPart"
-import { AllTransactions } from "./DashboardComponents/AllTransactions/Transactions/AllTransactions"
-import type { Transaction } from "../types"
+import { getTransactions } from "../../api"
+import { FinancialSummary } from "../DashboardComponents/FinancialSummary/FinancialSummary"
+import { AddTransaction } from "../DashboardComponents/TransactionInput/AddTransaction/AddTransactions"
+import { SpendingByCategory } from "..//DashboardComponents/TransactionInput/SpendingByCategory/SpendingByCategory"
+import { UpperPart } from "../DashboardComponents/AllTransactions/UpperPart/UpperPart"
+import { AllTransactions } from "../DashboardComponents/AllTransactions/Transactions/AllTransactions"
+import type { Transaction } from "../../types"
 import './Dashboard.css'
 
 
