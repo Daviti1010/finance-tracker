@@ -14,41 +14,56 @@ import './App.css'
 function App() {
   // const [count, setCount] = useState(0)
 
+
   return (
-    <Routes>
-      <Route path='/' element={<Navigate to={"/login"}/>} />
+    <>
+      <div className="parent-container">
+      <Routes>
+        <Route path='/' element={<Navigate to={"/login"}/>} />
 
-      <Route path='/login' element={<GuestRoute><Login /></GuestRoute>} />
+        <Route path='/login' element={<GuestRoute><Login /></GuestRoute>} />
 
-      <Route path='/register' element={<GuestRoute><Register /></GuestRoute>} />
+        <Route path='/register' element={<GuestRoute><Register /></GuestRoute>} />
 
-      <Route path='/dashboard' element={
-        <ProtectedRoute>
-          <Dashboard />
-        </ProtectedRoute>
-      } />
+        <Route path='/dashboard' element={
+          <ProtectedRoute>
+            <Dashboard />
+          </ProtectedRoute>
+        } />
 
-      <Route path='/links' element={
-        <ProtectedRoute>
-          <LinksPage />
-        </ProtectedRoute>
-      } />
+        <Route path='/links' element={
+          <ProtectedRoute>
+            <LinksPage />
+          </ProtectedRoute>
+        } />
 
-      <Route path='/clients/:clientId/transactions' element={
-        <ProtectedRoute>
-          <ClientTransactionsPage />
-        </ProtectedRoute>
-      } />
+        <Route path='/clients/:clientId/transactions' element={
+          <ProtectedRoute>
+            <ClientTransactionsPage />
+          </ProtectedRoute>
+        } />
 
-      <Route path='/chatbot' element={
-        <ProtectedRoute>
-          <Chatbot />
-        </ProtectedRoute>
-      } />
+        <Route path='/chatbot' element={
+          <ProtectedRoute>
+            <Chatbot />
+          </ProtectedRoute>
+        } />
 
-      <Route path="*" element={<PageNotFound/>} />
+        <Route path="*" element={<PageNotFound/>} />
+        
+      </Routes>
+
+      <div className="corner-widget-div">
+        <div className="corner-widget">
+          <button>
+            <img src="gemini.png" alt="" />
+          </button>
+        </div>
+      </div>
+
       
-    </Routes>
+    </div>
+    </>
   )
 }
 
