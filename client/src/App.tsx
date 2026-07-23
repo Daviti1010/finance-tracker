@@ -6,6 +6,7 @@ import { Dashboard } from "./pages/DashboardComponents/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import { LinksPage } from "./pages/LinksPage";
 import { ClientTransactionsPage } from './pages/ClientTransactionsPages/ClientTransactionsPage';
+import { Chatbot } from "./pages/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import './App.css'
@@ -36,6 +37,12 @@ function App() {
       <Route path='/clients/:clientId/transactions' element={
         <ProtectedRoute>
           <ClientTransactionsPage />
+        </ProtectedRoute>
+      } />
+
+      <Route path='/chatbot' element={
+        <ProtectedRoute>
+          <Chatbot />
         </ProtectedRoute>
       } />
 
