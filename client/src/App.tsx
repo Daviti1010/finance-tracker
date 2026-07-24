@@ -1,4 +1,5 @@
 import { Routes, Route, Navigate } from "react-router";
+import { useLocation } from 'react-router-dom';
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
 import { Dashboard } from "./pages/DashboardComponents/Dashboard";
@@ -14,6 +15,13 @@ import './App.css'
 
 function App() {
   // const [count, setCount] = useState(0)
+  const location = useLocation();
+  const hideChatbotOnPages = ["/login", "/register"];
+
+  let showChatbot = true;
+  if (hideChatbotOnPages.includes(location.pathname)) {
+    showChatbot = false;
+  }
 
 
   return (
@@ -54,7 +62,7 @@ function App() {
         
       </Routes>
 
-      <Chatbot />
+      {showChatbot && <Chatbot />}
     </div>
     </>
   )
