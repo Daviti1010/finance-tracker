@@ -16,6 +16,11 @@ router.post("/", async (req, res) => {
         const interaction = await ai.interactions.create({
             model: "gemini-3.6-flash",
             input: `${userMessage}`,
+            system_instruction: `You are a finance assistant embedded in a personal finance tracker app. 
+            Only answer questions related to personal finance, budgeting, 
+            the app's dashboard, transactions, and money management topics. 
+            If asked about anything unrelated, politely decline and redirect 
+            the user back to finance-related topics.`,
             ...(previousInteractionId && { previous_interaction_id: previousInteractionId }),
         });
 
