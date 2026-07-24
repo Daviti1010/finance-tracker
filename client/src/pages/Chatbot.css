@@ -3,6 +3,46 @@
     justify-content: center;
 } */
 
+.corner-widget-div {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 1000;
+}
+
+.corner-widget {
+  display: flex;
+  justify-content: end;
+}
+
+
+.corner-widget button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background-color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.corner-widget button:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.corner-widget button img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
 .chat-window {
   width: 380px;
   height: 550px;
