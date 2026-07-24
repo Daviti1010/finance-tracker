@@ -1,4 +1,3 @@
-// import { useState } from 'react'
 import { Routes, Route, Navigate } from "react-router";
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
@@ -10,6 +9,8 @@ import { Chatbot } from "./pages/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GuestRoute from "./components/GuestRoute";
 import './App.css'
+
+
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -43,25 +44,17 @@ function App() {
           </ProtectedRoute>
         } />
 
-        <Route path='/chatbot' element={
+        {/* <Route path='/chatbot' element={
           <ProtectedRoute>
             <Chatbot />
           </ProtectedRoute>
-        } />
+        } /> */}
 
         <Route path="*" element={<PageNotFound/>} />
         
       </Routes>
 
-      <div className="corner-widget-div">
-        <div className="corner-widget">
-          <button>
-            <img src="gemini.png" alt="" />
-          </button>
-        </div>
-      </div>
-
-      
+      <Chatbot />
     </div>
     </>
   )

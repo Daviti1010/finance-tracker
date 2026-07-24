@@ -5,6 +5,11 @@
   z-index: 1000;
 }
 
+.corner-widget {
+  display: flex;
+  justify-content: end;
+}
+
 
 .corner-widget button {
   width: 56px;
