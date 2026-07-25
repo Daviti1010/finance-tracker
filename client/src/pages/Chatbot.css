@@ -100,7 +100,7 @@
 .send-message-container {
     display: flex;
     align-items: end;
-    height: 20vh;
+    /* height: 20vh; */
     flex-shrink: 0;
 }
 

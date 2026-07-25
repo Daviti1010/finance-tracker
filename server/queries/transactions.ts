@@ -37,3 +37,23 @@ export async function getTransactions(userId: number, type?: string, category?: 
         throw err;
     }
 }
+
+
+export async function getRecentTransactions(userId: number, daysBack: number): Promise<Transaction[]> {
+    const cutoffDate = new Date();
+    cutoffDate.setDate(cutoffDate.getDate() - daysBack);
+
+    try {
+        const result = await pool.query(
+            `SELECT * FROM transactions 
+            WHERE user_id = $1
+            AND date >= $2
+            ORDER BY date DESC`, [userId, cutoffDate])
+
+        return result.rows;
+
+    } catch (err) {
+        console.error(err);
+        throw err;
+    }
+}
