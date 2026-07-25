@@ -1,6 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 import { getRecentTransactions } from "../queries/transactions";
 import dotenv from "dotenv";
 
@@ -10,12 +11,19 @@ const router = express.Router();
 
 const ai = new GoogleGenAI({});
 
-router.post("/", authMiddleware, async (req, res) => {
+const chatRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 7,
+  message: 'Too many chat requests, please try again later.',
+  keyGenerator: (req: any) => req.user?.id ?? ipKeyGenerator(req.ip)
+});
+
+router.post("/", authMiddleware, chatRateLimiter, async (req, res) => {
     const userId = (req as any).user?.id;
 
     try {
         const transactions30Days = await getRecentTransactions(userId, 30);
-        console.log(transactions30Days);
+        // console.log(transactions30Days);
 
         const compactList = transactions30Days.map(t => {
             const sign = t.type === 'income' ? '+' : '-';
@@ -23,7 +31,7 @@ router.post("/", authMiddleware, async (req, res) => {
             return `• [${dateStr}] ${t.description} (${t.category}): ${sign}$${Number(t.amount)}`;
         }).join('\n');
 
-        console.log(compactList);
+        // console.log(compactList);
 
         const totalIncome = transactions30Days
             .filter(t => t.type === "income")

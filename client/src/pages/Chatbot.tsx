@@ -60,7 +60,7 @@ export function Chatbot() {
 
             const errorMessage: Message = {
                 sender: "model",
-                text: "Something went wrong. Please try again.",
+                text: "Something went wrong. Please try again in a few seconds.",
                 key: crypto.randomUUID(),
             };
 
