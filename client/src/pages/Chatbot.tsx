@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react"
 import ReactMarkdown from "react-markdown";
+import { api } from "../api";
 import './Chatbot.css'
 
 interface Message {
@@ -34,14 +35,10 @@ export function Chatbot() {
         setIsLoading(true);
 
         try {
-            const res = await fetch("/api/chat", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    message: userMessage.text,
-                    ...(lastInteractionId && { previous_interaction_id: lastInteractionId }),
-                }),
-            })
+            const res = await api.post("/api/chat", {
+                message: userMessage.text,
+                ...(lastInteractionId && { previous_interaction_id: lastInteractionId }),
+            });
 
             if (!res.ok) {
                 throw new Error(`Server responded with ${res.status}`);

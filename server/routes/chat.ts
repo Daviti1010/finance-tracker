@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import express from "express";
+import authMiddleware from "../middleware/authMiddleware";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -8,7 +9,7 @@ const router = express.Router();
 
 const ai = new GoogleGenAI({});
 
-router.post("/", async (req, res) => {
+router.post("/", authMiddleware, async (req, res) => {
     try {
         const userMessage = req.body.message;
         const previousInteractionId = req.body.previous_interaction_id;
