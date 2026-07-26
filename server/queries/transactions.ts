@@ -57,3 +57,33 @@ export async function getRecentTransactions(userId: number, daysBack: number): P
         throw err;
     }
 }
+
+
+export async function getStartingBalance(userId: number) {
+    try {
+        const result = await pool.query("SELECT starting_balance FROM users WHERE id = $1", [userId])
+
+        return result.rows[0] ?? null
+
+    } catch (err) {
+        console.error(err)
+        throw err;
+    }
+}
+
+export async function getCurrentBalance(userId: number): Promise<number> {
+    const startingBalanceResult = await getStartingBalance(userId);
+    const startingBalance = Number(startingBalanceResult?.starting_balance ?? 0);
+
+    const allTransactions = await getTransactions(userId);
+
+    const totalIncome = allTransactions
+        .filter(t => t.type === "income")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    const totalExpenses = allTransactions
+        .filter(t => t.type === "expense")
+        .reduce((sum, t) => sum + Number(t.amount), 0);
+
+    return startingBalance + totalIncome - totalExpenses;
+}

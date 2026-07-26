@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
-import { getRecentTransactions } from "../queries/transactions";
+import { getCurrentBalance, getRecentTransactions } from "../queries/transactions";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -24,6 +24,9 @@ router.post("/", authMiddleware, chatRateLimiter, async (req, res) => {
     try {
         const transactions30Days = await getRecentTransactions(userId, 30);
         // console.log(transactions30Days);
+
+        const currentBalance = await getCurrentBalance(userId);
+
 
         const compactList = transactions30Days.map(t => {
             const sign = t.type === 'income' ? '+' : '-';
@@ -59,7 +62,9 @@ router.post("/", authMiddleware, chatRateLimiter, async (req, res) => {
             Only answer questions related to personal finance, budgeting, 
             the app's dashboard, transactions, and money management topics. 
             If asked about anything unrelated, politely decline and redirect 
-            the user back to finance-related topics. ${financialContext}`,
+            the user back to finance-related topics.
+            User's current balance is: $${currentBalance}
+            ${financialContext}`,
             ...(previousInteractionId && { previous_interaction_id: previousInteractionId }),
         });
 

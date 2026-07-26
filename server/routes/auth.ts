@@ -3,6 +3,7 @@ import pool from "../db";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
 import { generateToken } from "../utils/generateToken";
+import { getStartingBalance } from "../queries/transactions";
 import authMiddleware from "../middleware/authMiddleware";
 
 
@@ -152,13 +153,13 @@ router.get("/starting-balance", authMiddleware, async (req, res) => {
     const userId = (req as any).user?.id;
 
     try {
-        const result = await pool.query("SELECT starting_balance FROM users WHERE id = $1", [userId])
+        const startingBalanceResult = await getStartingBalance(userId);
 
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Balance not found" })
+        if (!startingBalanceResult) {
+            return res.status(404).json({ message: "Balance not found" });
         }
 
-        res.status(200).json({ success: true, startingBalance: result.rows[0].starting_balance })
+        res.status(200).json({ success: true, startingBalance: startingBalanceResult.starting_balance });
         
         
     } catch (err) {
