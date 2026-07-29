@@ -4,7 +4,7 @@
     align-items: center;
 
     width: 70%;
-    height: 100px;
+    /* height: 100px; */
     
     margin: 0 auto;
     margin-top: 50px;
@@ -127,4 +127,100 @@
     cursor: pointer;
     margin-left: 10px;
     color: whitesmoke;
+}
+
+@media (max-width: 900px) {
+
+  .income {
+    width: 200px;
+  }
+
+  .expense {
+    width: 200px;
+  }
+
+  .net-balance {
+    width: 200px;
+  }
+  
+}
+
+
+@media (max-width: 750px) {
+
+  .income-expense-container {
+    margin-top: 20px;
+  }
+
+  .income-expense-balance {
+    gap: 20px;
+  }
+
+  .income-expense {
+    gap: 20px;
+  }
+
+  .income {
+    height: 80px;
+    width: 170px;
+  }
+
+  #income-text {
+    font-size: 14px;
+  }
+
+  #income-number p {
+    font-size: 20px;
+  }
+
+  .expense {
+    height: 80px;
+    width: 170px;
+  }
+
+  #expense-text {
+    font-size: 14px;
+  }
+
+  #expense-number {
+    font-size: 20px;
+  }
+
+  .net-balance {
+    height: 80px;
+    width: 170px;
+    margin: 0 auto;
+  }
+
+  #net-balance-text {
+    font-size: 14px;
+  }
+
+  #net-balance-number-p {
+    font-size: 19px;
+  }
+}
+
+@media (max-width: 600px) {
+
+  .income-expense-balance {
+    flex-direction: column;
+  }
+  
+}
+
+@media (min-width: 768px) {
+  .income-expense-container {
+    height: 100px;
+  }
+}
+
+@media (max-width: 451px) {
+  .income {
+    width: 150px;
+  }
+
+  .expense {
+    width: 150px;
+  }
 }
