@@ -139,3 +139,43 @@
     filter: invert(1);
     cursor: pointer;
 }
+
+@media (max-width: 850px) {
+    .transaction-input {
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 600px) {
+    .transaction-input {
+        flex-direction: column;
+        margin: 30px auto 0;
+    }
+
+    .add-transaction {
+        margin: 0 auto;
+        width: 70%;
+        height: auto;
+    }
+
+    .spending-by-category {
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    #add-transaction-text {
+        font-size: 14px;
+    }
+
+    .add-transaction select, .add-transaction input {
+        font-size: 12px;
+        padding: 7px 8px;
+    }
+}
+
+
+@media (max-width: 450px) {
+    .add-transaction {
+        width: 80%;
+    }
+}
