@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Transaction } from "../../../../types"
 
 interface ClientAllTransactionProps {
@@ -5,6 +6,12 @@ interface ClientAllTransactionProps {
 }
 
 export function ClientAllTransactions({displayedTransactions}: ClientAllTransactionProps) {
+
+    const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
+    
+    const toggleExpand = (id: number) => {
+        setExpandedTransactionId(prev => (prev === id ? null : id));
+    };
 
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
@@ -18,7 +25,7 @@ export function ClientAllTransactions({displayedTransactions}: ClientAllTransact
         <div className="all-transactions">
             <div className="list">
                 {displayedTransactions.map((t) => (
-                    <div key={t.id} className="transaction">
+                    <div key={t.id} className="transaction" onClick={() => toggleExpand(t.id)}>
                         <div className="transaction-left-side">
                             <img 
                                 src={t.type === "income" ? "/green-arrow.png" : "/red-arrow.png"}
@@ -37,6 +44,12 @@ export function ClientAllTransactions({displayedTransactions}: ClientAllTransact
                                 "transaction-amount positive" : "transaction-amount negative"}>
                                 {t.type === "income" ? "+$" : "-$"}{t.amount}</p>
                         </div>
+
+                        {expandedTransactionId === t.id && (
+                            <div className="transaction-details">
+                                <p className="transaction-date-mobile">{formatDate(t.date)}</p>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

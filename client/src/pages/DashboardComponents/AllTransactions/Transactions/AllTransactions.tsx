@@ -1,3 +1,4 @@
+import { useState } from "react"
 import type { Dispatch, SetStateAction } from "react"
 import { deleteTransaction } from "../../../../api"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -14,6 +15,12 @@ interface AddTransactionProps {
 
 export function AllTransactions({setAllTransactions, setDisplayedTransactions, displayedTransactions}: AddTransactionProps) {
 
+
+    const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
+
+    const toggleExpand = (id: number) => {
+        setExpandedTransactionId(prev => (prev === id ? null : id));
+    };
 
     function formatDate(isoString: string) {
         return new Date(isoString).toLocaleDateString("en-US", {
@@ -46,7 +53,7 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
         <div className="all-transactions">
             <div className="list">
                 {displayedTransactions.map((t) => (
-                    <div key={t.id} className="transaction">
+                    <div key={t.id} className="transaction" onClick={() => toggleExpand(t.id)}>
                         <div className="transaction-left-side">
                             <img 
                                 src={t.type === "income" ? "/green-arrow.png" : "/red-arrow.png"}
@@ -64,8 +71,18 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
                             <p className={t.type === "income" ?
                                     "transaction-amount positive" : "transaction-amount negative"}>
                                     {t.type === "income" ? "+$" : "-$"}{t.amount}</p>
-                            <button onClick={() => handleDeleteTransaction(t.id)} className="delete-button"><FontAwesomeIcon icon={faTrashCan} /></button>
+                            <button
+                                onClick={(e) => { e.stopPropagation(); handleDeleteTransaction(t.id); }}
+                                className="delete-button">
+                                <FontAwesomeIcon icon={faTrashCan} />
+                            </button>
                         </div>
+
+                        {expandedTransactionId === t.id && (
+                            <div className="transaction-details">
+                                <p className="transaction-date-mobile">{formatDate(t.date)}</p>
+                            </div>
+                        )}
                     </div>
                 ))}
             </div>

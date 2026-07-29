@@ -1,3 +1,16 @@
+.all-transactions-container {
+    width: 70%;
+    height: 500px;
+    background-color: rgb(73, 73, 73);
+    margin: 30px auto 20px;
+    border-radius: 15px;
+    border: 2px solid rgb(130, 130, 130);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
 .all-transactions {
     flex: 1;
     overflow-y: auto;
@@ -20,7 +33,7 @@
     align-items: center;
     border-radius: 8px;
     width: 90%;
-    height: 60px;
+    min-height: 60px;
     background-color: #3a3a3a;
 }
 
@@ -83,4 +96,132 @@
     color: white;
     cursor: pointer;
     font-size: 13.5px;
+}
+
+.transaction-details {
+    display: none;
+}
+
+@media (max-width: 1400px) {
+    .all-transactions-container {
+        width: 85%;
+    }
+}
+
+
+@media (max-width: 1024px) {
+    .all-transactions-container {
+        width: 90%;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .all-transactions-container {
+        width: 90%;
+    }
+
+    .transaction {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding: 10px 0px;
+    }
+    
+    .arrow {
+        width: 25px;
+        height: 25px;
+    }
+
+    .transaction-text {
+        margin-left: 8px;
+    }
+
+    .category {
+        font-size: 13px;
+    }
+
+    .description {
+        font-size: 11px;
+    }
+
+    .transaction-date {
+        display: none;
+    }
+
+    .transaction-right-side {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 4px 12px;
+    }
+
+
+    .transaction-details {
+        display: block;
+        margin: 10px 0 0px 20px;
+        width: 100%;
+        order: 3; 
+
+        p {
+            color: bisque;
+            font-size: 12px;
+        }
+    }
+
+}
+
+
+@media (max-width: 415px) {
+    .all-transactions-container {
+        width: 90%;
+    }
+
+    .category {
+        font-size: 12px;
+    }
+
+    .description {
+        font-size: 10px;
+    }
+
+}
+
+
+@media (max-width: 380px) {
+    .arrow {
+        margin: 0 0 0 10px;
+    }
+
+    .transaction-text {
+        margin-left: 0;
+    }
+
+    .category {
+        font-size: 11px;
+    }
+
+    .description {
+        font-size: 9px;
+    }
+
+    .negative,
+    .positive {
+        font-size: 14px;
+    }
+
+    #select-category {
+        width: 40%;
+        margin-left: 15px;
+    }
+
+    #reset-transactions-btn {
+        margin: 0 0 0 7px;
+    }
+
+    .upper-part select {
+        width: 30%;
+        margin: 0 0 0 10px;
+        font-size: 13px;
+    }
+
 }
