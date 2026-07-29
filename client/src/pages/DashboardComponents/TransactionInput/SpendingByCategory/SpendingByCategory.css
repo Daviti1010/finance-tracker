@@ -40,6 +40,10 @@
     padding: 20px 22px 22px;
 }
 
+.progress-bar-container::-webkit-scrollbar {
+  display: none;
+}
+
 .progress-bar {
     height: 22px;
     border-radius: 4px;
@@ -127,4 +131,19 @@
 .percentage {
     color: #ffd194;
     width: 30px;
+}
+
+
+@media (max-width: 600px) {
+    .spending-by-category {
+        margin: 0 auto;
+        width: 71%;
+    }
+
+}
+
+@media (max-width: 450px) {
+    .spending-by-category {
+        width: 80%;
+    }
 }
