@@ -22,6 +22,16 @@ router.post("/", authMiddleware, chatRateLimiter, async (req, res) => {
     const userId = (req as any).user?.id;
 
     try {
+        const userMessage = req.body.message;
+
+        if (!userMessage || typeof userMessage !== "string" || userMessage.trim().length === 0) {
+            return res.status(400).json({ error: "Message cannot be empty" });
+        }
+
+        if (userMessage.length > 500) {
+            return res.status(400).json({ error: "Message is too long (max 500 characters)" });
+        }
+
         const transactions30Days = await getRecentTransactions(userId, 30);
         // console.log(transactions30Days);
 
@@ -52,7 +62,7 @@ router.post("/", authMiddleware, chatRateLimiter, async (req, res) => {
             Transactions:
             ${compactList.length > 0 ? compactList : "No transactions found in this period."} `;
 
-        const userMessage = req.body.message;
+
         const previousInteractionId = req.body.previous_interaction_id;
 
         const interaction = await ai.interactions.create({

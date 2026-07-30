@@ -155,6 +155,20 @@
   background-color: #0056b3;
 }
 
+.char-counter {
+  color: #1fff39;
+}
+
+.char-counter.over-limit {
+  color: #ff6b6b;
+  font-weight: 600;
+}
+
+.message-input button:disabled {
+  background-color: rgba(0, 123, 255, 0.3);
+  cursor: not-allowed;
+}
+
 
 .spinner {
   width: 16px;

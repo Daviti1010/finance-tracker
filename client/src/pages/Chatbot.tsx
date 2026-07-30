@@ -24,6 +24,11 @@ export function Chatbot() {
     const handleSendMessage = async () => {
         if (!inputValue.trim()) return;
 
+        if (inputValue.length > 500) {
+            // show some feedback — a temporary error state, or just prevent sending
+            return;
+        }
+
         const userMessage: Message = {
             sender: "user",
             text: inputValue,
@@ -138,9 +143,16 @@ export function Chatbot() {
                           onKeyDown={handleKeyDown}
                           rows={1}
                         />
-        
+
+                        {inputValue.length > 450 && (
+                            <div className={`char-counter ${inputValue.length > 500 ? 'over-limit' : ''}`}>
+                                {inputValue.length}/500
+                            </div>
+                        )}
+                                    
                         <div>
-                            <button type="submit" onClick={handleSendMessage}>Send</button>
+                            <button type="submit" onClick={handleSendMessage} 
+                            disabled={isLoading || inputValue.length > 500 || !inputValue.trim()}>Send</button>
                         </div>
         
                       </div>
