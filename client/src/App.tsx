@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router";
 import { useLocation } from 'react-router-dom';
 import { Login } from './pages/RegisterPages/Login'
 import { Register } from "./pages/RegisterPages/Register";
+import { ForgotPassword } from "./pages/RegisterPages/ForgotPassword";
 import { Dashboard } from "./pages/DashboardComponents/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import { LinksPage } from "./pages/LinksPage";
@@ -16,7 +17,7 @@ import './App.css'
 function App() {
   // const [count, setCount] = useState(0)
   const location = useLocation();
-  const hideChatbotOnPages = ["/login", "/register"];
+  const hideChatbotOnPages = ["/login", "/register", "/forgot-password"];
 
   let showChatbot = true;
   if (hideChatbotOnPages.includes(location.pathname)) {
@@ -33,6 +34,8 @@ function App() {
         <Route path='/login' element={<GuestRoute><Login /></GuestRoute>} />
 
         <Route path='/register' element={<GuestRoute><Register /></GuestRoute>} />
+
+        <Route path='/forgot-password' element={<GuestRoute><ForgotPassword /></GuestRoute>} />
 
         <Route path='/dashboard' element={
           <ProtectedRoute>

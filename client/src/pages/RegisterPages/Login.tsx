@@ -88,6 +88,8 @@ export function Login() {
                 <button type="submit" className="submit-btn" disabled={loading}>{buttonText}</button>
 
                 <p className="footer-text">Do not have an acocunt? <Link to="/register">Sign up</Link></p>
+
+                <Link className='forgot-password' to="/forgot-password">Forgot Password?</Link>
             </form>
         </div>
     )
