@@ -7,6 +7,7 @@ import { getStartingBalance } from "../queries/transactions";
 import authMiddleware from "../middleware/authMiddleware";
 import { sendPasswordResetEmail } from "../services/email";
 import { generateRandom6DigitCode } from "../utils/generateResetCode";
+import rateLimit, { ipKeyGenerator } from 'express-rate-limit';
 
 
 dotenv.config()
@@ -15,6 +16,13 @@ const router = express.Router();
 
 const salt_rounds = 10;
 
+
+const ForgotPasswordRateLimiter = rateLimit({
+  windowMs: 60 * 1000 * 15,
+  max: 3,
+  message: 'Too many password reset requests, please try again later.',
+  keyGenerator: (req: any) => req.user?.id ?? ipKeyGenerator(req.ip)
+});
 
 
 
@@ -195,7 +203,7 @@ router.put("/starting-balance", authMiddleware, async (req, res) => {
 })
 
 
-router.post("/forgot-password", async (req, res) => {
+router.post("/forgot-password", ForgotPasswordRateLimiter, async (req, res) => {
     const userEmail = req.body.email;
 
     try {
