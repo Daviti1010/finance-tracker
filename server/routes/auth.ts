@@ -5,6 +5,8 @@ import dotenv from 'dotenv';
 import { generateToken } from "../utils/generateToken";
 import { getStartingBalance } from "../queries/transactions";
 import authMiddleware from "../middleware/authMiddleware";
+import { sendPasswordResetEmail } from "../services/email";
+import { generateRandom6DigitCode } from "../utils/generateResetCode";
 
 
 dotenv.config()
@@ -12,6 +14,9 @@ dotenv.config()
 const router = express.Router();
 
 const salt_rounds = 10;
+
+
+
 
 router.post("/register", async (req, res) => {
     const name = req.body.name;
@@ -186,6 +191,44 @@ router.put("/starting-balance", authMiddleware, async (req, res) => {
     } catch (err) {
         console.error(err)
         return res.status(500).json({ message: "Something went wrong" })
+    }
+})
+
+
+router.post("/forgot-password", async (req, res) => {
+    const userEmail = req.body.email;
+
+    try {
+        const findUserByEmail = await pool.query("SELECT * FROM users WHERE email = $1", [userEmail]) 
+
+        if (findUserByEmail.rows.length === 0) {
+            return res.status(200).json({ message: "If that email exists, a code was sent." });
+        }
+
+        const userId = findUserByEmail.rows[0].id;
+
+        await pool.query("DELETE FROM password_reset_tokens WHERE user_id = $1", [userId])
+
+        const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
+        const rawCode = generateRandom6DigitCode();
+        const tokenHash = await bcrypt.hash(rawCode, 10);
+
+        await pool.query(`
+            INSERT INTO password_reset_tokens
+            (user_id, token_hash, expires_at) VALUES ($1, $2, $3)`, [userId, tokenHash, expiresAt])
+
+        const result = await sendPasswordResetEmail(userEmail, rawCode);
+
+        
+        if (result.error) {
+            console.error("Failed to send reset email:", result.error);
+        }
+
+        return res.status(200).json({ message: "If that email exists, a code was sent." });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Something went wrong" });
     }
 })
 
