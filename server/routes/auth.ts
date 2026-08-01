@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import pool from "../db";
 import bcrypt from "bcrypt";
 import dotenv from 'dotenv';
@@ -17,11 +17,32 @@ const router = express.Router();
 const salt_rounds = 10;
 
 
-const ForgotPasswordRateLimiter = rateLimit({
+const ForgotPasswordIpLimiter = rateLimit({
   windowMs: 60 * 1000 * 15,
   max: 3,
   message: 'Too many password reset requests, please try again later.',
-  keyGenerator: (req: any) => req.user?.id ?? ipKeyGenerator(req.ip)
+  keyGenerator: (req: any) => ipKeyGenerator(req.ip)
+});
+
+const ForgotPasswordEmailRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 3,
+  message: 'Too many password reset requests for this account, please try again later.',
+  keyGenerator: (req: any) => req.body?.email ?? 'unknown',
+});
+
+const ResetPasswordIpLimiter = rateLimit({
+  windowMs: 60 * 1000 * 15,
+  max: 3,
+  message: 'Too many password reset requests, please try again later.',
+  keyGenerator: (req: any) => ipKeyGenerator(req.ip)
+});
+
+const ResetPasswordEmailRateLimiter = rateLimit({
+  windowMs: 60 * 1000 * 15,
+  max: 3,
+  message: 'Too many password reset requests, please try again later.',
+  keyGenerator: (req: any) => req.body?.email ?? 'unknown',
 });
 
 
@@ -203,7 +224,7 @@ router.put("/starting-balance", authMiddleware, async (req, res) => {
 })
 
 
-router.post("/forgot-password", ForgotPasswordRateLimiter, async (req, res) => {
+router.post("/forgot-password", [ForgotPasswordIpLimiter, ForgotPasswordEmailRateLimiter], async (req: Request, res: Response) => {
     const userEmail = req.body.email;
 
     try {
@@ -233,6 +254,57 @@ router.post("/forgot-password", ForgotPasswordRateLimiter, async (req, res) => {
         }
 
         return res.status(200).json({ message: "If that email exists, a code was sent." });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Something went wrong" });
+    }
+})
+
+
+router.post("/reset-password", [ResetPasswordIpLimiter, ResetPasswordEmailRateLimiter], async (req: Request, res: Response) => {
+    const userEmail = req.body.email;
+    const submittedCode = req.body.code;
+    const newPassword = req.body.new_password;
+
+    try {
+        const findUserByEmail = await pool.query("SELECT * FROM users WHERE email = $1", [userEmail]) 
+
+        if (findUserByEmail.rows.length === 0) {
+            return res.status(200).json({ message: "Invalid or expired code" });
+        }
+
+        const userId = findUserByEmail.rows[0].id;
+
+        const result = await pool.query("SELECT * FROM password_reset_tokens WHERE user_id = $1", [userId])
+
+        if (result.rows.length === 0) {
+            return res.status(200).json({ message: "Invalid or expired code" });
+        }
+
+        const tokenRow = result.rows[0];
+
+        if (new Date() > tokenRow.expires_at) {
+            return res.status(200).json({ message: "Invalid or expired code" });
+        }
+
+        const isMatch = await bcrypt.compare(submittedCode, result.rows[0].token_hash)
+
+        if (!isMatch) {
+            return res.status(200).json({ message: "Invalid or expired code" });
+        }
+
+         else {
+
+            const hash = await bcrypt.hash(newPassword, salt_rounds);
+            
+            await pool.query("UPDATE users SET password_hash = $1 WHERE id = $2", [hash, userId]);
+
+            await pool.query("DELETE FROM password_reset_tokens WHERE user_id = $1", [userId])
+
+            return res.status(200).json({success: true, message: "Password reset is successful"})
+        }
+
 
     } catch (err) {
         console.error(err);
