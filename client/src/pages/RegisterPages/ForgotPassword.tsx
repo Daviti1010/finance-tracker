@@ -19,6 +19,7 @@ export function ForgotPassword() {
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
     const [submitButtonText, setSubmitButtonText] = useState("Submit New Password")
+    const [isSendingCode, setIsSendingCode] = useState(false);
 
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
@@ -55,16 +56,26 @@ export function ForgotPassword() {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    function handleSendCode() {
+    async function handleSendCode() {
         if (!isValidEmailFormat(email)) {
             setEmailError("Please enter a valid email address");
             return;
         }
 
         setEmailError("");
-        sendCode();
-        setShowCodeInput(true);
-        setShowButton(false);
+        setIsSendingCode(true);
+
+        const success = await sendCode()
+
+        setIsSendingCode(false);
+
+        if (success) {
+            setShowCodeInput(true);
+            setShowButton(false);
+        } else {
+            setEmailError("Something went wrong. Please try again.");
+        }
+
     }
 
     async function sendCode() {    
@@ -77,6 +88,8 @@ export function ForgotPassword() {
 
             const data = await response.json();
             console.log(data);
+
+            return response.ok;
 
         } catch (err) {
             console.error(err)
@@ -177,7 +190,10 @@ export function ForgotPassword() {
                 </div>
 
                 {showButton && (
-                    <button className="send-code-btn" type="button" onClick={handleSendCode}>Send Code</button>
+                    <button className="send-code-btn" type="button" 
+                    onClick={handleSendCode}
+                    disabled={isSendingCode}
+                    >{isSendingCode ? "Sending Code..." : "Send Recovery Code To Email"}</button>
                 )}
 
 
