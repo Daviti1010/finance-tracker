@@ -143,7 +143,7 @@ router.post("/login", async (req, res) => {
         const user = result.rows[0];        
         const passwordSavedInDB = user.password_hash;
 
-        const userInfo = { id: user.id, name: user.name }
+        const userInfo = { id: user.id, name: user.name, tokenVersion: user.token_version }
 
         const isMatch = await bcrypt.compare(passwordEnteredByUser, passwordSavedInDB)
 
@@ -336,7 +336,7 @@ router.post("/reset-password", [ResetPasswordIpLimiter, ResetPasswordEmailRateLi
             
             const hash = await bcrypt.hash(newPassword, salt_rounds);
             
-            await pool.query("UPDATE users SET password_hash = $1 WHERE id = $2", [hash, userId]);
+            await pool.query("UPDATE users SET password_hash = $1, token_version = token_version + 1 WHERE id = $2", [hash, userId]);
 
             await pool.query("DELETE FROM password_reset_tokens WHERE user_id = $1", [userId])
 
