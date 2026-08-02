@@ -12,6 +12,8 @@ export function ForgotPassword() {
     const [showButton, setShowButton] = useState(true);
     const [showPasswordInputs, setShowPasswordInputs] = useState(false)
 
+    const [emailError, setEmailError] = useState("");
+
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
     }
@@ -24,7 +26,23 @@ export function ForgotPassword() {
         setPassword(e.target.value);
     }
 
-    async function sendCode() {
+    function isValidEmailFormat(email: string): boolean {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function handleSendCode() {
+        if (!isValidEmailFormat(email)) {
+            setEmailError("Please enter a valid email address");
+            return;
+        }
+
+        setEmailError("");
+        sendCode();
+        setShowCodeInput(true);
+        setShowButton(false);
+    }
+
+    async function sendCode() {    
         try {
             const response = await fetch("/auth/forgot-password", {
                 method: "POST",
@@ -104,14 +122,11 @@ export function ForgotPassword() {
                     <label htmlFor="email">Email</label>
                     <input value={email} onChange={enteringEmail}
                         type="email" id="email" name="email" placeholder="your.email@example.com"/>
+                    {emailError && <p className="email-error">{emailError}</p>}
                 </div>
 
                 {showButton && (
-                        <button className="send-code-btn" type="button" onClick={() => {
-                        sendCode()
-                        setShowCodeInput(true)
-                        setShowButton(false)
-                    }}>Send Code</button>
+                    <button className="send-code-btn" type="button" onClick={handleSendCode}>Send Code</button>
                 )}
 
 
