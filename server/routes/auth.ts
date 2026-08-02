@@ -261,6 +261,45 @@ router.post("/forgot-password", [ForgotPasswordIpLimiter, ForgotPasswordEmailRat
     }
 })
 
+router.post("/check-code", [ResetPasswordIpLimiter, ResetPasswordEmailRateLimiter], async (req: Request, res: Response) => {
+    const submittedCode = req.body.code;
+    const userEmail = req.body.email;
+
+    try {
+        const findUserByEmail = await pool.query("SELECT * FROM users WHERE email = $1", [userEmail]) 
+
+        if (findUserByEmail.rows.length === 0) {
+            return res.status(200).json({ valid: false, message: "Invalid or expired code" });
+        }
+
+        const userId = findUserByEmail.rows[0].id;
+
+        const result = await pool.query("SELECT * FROM password_reset_tokens WHERE user_id = $1", [userId])
+
+        if (result.rows.length === 0) {
+            return res.status(200).json({ valid: false, message: "Invalid or expired code" });
+        }
+
+        const tokenRow = result.rows[0];
+
+        if (new Date() > tokenRow.expires_at) {
+            return res.status(200).json({ valid: false, message: "Invalid or expired code" });
+        }
+
+        const isMatch = await bcrypt.compare(submittedCode, tokenRow.token_hash)
+
+        if (!isMatch) {
+            return res.status(200).json({ valid: false, message: "Invalid or expired code" });
+        }
+
+        return res.status(200).json({ valid: true });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Something went wrong" });
+    }
+})
+
 
 router.post("/reset-password", [ResetPasswordIpLimiter, ResetPasswordEmailRateLimiter], async (req: Request, res: Response) => {
     const userEmail = req.body.email;
@@ -292,10 +331,9 @@ router.post("/reset-password", [ResetPasswordIpLimiter, ResetPasswordEmailRateLi
 
         if (!isMatch) {
             return res.status(200).json({ message: "Invalid or expired code" });
-        }
 
-         else {
-
+        } else {
+            
             const hash = await bcrypt.hash(newPassword, salt_rounds);
             
             await pool.query("UPDATE users SET password_hash = $1 WHERE id = $2", [hash, userId]);
