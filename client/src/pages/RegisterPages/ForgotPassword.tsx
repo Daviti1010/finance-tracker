@@ -13,13 +13,15 @@ export function ForgotPassword() {
     const [showPasswordInputs, setShowPasswordInputs] = useState(false)
 
     const [emailError, setEmailError] = useState("");
+    const [codeError, setCodeError] = useState("");
 
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
     }
 
     function enteringCode(e: React.ChangeEvent<HTMLInputElement>) {
-        setCode(e.target.value);
+        const digitsOnly = e.target.value.replace(/\D/g, "");
+        setCode(digitsOnly);
     }
 
     function enteringPassword(e: React.ChangeEvent<HTMLInputElement>) {
@@ -58,6 +60,16 @@ export function ForgotPassword() {
         }
     }
 
+    function handleCheckCode() {
+        if (code.length !== 6) {
+            setCodeError("Code needs to be 6 digit")
+            return;
+        }
+
+        setCodeError("");
+        checkCode()
+    }
+
     async function checkCode() {
         try {
             const response = await fetch("/auth/check-code", {
@@ -72,6 +84,8 @@ export function ForgotPassword() {
             if (data.valid === true) {
                 setShowCodeInput(false)
                 setShowPasswordInputs(true)
+            } else {
+                setCodeError("Code is incorrect")
             }
 
         } catch (err) {
@@ -135,10 +149,11 @@ export function ForgotPassword() {
                         <div className="field">
                             <label htmlFor="code">Code</label>
                             <input value={code} onChange={enteringCode}
-                                type="number" inputMode="numeric" id="code" name="code" placeholder="123456"/>
+                                type="text" inputMode="numeric" id="code" name="code" placeholder="123456" maxLength={6}/>
+                            {codeError && <p className="code-error">{codeError}</p>}
                         </div>
 
-                        <button className="confirm-code-btn" type="button" onClick={checkCode}>Confirm Code</button>
+                        <button className="confirm-code-btn" type="button" onClick={handleCheckCode}>Confirm Code</button>
                     </>
                 )}
 
