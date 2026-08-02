@@ -18,6 +18,8 @@ export function ForgotPassword() {
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+    const [submitButtonText, setSubmitButtonText] = useState("Submit New Password")
+
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
     }
@@ -146,6 +148,7 @@ export function ForgotPassword() {
             if (data.success === true) {
                 // console.log(data.message);
                 
+                setSubmitButtonText("Changing password...")
                 setTimeout(() => {
                     navigate("/login")
                 }, 1500);
@@ -208,7 +211,7 @@ export function ForgotPassword() {
                             {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
 
-                        <button type="submit" className="submit-btn">Submit New Password</button>
+                        <button type="submit" className="submit-btn">{submitButtonText}</button>
                     </>
                 )}
 
