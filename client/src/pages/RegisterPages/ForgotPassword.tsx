@@ -8,12 +8,15 @@ export function ForgotPassword() {
     const [email, setEmail] = useState("");
     const [code, setCode] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [showCodeInput, setShowCodeInput] = useState(false);
     const [showButton, setShowButton] = useState(true);
     const [showPasswordInputs, setShowPasswordInputs] = useState(false)
 
     const [emailError, setEmailError] = useState("");
     const [codeError, setCodeError] = useState("");
+    const [passwordError, setPasswordError] = useState("");
+    const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
@@ -25,7 +28,25 @@ export function ForgotPassword() {
     }
 
     function enteringPassword(e: React.ChangeEvent<HTMLInputElement>) {
-        setPassword(e.target.value);
+        const value = e.target.value;
+        setPassword(value);
+
+        if (value.length >= 8) {
+            setPasswordError("");
+        }
+
+        if (confirmPassword && value === confirmPassword) {
+            setConfirmPasswordError("");
+        }
+    }
+
+    function enteringConfirmPassword(e: React.ChangeEvent<HTMLInputElement>) {
+        const value = e.target.value;
+        setConfirmPassword(value);
+
+        if (value === password) {
+            setConfirmPasswordError("");
+        }
     }
 
     function isValidEmailFormat(email: string): boolean {
@@ -93,6 +114,24 @@ export function ForgotPassword() {
         }
     }
 
+    function handleResetPassword(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+
+        if (password.length < 8) {
+            setPasswordError("Password must be at least 8 characters")
+            return
+        }
+
+        if (password !== confirmPassword) {
+            setConfirmPasswordError("Passwords must be the same");
+            return;
+        }
+
+        setPasswordError("")
+        setConfirmPasswordError("")
+        resetPassword()
+    }
+
     async function resetPassword() {
         try {
             const response = await fetch("/auth/reset-password", {
@@ -120,15 +159,10 @@ export function ForgotPassword() {
         }
     }
 
-    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-        e.preventDefault();
-        await resetPassword();
-    }
-
     
     return (
          <div className="page">
-            <form className="container" onSubmit={handleSubmit}>
+            <form className="container" onSubmit={handleResetPassword}>
                 <p className="brand">Finance Tracker</p>
                 <h1>Update your password</h1>
 
@@ -164,20 +198,19 @@ export function ForgotPassword() {
                             <label htmlFor="password">New Password</label>
                             <input value={password} onChange={enteringPassword}
                                 type="password" id="password" name="new_password" placeholder="New Password" />
+                            {passwordError && <p className="password-error">{passwordError}</p>}
                         </div>
 
                         <div className="field">
                             <label htmlFor="password">Confirm Password</label>
-                            <input
-                                type="password" id="password" name="new_password_" placeholder="New Password" />
+                            <input value={confirmPassword} onChange={enteringConfirmPassword}
+                                type="password" id="password" name="confirm_new_password" placeholder="New Password" />
+                            {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
 
-
-                        <button type="submit" className="submit-btn" onClick={resetPassword}>Submit New Password</button>
+                        <button type="submit" className="submit-btn">Submit New Password</button>
                     </>
                 )}
-
-
 
             </form>
         </div>
