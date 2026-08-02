@@ -125,3 +125,29 @@
     color: #c8bfb5;
     text-decoration: none;
 }
+
+
+.send-code-btn,
+.confirm-code-btn {
+    margin-top: 8px;
+    padding: 11px;
+    background: #f0ebe5;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1b1b;
+    cursor: pointer;
+
+}
+
+.send-code-btn:hover,
+.confirm-code-btn:hover {
+    background: #ddd5cc;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
