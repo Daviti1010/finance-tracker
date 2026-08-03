@@ -24,14 +24,33 @@ export async function sendPasswordResetEmail(toUserEmail: string, code: string) 
         const { data, error } = await resend.emails.send({
             from: `Finance Tracker <onboarding@resend.dev>`,
             to: [toUserEmail],
-            subject: "Your Reset Code:",
-            html: `<strong>${code}</strong>`,
+            subject: "Your Password Reset Code",
+            html: buildResetEmailHtml(code),
         });
 
-        return {data, error}
+        return { data, error };
 
     } catch (err) {
         console.error(err);
         return { data: null, error: err };
     }
+}
+
+function buildResetEmailHtml(code: string): string {
+    return `
+    <div style="font-family: Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 32px 24px; background-color: #f7f7f7;">
+        <div style="background-color: #ffffff; border-radius: 8px; padding: 32px; text-align: center;">
+            <h1 style="font-size: 20px; color: #1a1a1a; margin-bottom: 8px;">Finance Tracker</h1>
+            <p style="font-size: 15px; color: #555555; margin-bottom: 24px;">
+                Use the code below to reset your password. This code expires in 15 minutes.
+            </p>
+            <div style="font-size: 32px; font-weight: bold; letter-spacing: 6px; color: #1a1a1a; background-color: #f0f0f0; padding: 16px; border-radius: 6px; margin-bottom: 24px;">
+                ${code}
+            </div>
+            <p style="font-size: 13px; color: #999999;">
+                If you didn't request this, you can safely ignore this email.
+            </p>
+        </div>
+    </div>
+    `;
 }
