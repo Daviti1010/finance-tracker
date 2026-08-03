@@ -118,8 +118,17 @@ export function ForgotPassword() {
                 body: JSON.stringify({ email, code })
             })
 
+            if (!response.ok) {
+                if (response.status === 429) {
+                    setCodeError("Too many attempts. Please try again later.");
+                } else {
+                    setCodeError("Something went wrong. Please try again.");
+                }
+                return;
+            }
+
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
 
             if (data.valid === true) {
                 setShowCodeInput(false)
@@ -130,6 +139,7 @@ export function ForgotPassword() {
 
         } catch (err) {
             console.error(err)
+            setCodeError("Network error. Please check your connection and try again.");
         }
     }
 
@@ -161,8 +171,17 @@ export function ForgotPassword() {
                 body: JSON.stringify({ email, code, new_password: password })
             })
 
+            if (!response.ok) {
+                if (response.status === 429) {
+                    setPasswordError("Too many attempts. Please try again later.");
+                } else {
+                    setPasswordError("Something went wrong. Please try again.");
+                }
+                return;
+            }
+
             const data = await response.json();
-            console.log(data)
+            // console.log(data)
 
             if (data.success === true) {
                 // console.log(data.message);
@@ -173,11 +192,12 @@ export function ForgotPassword() {
                 }, 1500);
 
             } else {
-                console.log("Password reset is not successful")
+                setPasswordError(data.message ?? "Password reset failed");
             }
 
         } catch (err) {
             console.error(err)
+            setPasswordError("Network error. Please check your connection and try again.");
         }
     }
 
