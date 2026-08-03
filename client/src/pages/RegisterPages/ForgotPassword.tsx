@@ -246,14 +246,14 @@ export function ForgotPassword() {
                         <div className="field">
                             <label htmlFor="password">New Password</label>
                             <input value={password} onChange={enteringPassword}
-                                type="password" id="password" name="new_password" placeholder="New Password" />
+                                type="password" id="new-password" name="new_password" placeholder="New Password" />
                             {passwordError && <p className="password-error">{passwordError}</p>}
                         </div>
 
                         <div className="field">
                             <label htmlFor="password">Confirm Password</label>
                             <input value={confirmPassword} onChange={enteringConfirmPassword}
-                                type="password" id="password" name="confirm_new_password" placeholder="New Password" />
+                                type="password" id="confirm-password" name="confirm_new_password" placeholder="New Password" />
                             {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
 

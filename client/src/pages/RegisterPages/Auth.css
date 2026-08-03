@@ -168,3 +168,10 @@ input[type="number"]::-webkit-inner-spin-button {
 .confirm-password-error {
     color: #e05c5c;
 }
+
+.confirm-code-btn:disabled,
+.send-code-btn:disabled,
+.submit-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
