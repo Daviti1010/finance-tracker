@@ -18,8 +18,10 @@ export function ForgotPassword() {
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
-    const [submitButtonText, setSubmitButtonText] = useState("Submit New Password")
+    // const [submitButtonText, setSubmitButtonText] = useState("Submit New Password")
     const [isSendingCode, setIsSendingCode] = useState(false);
+    const [isCheckingCode, setIsCheckingCode] = useState(false);
+    const [isResettingPassword, setIsResettingPassword] = useState(false);
 
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
@@ -96,14 +98,16 @@ export function ForgotPassword() {
         }
     }
 
-    function handleCheckCode() {
+    async function handleCheckCode() {
         if (code.length !== 6) {
             setCodeError("Code needs to be 6 digit")
             return;
         }
 
         setCodeError("");
-        checkCode()
+        setIsCheckingCode(true);
+        await checkCode()
+        setIsCheckingCode(false);
     }
 
     async function checkCode() {
@@ -121,7 +125,7 @@ export function ForgotPassword() {
                 setShowCodeInput(false)
                 setShowPasswordInputs(true)
             } else {
-                setCodeError("Code is incorrect")
+                setCodeError(data.message ?? "Code is incorrect");
             }
 
         } catch (err) {
@@ -129,7 +133,7 @@ export function ForgotPassword() {
         }
     }
 
-    function handleResetPassword(e: React.FormEvent<HTMLFormElement>) {
+    async function handleResetPassword(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
         if (password.length < 8) {
@@ -144,7 +148,9 @@ export function ForgotPassword() {
 
         setPasswordError("")
         setConfirmPasswordError("")
-        resetPassword()
+        setIsResettingPassword(true)
+        await resetPassword()
+        // setIsResettingPassword(false);
     }
 
     async function resetPassword() {
@@ -161,7 +167,7 @@ export function ForgotPassword() {
             if (data.success === true) {
                 // console.log(data.message);
                 
-                setSubmitButtonText("Changing password...")
+                // setSubmitButtonText("Changing password...")
                 setTimeout(() => {
                     navigate("/login")
                 }, 1500);
@@ -206,7 +212,11 @@ export function ForgotPassword() {
                             {codeError && <p className="code-error">{codeError}</p>}
                         </div>
 
-                        <button className="confirm-code-btn" type="button" onClick={handleCheckCode}>Confirm Code</button>
+                        <button className="confirm-code-btn" type="button" 
+                        onClick={handleCheckCode}
+                        disabled={isCheckingCode}
+                        >
+                        {isCheckingCode ? "Checking..." : "Confirm Code"}</button>
                     </>
                 )}
 
@@ -227,7 +237,8 @@ export function ForgotPassword() {
                             {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
 
-                        <button type="submit" className="submit-btn">{submitButtonText}</button>
+                        <button type="submit" className="submit-btn" disabled={isResettingPassword}>
+                            {isResettingPassword ? "Resetting..." : "Submit New Password"}</button>
                     </>
                 )}
 
