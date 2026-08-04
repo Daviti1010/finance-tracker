@@ -1,11 +1,15 @@
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { checkUsername, register } from '../../api'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './Auth.css'
-// import { faL } from '@fortawesome/free-solid-svg-icons';
+
 
 export function Register() {
+    const navigate = useNavigate();
+
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -23,7 +27,30 @@ export function Register() {
 
     const [touchedPassword, setTouchedPassword] = useState(false)
 
-    const navigate = useNavigate();
+
+    const [showPassword, setShowPassword] = useState(false);
+    
+    const passwordInputRef = useRef<HTMLInputElement>(null);
+
+    function toggleShowPassword() {
+        console.log("toggle called, current showPassword:", showPassword);
+        const input = passwordInputRef.current;
+        const cursorPosition = input?.selectionStart ?? 0;
+
+        setShowPassword(!showPassword);
+        setTouchedPassword(true);
+        validatePassword(password);
+
+        requestAnimationFrame(() => {
+            input?.setSelectionRange(cursorPosition, cursorPosition);
+            input?.focus();
+        });
+    }
+
+
+    // function toggleShowPassword() {
+    //     setShowPassword(!showPassword);
+    // }
 
     function handleUsernameChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
@@ -181,8 +208,17 @@ export function Register() {
 
                 <div className="field">
                     <label htmlFor="password">Password</label>
-                    <input value={password} onChange={handlePasswordChange} onBlur={handlePasswordBlur} type="password" 
-                        id="password" name="password" placeholder="At least 8 characters" />
+                    <div className='password-wrapper'>
+                        <input value={password} onChange={handlePasswordChange} onBlur={handlePasswordBlur}
+                            type={showPassword ? "text" : "password"}
+                            id="password" name="password" placeholder="Your Password"
+                            ref={passwordInputRef}
+                        />
+                        <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} 
+                            onClick={toggleShowPassword} 
+                            onMouseDown={(e) => e.preventDefault()} 
+                            className='toggle-password'/>
+                    </div>
                 </div>
 
                 {passwordError && <p className="password-error-text">{passwordError}</p>}
