@@ -98,6 +98,19 @@ export function ForgotPassword() {
         }
     }
 
+    async function handleResendCode() {
+        setCodeError("");
+        setIsSendingCode(true);
+
+        const success = await sendCode();
+
+        setIsSendingCode(false);
+
+        if (!success) {
+            setCodeError("Failed to resend code. Please try again.");
+        }
+    }
+
     async function handleCheckCode() {
         if (code.length !== 6) {
             setCodeError("Code needs to be 6 digit")
@@ -237,6 +250,10 @@ export function ForgotPassword() {
                         disabled={isCheckingCode}
                         >
                         {isCheckingCode ? "Checking..." : "Confirm Code"}</button>
+
+                        <button className="resend-code-btn" type="button" onClick={handleResendCode} disabled={isSendingCode}>
+                            {isSendingCode ? "Resending..." : "Didn't get a code? Resend"}
+                        </button>
                     </>
                 )}
 
