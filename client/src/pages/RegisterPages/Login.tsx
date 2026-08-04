@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
 import React, { useState } from 'react';
 import { login } from '../../api'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './Auth.css'
 // import { faL } from '@fortawesome/free-solid-svg-icons';
 
@@ -14,6 +16,8 @@ export function Login() {
     const [loading, setLoading] = useState(false);
     const [buttonText, setButtonText] = useState("Log In")
 
+    const [showPassword, setShowPassword] = useState(false);
+
     async function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
         setEmail(e.target.value);
@@ -22,6 +26,10 @@ export function Login() {
     async function enteringPassword(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault();
         setPassword(e.target.value);
+    }
+
+    function toggleShowPassword() {
+        setShowPassword(!showPassword);
     }
 
     const navigate = useNavigate();
@@ -79,8 +87,12 @@ export function Login() {
 
                 <div className="field">
                     <label htmlFor="password">Password</label>
+                    <div className='password-wrapper'>
                     <input value={password} onChange={enteringPassword}
-                        type="password" id="password" name="password" placeholder="Your Password" />
+                        type={showPassword ? "text" : "password"}
+                        id="password" name="password" placeholder="Your Password" />
+                    <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={toggleShowPassword} className='toggle-password'/>
+                    </div>
                 </div>
 
                 {error && <p className="error-text">{error}</p>}
