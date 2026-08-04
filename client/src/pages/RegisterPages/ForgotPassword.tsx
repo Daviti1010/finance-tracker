@@ -67,13 +67,15 @@ export function ForgotPassword() {
         setEmailError("");
         setIsSendingCode(true);
 
-        const success = await sendCode()
+        const result = await sendCode()
 
         setIsSendingCode(false);
 
-        if (success) {
+        if (result.success) {
             setShowCodeInput(true);
             setShowButton(false);
+        } else if (result.rateLimited) {
+            setEmailError("Too many attempts. Please try again later.");
         } else {
             setEmailError("Something went wrong. Please try again.");
         }
@@ -88,13 +90,21 @@ export function ForgotPassword() {
                 body: JSON.stringify({ email })
             })
 
-            const data = await response.json();
-            console.log(data);
+            if (!response.ok) {
+                return { success: false, rateLimited: response.status === 429 };
+            }
 
-            return response.ok;
+            await response.json();
+            // const data = await response.json();
+            // console.log(data);
+
+            return { success: true, rateLimited: false };
+
+            // return response.ok;
 
         } catch (err) {
-            console.error(err)
+            console.error(err);
+            return { success: false, rateLimited: false };
         }
     }
 
@@ -102,12 +112,16 @@ export function ForgotPassword() {
         setCodeError("");
         setIsSendingCode(true);
 
-        const success = await sendCode();
+        const result = await sendCode();
 
         setIsSendingCode(false);
 
-        if (!success) {
-            setCodeError("Failed to resend code. Please try again.");
+        if (!result.success) {
+            setCodeError(
+                result.rateLimited
+                    ? "Too many attempts. Please try again later."
+                    : "Failed to resend code. Please try again."
+            );
         }
     }
 
