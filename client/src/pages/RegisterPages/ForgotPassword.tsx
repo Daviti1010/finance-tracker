@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
 export function ForgotPassword() {
@@ -22,6 +24,9 @@ export function ForgotPassword() {
     const [isSendingCode, setIsSendingCode] = useState(false);
     const [isCheckingCode, setIsCheckingCode] = useState(false);
     const [isResettingPassword, setIsResettingPassword] = useState(false);
+
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     function enteringEmail(e: React.ChangeEvent<HTMLInputElement>) {
         setEmail(e.target.value);
@@ -56,6 +61,14 @@ export function ForgotPassword() {
 
     function isValidEmailFormat(email: string): boolean {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function toggleShowNewPassword() {
+        setShowNewPassword(!showNewPassword);
+    }
+
+    function toggleShowConfirmPassword() {
+        setShowConfirmPassword(!showConfirmPassword);
     }
 
     async function handleSendCode() {
@@ -276,15 +289,21 @@ export function ForgotPassword() {
                     <>
                         <div className="field">
                             <label htmlFor="password">New Password</label>
-                            <input value={password} onChange={enteringPassword}
-                                type="password" id="new-password" name="new_password" placeholder="New Password" />
+                            <div className="password-wrapper">
+                                <input value={password} onChange={enteringPassword}
+                                    type={showNewPassword ? "text" : "password"} id="new-password" name="new_password" placeholder="New Password" />
+                                <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} onClick={toggleShowNewPassword} className='toggle-password'/>
+                            </div>
                             {passwordError && <p className="password-error">{passwordError}</p>}
                         </div>
 
                         <div className="field">
                             <label htmlFor="password">Confirm Password</label>
-                            <input value={confirmPassword} onChange={enteringConfirmPassword}
-                                type="password" id="confirm-password" name="confirm_new_password" placeholder="New Password" />
+                            <div className="password-wrapper">
+                                <input value={confirmPassword} onChange={enteringConfirmPassword}
+                                    type={showConfirmPassword ? "text" : "password"} id="confirm-password" name="confirm_new_password" placeholder="New Password" />
+                                <FontAwesomeIcon icon={showConfirmPassword ? faEyeSlash : faEye} onClick={toggleShowConfirmPassword} className='toggle-password'/>
+                            </div>
                             {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
 
