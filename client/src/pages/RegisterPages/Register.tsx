@@ -6,6 +6,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './Auth.css'
 
+interface PasswordCheck {
+    label: string;
+    passed: boolean;
+}
 
 export function Register() {
     const navigate = useNavigate();
@@ -33,7 +37,7 @@ export function Register() {
     const passwordInputRef = useRef<HTMLInputElement>(null);
 
     function toggleShowPassword() {
-        console.log("toggle called, current showPassword:", showPassword);
+        // console.log("toggle called, current showPassword:", showPassword);
         const input = passwordInputRef.current;
         const cursorPosition = input?.selectionStart ?? 0;
 
@@ -121,7 +125,8 @@ export function Register() {
         if (value.length === 0) {
             setPasswordError("");
         } else if (value.length < 8) {
-            setPasswordError("Password must be at least 8 characters")
+            // setPasswordError("Password must be at least 8 characters")
+            setPasswordError("")
         } else {
             setPasswordError("")
         }
@@ -131,6 +136,19 @@ export function Register() {
         setTouchedPassword(true);
         validatePassword(password)
     } 
+
+    function getPasswordChecks(password: string): PasswordCheck[] {
+        return [
+            { label: "At least 8 characters", passed: password.length >= 8 },
+            { label: "One letter", passed: /[A-Za-z]/.test(password) },
+            { label: "One number", passed: /[0-9]/.test(password) },
+            { label: "One special character (e.g., !@#)", passed: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+        ];
+    }
+
+    function isPasswordValid(password: string): boolean {
+        return getPasswordChecks(password).every(check => check.passed);
+    }
 
     ////////////////////
 
@@ -143,13 +161,13 @@ export function Register() {
             return
         } else if (usernameError) {
             return
+        } else if (!isPasswordValid(password)) {
+            setError("Please meet all password requirements")
+            return
         } else {
             setLoading(true);
         }
 
-        // if (usernameError) {
-        //     return;
-        // }
 
         try {
             const response = await register(username, email, password)
@@ -219,12 +237,21 @@ export function Register() {
                             onMouseDown={(e) => e.preventDefault()} 
                             className='toggle-password'/>
                     </div>
+                    {password.length > 0 && (
+                        <ul className="password-requirements">
+                            {getPasswordChecks(password).map((check) => (
+                                <li key={check.label} className={check.passed ? "met" : "unmet"}>
+                                    {check.passed ? "✓" : "○"} {check.label}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
 
                 {passwordError && <p className="password-error-text">{passwordError}</p>}
                 {error && <p className="error-text">{error}</p>}
 
-                <button type="submit" className="submit-btn" disabled={loading}>{buttonText}</button>
+                <button type="submit" className="submit-btn" disabled={!getPasswordChecks(password).every((check) => check.passed) || loading}>{buttonText}</button>
 
                 <p className="footer-text">Already have an account? <Link to="/login">Sign in</Link></p>
             </form>

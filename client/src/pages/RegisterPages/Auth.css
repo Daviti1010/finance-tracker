@@ -213,3 +213,18 @@ input[type="number"]::-webkit-inner-spin-button {
     font-size: 15px;
     transition: color 0.2s;
 }
+
+.password-requirements {
+    list-style: none;
+    padding: 0;
+    margin: 4px 0 0 0;
+    font-size: 12px;
+}
+
+.password-requirements li.met {
+    color: #4caf50;
+}
+
+.password-requirements li.unmet {
+    color: #888;
+}
