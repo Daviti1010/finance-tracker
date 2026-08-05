@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router";
 import React, { useState, useRef } from 'react';
-import { checkUsername, register } from '../../api'
+import { checkUsername, register, login } from '../../api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import './Auth.css'
@@ -170,13 +170,21 @@ export function Register() {
 
 
         try {
+            setButtonText("Creating account...")
             const response = await register(username, email, password)
             const data = await response.json()
 
             if (data.success === true) {
-                setButtonText("Creating account...")
+                const loginResponse = await login(email, password);
+                const loginData = await loginResponse.json();
 
-                localStorage.setItem("accessToken", data.accessToken)
+                if (loginData.success === true) {
+                    localStorage.setItem("accessToken", loginData.accessToken);
+                } else {
+                    localStorage.setItem("accessToken", data.accessToken);
+                }
+
+                // localStorage.setItem("accessToken", data.accessToken)
                 setTimeout(() => {
                     navigate("/dashboard")
                 }, 1500);
