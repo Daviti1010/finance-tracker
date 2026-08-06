@@ -4,6 +4,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 
+interface PasswordCheck {
+    label: string;
+    passed: boolean;
+}
+
+
 export function ForgotPassword() {
     const navigate = useNavigate();
 
@@ -19,6 +25,7 @@ export function ForgotPassword() {
     const [codeError, setCodeError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [confirmPasswordError, setConfirmPasswordError] = useState("");
+    const [error, setError] = useState("");
 
     // const [submitButtonText, setSubmitButtonText] = useState("Submit New Password")
     const [isSendingCode, setIsSendingCode] = useState(false);
@@ -48,6 +55,10 @@ export function ForgotPassword() {
         if (confirmPassword && value === confirmPassword) {
             setConfirmPasswordError("");
         }
+
+        if (isPasswordValid(value)) {
+            setError("");
+        }
     }
 
     function enteringConfirmPassword(e: React.ChangeEvent<HTMLInputElement>) {
@@ -69,6 +80,19 @@ export function ForgotPassword() {
 
     function toggleShowConfirmPassword() {
         setShowConfirmPassword(!showConfirmPassword);
+    }
+
+    function getPasswordChecks(password: string): PasswordCheck[] {
+        return [
+            { label: "At least 8 characters", passed: password.length >= 8 },
+            { label: "One letter", passed: /[A-Za-z]/.test(password) },
+            { label: "One number", passed: /[0-9]/.test(password) },
+            { label: "One special character (e.g., !@#)", passed: /[!@#$%^&*(),.?":{}|<>]/.test(password) },
+        ];
+    }
+
+    function isPasswordValid(password: string): boolean {
+        return getPasswordChecks(password).every(check => check.passed);
     }
 
     async function handleSendCode() {
@@ -186,8 +210,13 @@ export function ForgotPassword() {
     async function handleResetPassword(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        if (password.length < 8) {
-            setPasswordError("Password must be at least 8 characters")
+        // if (password.length < 8) {
+        //     setPasswordError("Password must be at least 8 characters")
+        //     return
+        // }
+
+        if (!isPasswordValid(password)) {
+            setError("Please meet all password requirements")
             return
         }
 
@@ -196,6 +225,7 @@ export function ForgotPassword() {
             return;
         }
 
+        setError("")
         setPasswordError("")
         setConfirmPasswordError("")
         setIsResettingPassword(true)
@@ -295,6 +325,16 @@ export function ForgotPassword() {
                                 <FontAwesomeIcon icon={showNewPassword ? faEyeSlash : faEye} onClick={toggleShowNewPassword} className='toggle-password'/>
                             </div>
                             {passwordError && <p className="password-error">{passwordError}</p>}
+
+                            {password.length > 0 && (
+                                <ul className="password-requirements">
+                                    {getPasswordChecks(password).map((check) => (
+                                        <li key={check.label} className={check.passed ? "met" : "unmet"}>
+                                            {check.passed ? "✓" : "○"} {check.label}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
                         </div>
 
                         <div className="field">
@@ -306,6 +346,8 @@ export function ForgotPassword() {
                             </div>
                             {confirmPasswordError && <p className="confirm-password-error">{confirmPasswordError}</p>}
                         </div>
+
+                        {error && <p className="error-text">{error}</p>}
 
                         <button type="submit" className="submit-btn" disabled={isResettingPassword}>
                             {isResettingPassword ? "Resetting..." : "Submit New Password"}</button>
