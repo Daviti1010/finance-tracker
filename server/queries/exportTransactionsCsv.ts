@@ -12,10 +12,15 @@ export async function exportTransactionsCsv(req: any, res: any) {
         
         const rows = transactions;
 
+        function formatLocalDate(date: Date): string {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, "0");
+            const day = String(date.getDate()).padStart(2, "0");
+            return `${year}-${month}-${day}`;
+        }
+
         const mapped = rows.map((row: any) => ({
-            date: row.date instanceof Date
-                ? row.date.toISOString().split("T")[0]
-                : row.date,
+            date: row.date instanceof Date ? formatLocalDate(row.date) : row.date,
             type: row.type,
             category: row.category,
             description: row.description ?? "",

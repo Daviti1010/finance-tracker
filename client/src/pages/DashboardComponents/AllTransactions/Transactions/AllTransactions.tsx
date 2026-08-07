@@ -2,21 +2,26 @@ import { useState } from "react"
 import type { Dispatch, SetStateAction } from "react"
 import { deleteTransaction } from "../../../../api"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTrashCan } from '@fortawesome/free-solid-svg-icons'
+import { faTrashCan, faDownload } from '@fortawesome/free-solid-svg-icons'
 import type { Transaction } from "../../../../types"
 import './AllTransactions.css'
 
 interface AddTransactionProps {
-  setAllTransactions: Dispatch<SetStateAction<Transaction[]>>
-  setDisplayedTransactions: Dispatch<SetStateAction<Transaction[]>>
-  displayedTransactions: Transaction[]
+    setAllTransactions: Dispatch<SetStateAction<Transaction[]>>
+    setDisplayedTransactions: Dispatch<SetStateAction<Transaction[]>>
+    displayedTransactions: Transaction[]
+    filterType: string
+    filterCategory: string
 }
 
 
-export function AllTransactions({setAllTransactions, setDisplayedTransactions, displayedTransactions}: AddTransactionProps) {
+export function AllTransactions({setAllTransactions, setDisplayedTransactions, displayedTransactions, 
+    filterType, filterCategory}: AddTransactionProps) {
 
 
     const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
+    
+    const [exporting, setExporting] = useState(false);
 
     const toggleExpand = (id: number) => {
         setExpandedTransactionId(prev => (prev === id ? null : id));
@@ -49,8 +54,51 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
         }
     }
 
+    async function handleExportCsv() {
+        setExporting(true);
+
+        try {
+            const token = localStorage.getItem("accessToken");
+            const params = new URLSearchParams();
+            if (filterType && filterType !== "all") params.append("type", filterType);
+            if (filterCategory && filterCategory !== "all") params.append("category", filterCategory);
+
+            const res = await fetch(`/transactions/export/csv?${params.toString()}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!res.ok) {
+                if (res.status === 401) {
+                    alert("Session expired. Please log in again.");
+                } else {
+                    alert("Failed to export CSV. Try again.");
+                }
+
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "transactions.csv";
+            a.click();
+            URL.revokeObjectURL(url);
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to export CSV. Try again.")
+        } finally {
+            setExporting(false);
+        }
+    }
+
     return (
         <div className="all-transactions">
+            <button className="csv-button" onClick={handleExportCsv} disabled={exporting}>
+                <FontAwesomeIcon icon={faDownload} />{exporting ? "Exporting..." : "Export CSV"}
+            </button>
+
             <div className="list">
                 {displayedTransactions.map((t) => (
                     <div key={t.id} className="transaction" onClick={() => toggleExpand(t.id)}>

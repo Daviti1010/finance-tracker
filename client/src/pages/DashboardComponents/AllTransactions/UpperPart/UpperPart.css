@@ -38,6 +38,10 @@
     box-shadow: 0 0 0 2px rgba(140, 109, 47, 0.15);
 }
 
+#select-category:disabled {
+  cursor: not-allowed;
+}
+
 #search-btn,
 #reset-transactions-btn {
     background: rgb(73, 73, 73);

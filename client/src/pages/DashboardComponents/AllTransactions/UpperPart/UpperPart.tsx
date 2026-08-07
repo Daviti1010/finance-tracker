@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import type { Dispatch, SetStateAction } from "react"
 import { getTransactions } from '../../../../api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -13,14 +13,16 @@ interface UpperPartProps {
     incomeCategories: { value: string; label: string }[]
     setDisplayedTransactions: Dispatch<SetStateAction<Transaction[]>>
     fetchTransactions: () => Promise<void>
+    filterType: string
+    setFilterType: Dispatch<SetStateAction<string>>
+    filterCategory: string
+    setFilterCategory: Dispatch<SetStateAction<string>>
 }
 
 
 
-export function UpperPart({expenseCategories, incomeCategories, setDisplayedTransactions, fetchTransactions}: UpperPartProps) {
-
-    const [filterType, setFilterType]= useState("expense");
-    const [filterCategory, setFilterCategory] = useState("all")
+export function UpperPart({expenseCategories, incomeCategories, setDisplayedTransactions, fetchTransactions, 
+    filterType, setFilterType, filterCategory, setFilterCategory}: UpperPartProps) {
 
 
     const filterCategoryOptions = [
@@ -50,7 +52,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
 
 
     function handleReset() {
-        setFilterType("expense")
+        setFilterType("all")
         setFilterCategory("all")
         fetchTransactions()
     }
@@ -69,6 +71,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
                     setFilterCategory("all")
                 }}
             >
+                <option value="all">All Types</option>
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
             </select>
@@ -76,6 +79,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
             <select name="select-category"
                 id="select-category"
                 value={filterCategory} 
+                disabled={filterType === "all"}
                 onChange={(e) => setFilterCategory(e.target.value)}>
 
                 {filterCategoryOptions.map((categ) => (

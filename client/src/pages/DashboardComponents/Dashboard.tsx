@@ -14,6 +14,10 @@ export function Dashboard() {
     const [allTransactions, setAllTransactions] = useState<Transaction[]>([]) // +
     const [displayedTransactions, setDisplayedTransactions] = useState<Transaction[]>([]) // +
 
+    // const [filterType, setFilterType]= useState("expense");
+    const [filterType, setFilterType]= useState("all");
+    const [filterCategory, setFilterCategory] = useState("all")
+
     const incomeCategories = [
         { value: "salary", label: "Salary" },
         { value: "freelance", label: "Freelance" },
@@ -71,20 +75,40 @@ export function Dashboard() {
 
                 <div className="transaction-input">
                     
-                    <AddTransaction expenseCategories={expenseCategories} incomeCategories={incomeCategories}
-                    setAllTransactions={setAllTransactions} setDisplayedTransactions={setDisplayedTransactions} />
+                    <AddTransaction 
+                        expenseCategories={expenseCategories} 
+                        incomeCategories={incomeCategories}
+                        setAllTransactions={setAllTransactions} 
+                        setDisplayedTransactions={setDisplayedTransactions} 
+                    />
 
-                    <SpendingByCategory allTransactions={allTransactions} expenseCategories={expenseCategories}/>
+                    <SpendingByCategory 
+                        allTransactions={allTransactions} 
+                        expenseCategories={expenseCategories}
+                    />
 
                 </div>
 
                 <div className="all-transactions-container">
 
-                    <UpperPart expenseCategories={expenseCategories} incomeCategories={incomeCategories}
-                    setDisplayedTransactions={setDisplayedTransactions} fetchTransactions={fetchTransactions}/>
+                    <UpperPart 
+                        expenseCategories={expenseCategories} 
+                        incomeCategories={incomeCategories}
+                        setDisplayedTransactions={setDisplayedTransactions} 
+                        fetchTransactions={fetchTransactions}
+                        filterType={filterType} 
+                        setFilterType={setFilterType} 
+                        filterCategory={filterCategory} 
+                        setFilterCategory={setFilterCategory}
+                    />
 
-                    <AllTransactions setDisplayedTransactions={setDisplayedTransactions} setAllTransactions={setAllTransactions}
-                    displayedTransactions={displayedTransactions}/>
+                    <AllTransactions 
+                        setDisplayedTransactions={setDisplayedTransactions} 
+                        setAllTransactions={setAllTransactions}
+                        displayedTransactions={displayedTransactions}
+                        filterType={filterType} 
+                        filterCategory={filterCategory} 
+                    />
                     
                 </div>
             </div>
