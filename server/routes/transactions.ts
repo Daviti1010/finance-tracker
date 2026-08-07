@@ -2,6 +2,7 @@ import express from "express";
 import authMiddleware from "../middleware/authMiddleware";
 import pool from "../db";
 import { getTransactions } from "../queries/transactions";
+import { exportTransactionsCsv } from "../queries/exportTransactionsCsv";
 
 const router = express.Router();
 
@@ -58,6 +59,7 @@ router.post("/", authMiddleware, async (req: any, res: any) => {
     }
 })
 
+router.get("/export/csv", authMiddleware, exportTransactionsCsv)
 
 
 router.put("/:id", authMiddleware, async (req: any, res: any) => {
