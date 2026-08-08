@@ -10,6 +10,13 @@
     overflow: hidden;
 }
 
+.export-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+}
+
 .csv-button {
     background: rgb(240, 106, 5);
     color: white;
@@ -24,6 +31,22 @@
 
 .csv-button:hover {
     background: rgb(218, 96, 2);
+}
+
+.pdf-button {
+    background: rgb(87, 144, 2);
+    color: white;
+    padding: 8px 16px 8px 12px;
+    flex-shrink: 0;
+    margin: 10px 25px -10px 10px;
+    cursor: pointer;
+    border: 1px solid rgb(87, 144, 2);
+    border-radius: 7px;
+    transition: 0.15s ease;
+}
+
+.pdf-button:hover {
+    background: rgb(44, 141, 2);
 }
 
 
@@ -206,6 +229,12 @@
         margin-left: 15px;
     }
 
+    .pdf-button {
+        font-size: 13px;
+        padding: 8px 14px 8px 10px;
+        margin-left: 15px;
+    }
+
 }
 
 
@@ -251,4 +280,16 @@
         padding: 8px 12px 8px 8px;
     }
 
+    .pdf-button {
+        font-size: 12px;
+        padding: 8px 12px 8px 8px;
+    }
+
+}
+
+
+@media (max-width: 357px) {
+    .pdf-button {
+        margin-top: 15px;
+    }
 }

@@ -21,7 +21,8 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
 
     const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
     
-    const [exporting, setExporting] = useState(false);
+    const [exportingCSV, setExportingCSV] = useState(false);
+    const [exportingPDF, setExportingPDF] = useState(false);
 
     const toggleExpand = (id: number) => {
         setExpandedTransactionId(prev => (prev === id ? null : id));
@@ -55,7 +56,7 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
     }
 
     async function handleExportCsv() {
-        setExporting(true);
+        setExportingCSV(true);
 
         try {
             const token = localStorage.getItem("accessToken");
@@ -89,15 +90,60 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
             console.error(err);
             alert("Failed to export CSV. Try again.")
         } finally {
-            setExporting(false);
+            setExportingCSV(false);
+        }
+    }
+    
+    async function handleExportPdf() {
+        setExportingPDF(true); 
+
+        try {
+            const token = localStorage.getItem("accessToken");
+            const params = new URLSearchParams();
+            if (filterType && filterType !== "all") params.append("type", filterType);
+            if (filterCategory && filterCategory !== "all") params.append("category", filterCategory);
+
+            const res = await fetch(`/transactions/export/pdf?${params.toString()}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            if (!res.ok) {
+                if (res.status === 401) {
+                    alert("Session expired. Please log in again.");
+                } else {
+                    alert("Failed to export PDF. Try again.");
+                }
+                return;
+            }
+
+            const blob = await res.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = "transactions.pdf";
+            a.click();
+            URL.revokeObjectURL(url);
+
+        } catch (err) {
+            console.error(err);
+            alert("Failed to export PDF. Try again.");
+        } finally {
+            setExportingPDF(false);
         }
     }
 
+
     return (
         <div className="all-transactions">
-            <button className="csv-button" onClick={handleExportCsv} disabled={exporting}>
-                <FontAwesomeIcon icon={faDownload} />{exporting ? "Exporting..." : "Export CSV"}
-            </button>
+            <div className="export-buttons">
+                <button className="csv-button" onClick={handleExportCsv} disabled={exportingCSV}>
+                    <FontAwesomeIcon icon={faDownload} />{exportingCSV ? "Exporting..." : "Export CSV"}
+                </button>
+
+                <button className="pdf-button" onClick={handleExportPdf} disabled={exportingPDF}>
+                    <FontAwesomeIcon icon={faDownload} />{exportingPDF ? "Exporting..." : "Export PDF"}
+                </button>
+            </div>
 
             <div className="list">
                 {displayedTransactions.map((t) => (
