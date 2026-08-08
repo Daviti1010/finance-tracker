@@ -1,6 +1,6 @@
 import { getTransactions } from "./transactions";
 import { stringify } from "csv-stringify/sync";
-
+import { formatLocalDate } from "../utils/dateFormat";
 
 export async function exportTransactionsCsv(req: any, res: any) {
     const userId = req.user?.id;
@@ -11,13 +11,6 @@ export async function exportTransactionsCsv(req: any, res: any) {
         const transactions = await getTransactions(userId, type as string, category as string);
         
         const rows = transactions;
-
-        function formatLocalDate(date: Date): string {
-            const year = date.getFullYear();
-            const month = String(date.getMonth() + 1).padStart(2, "0");
-            const day = String(date.getDate()).padStart(2, "0");
-            return `${year}-${month}-${day}`;
-        }
 
         const mapped = rows.map((row: any) => ({
             date: row.date instanceof Date ? formatLocalDate(row.date) : row.date,
