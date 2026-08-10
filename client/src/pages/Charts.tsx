@@ -1,7 +1,10 @@
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import { Link } from "react-router-dom";
 import { useEffect, useState, useMemo } from 'react';
+import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import { getTransactions } from '../api';
 import type { Transaction } from "../types"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faLeftLong } from '@fortawesome/free-solid-svg-icons'
 import './Charts.css'
 
 export function ChartsPage() {
@@ -68,7 +71,12 @@ export function ChartsPage() {
     const hasNextYear = availableYears.includes(selectedYear + 1);
 
     return (
+        <>
         <div className="charts-page">
+            <Link to="/dashboard" className="back-to-dashboard">
+            <FontAwesomeIcon icon={faLeftLong} className="right-arrow-icon"/>
+            {" "} Back to dashboard</Link>
+
             <div className="year-nav">
                 <button
                     className="year-nav-button"
@@ -105,5 +113,6 @@ export function ChartsPage() {
                 </ResponsiveContainer>
             )}
         </div>
+        </>
     );
 }
