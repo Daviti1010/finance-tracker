@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRightLong } from '@fortawesome/free-solid-svg-icons'
 import type { Transaction } from "../../../../types";
 import "./SpendingByCategory.css";
 
@@ -24,6 +27,7 @@ export function SpendingByCategory({allTransactions, expenseCategories}: Spendin
     <div className="spending-by-category">
       <div className="spending-text">
         <p id="spending-text">Spending by category</p>
+        <Link to="/charts" className="view-charts">View Charts <FontAwesomeIcon icon={faRightLong} className="right-arrow-icon"/></Link>
       </div>
       <div className="progress-bar-container">
         {expenseCategories.map((categ) => {

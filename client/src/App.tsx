@@ -6,6 +6,7 @@ import { ForgotPassword } from "./pages/RegisterPages/ForgotPassword";
 import { Dashboard } from "./pages/DashboardComponents/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
 import { LinksPage } from "./pages/LinksPage";
+import { ChartsPage } from "./pages/Charts";
 import { ClientTransactionsPage } from './pages/ClientTransactionsPages/ClientTransactionsPage';
 import { Chatbot } from "./pages/Chatbot";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -46,6 +47,12 @@ function App() {
         <Route path='/links' element={
           <ProtectedRoute>
             <LinksPage />
+          </ProtectedRoute>
+        } />
+
+        <Route path='/charts' element={
+          <ProtectedRoute>
+            <ChartsPage />
           </ProtectedRoute>
         } />
 

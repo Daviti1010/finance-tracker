@@ -13,6 +13,9 @@
 }
 
 .spending-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     position: sticky;
     top: 0;
     background-color: inherit;
@@ -20,7 +23,7 @@
     /* padding: 12px 0; */
     border-bottom: 1px solid #C9CFC0;
     flex-shrink: 0;
-    padding: 20px 22px 0px;
+    padding: 20px 22px 24px;
 }
 
 #spending-text {
@@ -28,7 +31,17 @@
     font-weight: 500;
     font-size: 17px;
     color: antiquewhite;
-    margin: 0 0 30px;
+    /* margin: 0 0 30px; */
+}
+
+.view-charts {
+    color: #fcd7a8;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.right-arrow-icon {
+    height: 0.9em;
 }
 
 .progress-bar-container {
