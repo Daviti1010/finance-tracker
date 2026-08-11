@@ -18,6 +18,9 @@ export function Dashboard() {
     const [filterType, setFilterType]= useState("all");
     const [filterCategory, setFilterCategory] = useState("all")
 
+    // for transactions' pagination
+    const [currentPage, setCurrentPage] = useState(1);
+
     const incomeCategories = [
         { value: "salary", label: "Salary" },
         { value: "freelance", label: "Freelance" },
@@ -100,6 +103,7 @@ export function Dashboard() {
                         setFilterType={setFilterType} 
                         filterCategory={filterCategory} 
                         setFilterCategory={setFilterCategory}
+                        setCurrentPage={setCurrentPage}
                     />
 
                     <AllTransactions 
@@ -108,6 +112,8 @@ export function Dashboard() {
                         displayedTransactions={displayedTransactions}
                         filterType={filterType} 
                         filterCategory={filterCategory} 
+                        currentPage={currentPage}
+                        setCurrentPage={setCurrentPage}
                     />
                     
                 </div>

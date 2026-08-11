@@ -17,12 +17,13 @@ interface UpperPartProps {
     setFilterType: Dispatch<SetStateAction<string>>
     filterCategory: string
     setFilterCategory: Dispatch<SetStateAction<string>>
+    setCurrentPage: Dispatch<SetStateAction<number>>
 }
 
 
 
 export function UpperPart({expenseCategories, incomeCategories, setDisplayedTransactions, fetchTransactions, 
-    filterType, setFilterType, filterCategory, setFilterCategory}: UpperPartProps) {
+    filterType, setFilterType, filterCategory, setFilterCategory, setCurrentPage}: UpperPartProps) {
 
 
     const filterCategoryOptions = [
@@ -44,6 +45,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
 
             // setTransactions(data) // to filter 
             setDisplayedTransactions(data);
+            setCurrentPage(1)
 
         } catch (err) {
             console.log(err)
@@ -55,6 +57,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
         setFilterType("all")
         setFilterCategory("all")
         fetchTransactions()
+        setCurrentPage(1)
     }
 
     return (

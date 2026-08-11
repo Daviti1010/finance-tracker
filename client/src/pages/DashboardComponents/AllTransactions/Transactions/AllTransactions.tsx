@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import type { Dispatch, SetStateAction } from "react"
 import { deleteTransaction } from "../../../../api"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,12 +12,19 @@ interface AddTransactionProps {
     displayedTransactions: Transaction[]
     filterType: string
     filterCategory: string
+    setCurrentPage: Dispatch<SetStateAction<number>>
+    currentPage: number
 }
 
 
 export function AllTransactions({setAllTransactions, setDisplayedTransactions, displayedTransactions, 
-    filterType, filterCategory}: AddTransactionProps) {
+    filterType, filterCategory, setCurrentPage, currentPage}: AddTransactionProps) {
 
+
+    const itemsPerPage = 15;
+    const totalPages = Math.ceil(displayedTransactions.length / itemsPerPage);
+    const safePage = Math.min(currentPage, totalPages || 1);
+    
 
     const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
     
@@ -132,6 +139,19 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
         }
     }
 
+    
+    const paginatedTransactions = displayedTransactions.slice(
+        (safePage - 1) * itemsPerPage,
+        safePage * itemsPerPage
+    )
+
+    const paginationRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        paginationRef.current?.scrollIntoView();
+    }, [safePage]);
+
+
 
     return (
         <div className="all-transactions">
@@ -146,7 +166,7 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
             </div>
 
             <div className="list">
-                {displayedTransactions.map((t) => (
+                {paginatedTransactions.map((t) => (
                     <div key={t.id} className="transaction" onClick={() => toggleExpand(t.id)}>
                         <div className="transaction-left-side">
                             <img 
@@ -180,6 +200,26 @@ export function AllTransactions({setAllTransactions, setDisplayedTransactions, d
                     </div>
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <div className="pagination-div" ref={paginationRef}>
+                    <button className="pagination-button"
+                    onClick={() => {
+                        setCurrentPage(safePage - 1)
+                    }}
+                    disabled={safePage === 1}
+                    >← Prev</button>
+
+                    <p className="pagination-current">{`Page ${safePage} of ${totalPages}`}</p>
+
+                    <button className="pagination-button"
+                    onClick={() => {
+                        setCurrentPage(safePage + 1)
+                    }}
+                    disabled={safePage === totalPages}
+                    >Next →</button>
+                </div>
+            )}
         </div>
     )
 }

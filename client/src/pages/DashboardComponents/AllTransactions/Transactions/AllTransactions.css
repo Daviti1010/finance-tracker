@@ -64,6 +64,7 @@
     flex-direction: column;
     margin-top: 30px;
     gap: 25px;
+    flex: 1;
 }
 
 .transaction {
@@ -141,6 +142,33 @@
     display: none;
 }
 
+.pagination-div {
+    display: flex;
+    justify-content: center;
+    align-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.pagination-button {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 8px;
+    background-color: #f3f4f6;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.15s ease;
+}
+
+.pagination-button:disabled {
+    cursor: not-allowed;
+}
+
+.pagination-current {
+    color: #f3f4f6;
+}
+
 @media (max-width: 1400px) {
     .all-transactions-container {
         width: 85%;
@@ -205,6 +233,15 @@
             color: bisque;
             font-size: 12px;
         }
+    }
+
+    .pagination-button {
+        padding: 0.4rem 0.9rem;
+        font-size: 12px;
+    }
+
+    .pagination-current {
+        font-size: 14px;
     }
 
 }
@@ -283,6 +320,15 @@
     .pdf-button {
         font-size: 12px;
         padding: 8px 12px 8px 8px;
+    }
+
+    .pagination-button {
+        padding: 0.35rem 0.8rem;
+        font-size: 11.5px;
+    }
+
+    .pagination-current {
+        font-size: 13px;
     }
 
 }
