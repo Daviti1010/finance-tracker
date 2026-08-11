@@ -25,7 +25,6 @@ export function Chatbot() {
         if (!inputValue.trim()) return;
 
         if (inputValue.length > 500) {
-            // show some feedback — a temporary error state, or just prevent sending
             return;
         }
 
