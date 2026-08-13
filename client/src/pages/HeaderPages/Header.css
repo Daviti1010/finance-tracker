@@ -6,6 +6,11 @@
     background-color: rgb(51, 51, 51);
 }
 
+.left-part {
+  display: flex;
+  gap: 50px;
+}
+
 .right-part {
     display: flex;
     align-items: center;
@@ -29,6 +34,11 @@
     background-color: rgb(51, 51, 51);
     color: rgb(197, 197, 193);
     cursor: pointer;
+}
+
+.desktop-links a{
+    text-decoration: none;
+    color: #6da7ec;
 }
 
 .links { 
@@ -109,7 +119,7 @@
     display: none;
   }
 
-    .profile {
+  .profile {
     padding-right: 35px;
   }
 
@@ -146,6 +156,15 @@
   .logout-btn {
     background-color: rgb(30, 30, 30);
   }
+
+  .left-part {
+    gap: 25px;
+  }
+
+  .desktop-links {
+    margin-right: 15px;
+  }
+
 }
 
 @media (max-width: 450px) {
@@ -154,4 +173,14 @@
     display: none;
   }
 
+  .desktop-links {
+    margin-left: 20px;
+  }
+
+}
+
+@media (max-width: 420px) {
+  .desktop-links {
+    display: none;
+  }
 }

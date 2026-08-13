@@ -47,15 +47,8 @@ export function Header() {
             <div className='header-container'>
                 <div className='left-part'>
                     <div className='left-part-text'>Finance Tracker</div>
-                </div>
 
-                <div className="desktop-nav">
-                    <div className='right-part'>
-                        <div className='profile'>
-                            <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
-                        </div>
-
-                        <div className='links'>
+                    <div className='desktop-links'>
                         {location.pathname === '/dashboard' ? (
                             <Link to="/links">
                                 <FontAwesomeIcon icon={faLink} className="link-icon" />
@@ -72,6 +65,13 @@ export function Header() {
                                 {" "} Go to Dashboard
                             </Link>
                         )}
+                    </div>
+                </div>
+
+                <div className="desktop-nav">
+                    <div className='right-part'>
+                        <div className='profile'>
+                            <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
                         </div>
 
                         <div className='logout'>
