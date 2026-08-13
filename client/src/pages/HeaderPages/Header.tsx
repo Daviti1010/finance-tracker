@@ -4,12 +4,19 @@ import { faRightFromBracket, faCircleUser, faLink, faHouse, faBars, faXmark } fr
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { getMe } from '../../api';
+import { useTheme } from "../../context/useTheme";
 import './Header.css'
 
 export function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
     const [username, setUsername] = useState("")
+
+    const {theme, setTheme} = useTheme();
+
+    const toggleTheme = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTheme(e.target.checked ? "dark" : "light");
+    };
 
     useEffect(() => {
         async function fetchUsername() {
@@ -70,6 +77,17 @@ export function Header() {
 
                 <div className="desktop-nav">
                     <div className='right-part'>
+                        <div className="switch-mode">
+                            <label className="switch">
+                                <input
+                                    type="checkbox"
+                                    checked={theme === "dark"}
+                                    onChange={toggleTheme}
+                                />
+                                <span className="slider round"></span>
+                            </label>
+                        </div>
+
                         <div className='profile'>
                             <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
                         </div>
