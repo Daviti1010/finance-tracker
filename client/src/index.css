@@ -1,0 +1,24 @@
+:root {
+    --main-bg-color: rgb(255, 255, 255);
+
+    /* header */
+    --header-bg-color: rgb(235, 233, 233);
+    --header-text-color: rgb(31, 41, 55);
+    --header-link-color: #006ff3;
+    --hamburger-color: rgb(31, 41, 55);
+    --toggle-button-bg-color: rgb(78, 71, 71); 
+  
+}
+
+
+[data-theme="dark"] {
+    --main-bg-color: rgb(73, 73, 73);
+
+    /* header */
+    --header-bg-color: rgb(51, 51, 51);
+    --header-text-color: rgb(197, 197, 193);
+    --header-link-color: rgb(111, 167, 236);
+    --hamburger-color: rgb(242, 243, 243);
+    --toggle-button-bg-color: rgb(33, 150, 243);
+   
+}
