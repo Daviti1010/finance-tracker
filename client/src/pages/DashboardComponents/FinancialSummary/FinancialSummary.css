@@ -23,61 +23,61 @@
 }
 
 .income {
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     height: 100px;
     width: 250px;
     border-radius: 15px;
-    border: 2px solid rgb(130, 130, 130);
+    border: 2px solid var(--ieb-border-color);
 }
 
 .expense {
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     height: 100px;
     width: 250px;
     border-radius: 15px;    
-    border: 2px solid rgb(130, 130, 130);
+    border: 2px solid var(--ieb-border-color);
 } 
 
 .net-balance {
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     height: 100px;
     width: 250px;
     border-radius: 15px;
-    border: 2px solid rgb(130, 130, 130);
+    border: 2px solid var(--ieb-border-color);
 }
 
 #income-text {
-    color: antiquewhite;
+    color: var(--ieb-text-color);
     padding: 5px 17px 2px 17px;
     margin-top: 10px;
 }
 
 #income-number {
-    color: rgb(3, 181, 3);
+    color: var(--ieb-income-color);
     padding: 5px 17px;
     font-size: 25px;
 }
 
 #expense-text {
-    color: antiquewhite;
+    color: var(--ieb-text-color);
     padding: 5px 17px 2px 17px;
     margin-top: 10px;
 }
 
 #expense-number {
-    color: rgb(253, 52, 37);
+    color: var(--ieb-expense-color);
     padding: 5px 17px;
     font-size: 25px;
 }
 
 #net-balance-text {
-    color: antiquewhite;
+    color: var(--ieb-text-color);
     padding: 5px 17px 2px 17px;
     margin-top: 10px;
 }
 
 #net-balance-number {
-    color: rgb(241, 241, 241);
+    color: var(--ieb-balance-color);
     padding: 5px 17px;
     font-size: 25px;
     display: flex;
@@ -109,24 +109,24 @@
     margin-top: 5px;
     cursor: pointer;
     border-radius: 3px;
-    border: 2px solid rgb(130, 130, 130);
-    background-color: rgb(73, 73, 73);
-    color: white;
+    border: 2px solid var(--ieb-border-color);
+    background-color: var(--main-bg-color);
+    color: var(--ieb-button-text-color);
     transition: 0.1s ease-in;
 }
 
 .save-net-balance-btn:hover {
     opacity: 0.85;
-    background-color: #3e3e3e;
+    background-color: var(--ieb-button-hover-color);
     transition: 0.1s ease;
 } 
 
 #edit-balance-btn {
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     border: none;
     cursor: pointer;
     margin-left: 10px;
-    color: whitesmoke;
+    color: var(--ieb-balance-color);
 }
 
 @media (max-width: 900px) {

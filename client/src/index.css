@@ -1,17 +1,31 @@
 :root {
+    --page-bg-color: rgb(250, 250, 248);
+
     --main-bg-color: rgb(255, 255, 255);
 
     /* header */
-    --header-bg-color: rgb(235, 233, 233);
+    --header-bg-color: rgb(215, 214, 214);
     --header-text-color: rgb(31, 41, 55);
     --header-link-color: #006ff3;
     --hamburger-color: rgb(31, 41, 55);
     --toggle-button-bg-color: rgb(78, 71, 71); 
-  
+
+    /* Financial Summary */
+    /* income-expense-balance --> ieb */
+    --ieb-text-color: rgb(40, 40, 35);
+    --ieb-income-color: rgb(3, 150, 3);
+    --ieb-expense-color: rgb(210, 40, 30);
+    --ieb-balance-color: rgb(30, 30, 30);
+    --ieb-border-color: rgb(165, 165, 165);
+    --ieb-button-text-color: rgb(44, 43, 43);
+    --ieb-button-hover-color: rgb(227, 226, 226);
+
 }
 
 
 [data-theme="dark"] {
+    --page-bg-color: rgb(37, 37, 37);
+
     --main-bg-color: rgb(73, 73, 73);
 
     /* header */
@@ -21,4 +35,14 @@
     --hamburger-color: rgb(242, 243, 243);
     --toggle-button-bg-color: rgb(33, 150, 243);
    
+    /* Financial Summary */
+    /* income-expense-balance --> ieb */
+    --ieb-text-color: rgb(250, 235, 215);
+    --ieb-income-color: rgb(3, 181, 3);
+    --ieb-expense-color: rgb(253, 52, 37);
+    --ieb-balance-color: rgb(241, 241, 241);
+    --ieb-border-color: rgb(130, 130, 130);
+    --ieb-button-text-color: rgb(255, 255, 255);
+    --ieb-button-hover-color: rgb(62, 62, 62);
+
 }
