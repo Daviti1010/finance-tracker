@@ -140,6 +140,17 @@ export function Header() {
                                 <button className='logout-btn' onClick={clearToken}> <FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
                             </div>
 
+                            <div className="switch-mode">
+                                <label className="switch">
+                                    <input
+                                        type="checkbox"
+                                        checked={theme === "dark"}
+                                        onChange={toggleTheme}
+                                    />
+                                    <span className="slider round"></span>
+                                </label>
+                            </div>
+
                         </div>
                     </div>
                 </>
