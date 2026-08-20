@@ -20,6 +20,17 @@
     --ieb-button-text-color: rgb(44, 43, 43);
     --ieb-button-hover-color: rgb(227, 226, 226);
 
+    /* Transaction Input */
+    /* transaction input --> ti */
+    --ti-text-color: rgb(40, 40, 35);
+    --ti-label-color: rgb(120, 90, 50);
+    --ti-select-text-color: rgb(30, 30, 30);
+    --ti-select-bg-color: rgb(250, 250, 250);
+    --ti-select-border-color: rgb(165, 165, 165);
+    --ti-button-bg-color: rgb(245, 245, 245);
+    --ti-button-bg-hover-color: rgb(225, 225, 225);
+    --ti-button-text-color: rgb(44, 43, 43);
+    --calendar-icon-filter: none;
 }
 
 
@@ -45,4 +56,15 @@
     --ieb-button-text-color: rgb(255, 255, 255);
     --ieb-button-hover-color: rgb(62, 62, 62);
 
+    /* Transaction Input */
+    /* transaction input --> ti */
+    --ti-text-color: rgb(250, 235, 215);
+    --ti-label-color: rgb(251, 223, 186);
+    --ti-select-text-color: rgb(251, 253, 255);
+    --ti-select-bg-color: rgb(62, 62, 62);
+    --ti-select-border-color: rgb(130, 130, 130);
+    --ti-button-bg-color: rgb(73, 73, 73);
+    --ti-button-bg-hover-color: rgb(62, 62, 62);
+    --ti-button-text-color: rgb(255, 255, 255);
+    --calendar-icon-filter: invert(1);
 }
