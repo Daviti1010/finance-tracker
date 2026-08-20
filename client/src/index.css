@@ -96,6 +96,24 @@
     --ch-pagination-text-color: rgb(40, 40, 40);
 
     --ch-data-message-color: rgb(70, 75, 84);
+
+    
+    /* Corner Widget */
+    --corner-widget-button-bg-color: rgb(255, 255, 255);
+    --chat-window-bg-color: rgb(233, 233, 233);
+    --chat-message-text-color: rgb(30, 30, 30);
+
+    --spinner-track-color: rgba(0, 0, 0, 0.15);
+    --spinner-active-color: rgb(26, 26, 26);
+
+    --message-input-bg-color: rgb(211, 211, 211);
+    --message-input-border-color: rgb(204, 204, 204);
+    --message-input-text-color: rgb(30, 30, 30);
+    --message-input-button-bg-color: rgb(0, 123, 255);
+    --message-input-disabled-button-bg-color: rgba(0, 123, 255, 0.3);
+
+    --message-over-limit-color: rgb(200, 40, 40);
+    --message-under-limit-color: rgb(14, 162, 36);
 }
 
 
@@ -197,4 +215,22 @@
     --ch-pagination-text-color: rgb(243, 244, 246);
 
     --ch-data-message-color: rgb(152, 161, 177);
+
+
+    /* Corner Widget */
+    --corner-widget-button-bg-color: rgb(255, 255, 255);
+    --chat-window-bg-color: rgb(30, 30, 30);
+    --chat-message-text-color: rgb(255, 255, 255);
+
+    --spinner-track-color: rgba(255, 255, 255, 0.3);
+    --spinner-active-color: rgb(255, 255, 255);
+
+    --message-input-bg-color: rgb(73, 73, 73);
+    --message-input-border-color: rgb(204, 204, 204);
+    --message-input-text-color: rgb(255, 255, 255);
+    --message-input-button-bg-color: rgb(0, 123, 255);
+    --message-input-disabled-button-bg-color: rgba(0, 123, 255, 0.3);
+
+    --message-over-limit-color: rgb(255, 107, 107);
+    --message-under-limit-color: rgb(31, 255, 57);
 }

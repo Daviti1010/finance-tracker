@@ -21,7 +21,7 @@
   height: 56px;
   border-radius: 50%;
   border: none;
-  background-color: #ffffff;
+  background-color: var(--corner-widget-button-bg-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   
   display: flex;
@@ -52,7 +52,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
-  background-color: rgb(30, 30, 30);
+  background-color: var(--chat-window-bg-color);
 }
 
 .chat-container {
@@ -82,7 +82,7 @@
 
 .chat-message-text {
   padding: 15px 15px;
-  color: white;
+  color: var(--chat-message-text-color);
 }
 
 .chat-message-ai {
@@ -107,12 +107,12 @@
 .message-input {
   display: flex;
   align-items: center;
-  border: 1px solid #ccc;
+  border: 1px solid var(--message-input-border-color);
   border-radius: 12px;
   padding: 0 10px 0 0;
   box-sizing: border-box;
   width: 100%;
-  background-color: rgb(73, 73, 73);
+  background-color: var(--message-input-bg-color);
 
   div {
     padding-left: 10px;
@@ -130,7 +130,7 @@
   outline: none;
   background: transparent;
   font-size: 16px;
-  color: #ffffff;
+  color: var(--message-input-text-color);
   resize: none;
   overflow: auto;
   scrollbar-width: none;
@@ -141,7 +141,7 @@
 
 .message-input button {
   border: none;
-  background-color: #007bff;
+  background-color: var(--message-input-button-bg-color);
   color: white;
   padding: 8px 16px;
   border-radius: 18px;
@@ -156,16 +156,16 @@
 }
 
 .char-counter {
-  color: #1fff39;
+  color: var(--message-under-limit-color);
 }
 
 .char-counter.over-limit {
-  color: #ff6b6b;
+  color: var(--message-over-limit-color);
   font-weight: 600;
 }
 
 .message-input button:disabled {
-  background-color: rgba(0, 123, 255, 0.3);
+  background-color: var(--message-input-disabled-button-bg-color);
   cursor: not-allowed;
 }
 
@@ -173,8 +173,8 @@
 .spinner {
   width: 16px;
   height: 16px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: #ffffff;
+  border: 2px solid var(--spinner-track-color);
+  border-top-color: var(--spinner-active-color);
   border-radius: 50%;
   animation: spin 0.7s linear infinite;
 }
