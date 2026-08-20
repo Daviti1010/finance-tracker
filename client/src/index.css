@@ -31,6 +31,27 @@
     --ti-button-bg-hover-color: rgb(225, 225, 225);
     --ti-button-text-color: rgb(44, 43, 43);
     --calendar-icon-filter: none;
+
+    /* Spending By Category */
+    /* spending by category --> sbc */
+    --sbc-border-color: rgb(165, 165, 165);
+    --sbc-bottom-border-color: rgb(130, 140, 110);
+    --sbc-text-color: rgb(40, 40, 35);
+    --sbc-charts-text-color: rgb(120, 80, 40);
+    --sbc-category-color: rgb(74, 54, 29);
+    --sbc-percentage-color: rgb(140, 90, 40);
+    --sbc-bar-bg-color: rgb(210, 213, 205);
+
+    --sbc-food-color: rgb(166, 67, 47);
+    --sbc-rent-color: rgb(140, 109, 47);
+    --sbc-transport-color: rgb(147, 150, 1);
+    --sbc-utilities-color: rgb(2, 122, 143);
+    --sbc-entertainment-color: rgb(47, 111, 85);
+    --sbc-shopping-color: rgb(110, 127, 154);
+    --sbc-health-color: rgb(11, 138, 5);
+    --sbc-subscriptions-color: rgb(193, 161, 3);
+    --sbc-education-color: rgb(210, 4, 138);
+    --sbc-other-color: rgb(110, 127, 154);
 }
 
 
@@ -67,4 +88,25 @@
     --ti-button-bg-hover-color: rgb(62, 62, 62);
     --ti-button-text-color: rgb(255, 255, 255);
     --calendar-icon-filter: invert(1);
+
+    /* Spending By Category */
+    /* spending by category --> sbc */
+    --sbc-border-color: rgb(130, 130, 130);
+    --sbc-bottom-border-color: rgb(201, 207, 192);
+    --sbc-text-color: rgb(250, 235, 215);
+    --sbc-charts-text-color: rgb(252, 215, 168);
+    --sbc-category-color: rgb(245, 222, 179);
+    --sbc-percentage-color: rgb(255, 209, 148);
+    --sbc-bar-bg-color: rgb(201, 207, 192);
+
+    --sbc-food-color: rgb(166, 67, 47);
+    --sbc-rent-color: rgb(140, 109, 47);
+    --sbc-transport-color: rgb(147, 150, 1);
+    --sbc-utilities-color: rgb(2, 122, 143);
+    --sbc-entertainment-color: rgb(47, 111, 85);
+    --sbc-shopping-color: rgb(110, 127, 154);
+    --sbc-health-color: rgb(11, 138, 5);
+    --sbc-subscriptions-color: rgb(193, 161, 3);
+    --sbc-education-color: rgb(210, 4, 138);
+    --sbc-other-color: rgb(110, 127, 154);
 }

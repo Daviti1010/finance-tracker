@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     width: 450px;
     height: 425px;
     border-radius: 15px;
-    border: 2px solid rgb(130, 130, 130);
+    border: 2px solid var(--sbc-border-color);
     /* padding: 20px 22px 22px; */
     overflow-y: auto;
     position: relative;
@@ -21,7 +21,7 @@
     background-color: inherit;
     /* z-index: 1; */
     /* padding: 12px 0; */
-    border-bottom: 1px solid #C9CFC0;
+    border-bottom: 1px solid var(--sbc-bottom-border-color);
     flex-shrink: 0;
     padding: 20px 22px 24px;
 }
@@ -30,12 +30,12 @@
     font-family: var(--font-display, "Fraunces", serif);
     font-weight: 500;
     font-size: 17px;
-    color: antiquewhite;
+    color: var(--sbc-text-color);
     /* margin: 0 0 30px; */
 }
 
 .view-charts {
-    color: #fcd7a8;
+    color: var(--sbc-charts-text-color);
     text-decoration: none;
     font-size: 17px;
 }
@@ -57,12 +57,6 @@
   display: none;
 }
 
-.progress-bar {
-    height: 22px;
-    border-radius: 4px;
-    width: 65%;
-    background-color: #AFA9EC;
-}
 
 .bar-and-text-div {
     display: flex;
@@ -78,14 +72,14 @@
     margin: 0;
     font-family: var(--font-mono, "IBM Plex Mono", monospace);
     font-size: 13px;
-    color: wheat;
+    color: var(--sbc-category-color);
 }
 
 .progress-bar {
     flex: 1;
     height: 20px;
     border-radius: 5px;
-    background: var(--rule, #C9CFC0);
+    background: var(--sbc-bar-bg-color);
     position: relative;
     overflow: hidden;
 }
@@ -102,47 +96,47 @@
 }
 
 .food-progress-bar::after {
-    background: var(--loss, #A6432F);
+    background: var(--sbc-food-color);
 }
 
 .rent-progress-bar::after {
-    background: var(--brass, #8C6D2F);
+    background: var(--sbc-rent-color);
 }
 
 .transport-progress-bar::after {
-    background: var(--loss, #939601);
+    background: var(--sbc-transport-color);
 }
 
 .utilities-progress-bar::after {
-    background: #027a8f;
+    background: var(--sbc-utilities-color);
 }
 
 .entertainment-progress-bar::after {
-    background: var(--gain, #2F6F55);
+    background: var(--sbc-entertainment-color);
 }
 
 .shopping-progress-bar::after {
-    background: #6E7F9A;
+    background: var(--sbc-shopping-color);
 }
 
 .health-progress-bar::after {
-    background: #0b8a05;
+    background: var(--sbc-health-color);
 }
 
 .subscriptions-progress-bar::after {
-    background: #c1a103;
+    background: var(--sbc-subscriptions-color);
 }
 
 .education-progress-bar::after {
-    background: #d2048a;
+    background: var(--sbc-education-color);
 }
 
 .other-progress-bar::after {
-    background: #6E7F9A;
+    background: var(--sbc-other-color);
 }
 
 .percentage {
-    color: #ffd194;
+    color: var(--sbc-percentage-color);
     width: 30px;
 }
 
