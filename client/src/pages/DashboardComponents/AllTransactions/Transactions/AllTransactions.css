@@ -1,10 +1,10 @@
 .all-transactions-container {
     width: 70%;
     height: 500px;
-    background-color: rgb(73, 73, 73);
+    background-color: var(--main-bg-color);
     margin: 30px auto 20px;
     border-radius: 15px;
-    border: 2px solid rgb(130, 130, 130);
+    border: 2px solid var(--at-border-color);
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -18,35 +18,35 @@
 }
 
 .csv-button {
-    background: rgb(240, 106, 5);
-    color: white;
+    background: var(--at-csv-bg-color);
+    color: var(--at-csv-text-color);
     padding: 8px 16px 8px 12px;
     flex-shrink: 0;
     margin: 10px 25px -10px 10px;
     cursor: pointer;
-    border: 1px solid rgb(240, 106, 5);
+    border: 1px solid var(--at-csv-bg-color);
     border-radius: 7px;
     transition: 0.15s ease;
 }
 
 .csv-button:hover {
-    background: rgb(218, 96, 2);
+    background: var(--at-csv-bg-hover-color);
 }
 
 .pdf-button {
-    background: rgb(87, 144, 2);
-    color: white;
+    background: var(--at-pdf-bg-color);
+    color: var(--at-pdf-text-color);
     padding: 8px 16px 8px 12px;
     flex-shrink: 0;
     margin: 10px 25px -10px 10px;
     cursor: pointer;
-    border: 1px solid rgb(87, 144, 2);
+    border: 1px solid var(--at-pdf-bg-color);
     border-radius: 7px;
     transition: 0.15s ease;
 }
 
 .pdf-button:hover {
-    background: rgb(44, 141, 2);
+    background: var(--at-pdf-bg-hover-color);
 }
 
 
@@ -74,7 +74,7 @@
     border-radius: 8px;
     width: 90%;
     min-height: 60px;
-    background-color: #3a3a3a;
+    background-color: var(--at-transaction-bg-color);
 }
 
 .arrow {
@@ -99,7 +99,7 @@
     font-style: normal;
     font-size: 15px;
     margin: 0 0 0 12px;
-    color: rgb(255, 243, 225);
+    color: var(--at-transaction-category-color);
 }
 
 .description {
@@ -108,7 +108,7 @@
     font-weight: 300;
     font-style: normal;
     margin: 3px 0 0 12px;
-    color: rgb(254, 214, 155);
+    color: var(--at-transaction-description-color);
     font-size: 13px;
 }
 
@@ -119,21 +119,21 @@
 }
 
 .transaction-date {
-    color: rgb(255, 234, 203);
+    color: var(--at-transaction-date-color);
 }
 
 .positive {
-    color: rgb(3, 181, 3);
+    color: var(--at-transaction-positive-color);
 }
 
 .negative {
-    color: rgb(255, 77, 64);
+    color: var(--at-transaction-negative-color);
 }
 
 .delete-button {
-    background-color: #3a3a3a;
+    background-color: var(--at-transaction-bg-color);
     border: none;
-    color: white;
+    color: var(--at-delete-button-color);
     cursor: pointer;
     font-size: 13.5px;
 }
@@ -155,7 +155,7 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #f3f4f6;
+    background-color: var(--at-pagination-button-bg-color);
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.15s ease;
@@ -166,7 +166,7 @@
 }
 
 .pagination-current {
-    color: #f3f4f6;
+    color: var(--at-pagination-text-color);
 }
 
 @media (max-width: 1400px) {

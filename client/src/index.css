@@ -52,6 +52,41 @@
     --sbc-subscriptions-color: rgb(193, 161, 3);
     --sbc-education-color: rgb(210, 4, 138);
     --sbc-other-color: rgb(110, 127, 154);
+
+    /* All Transactions */
+    /* all transactions --> at */
+    --at-text-color: rgb(40, 40, 35);
+
+    --at-border-color: rgb(165, 165, 165);
+    --at-bottom-border-color: rgb(129, 138, 110);
+    --at-button-bg-color: rgb(240, 240, 240);
+    --at-button-text-color: rgb(61, 61, 61);
+
+    --at-search-text-color: rgb(40, 40, 35);
+    --at-search-hover-color: rgb(233, 233, 233);
+
+    --at-reset-hover: rgb(105, 105, 104);
+
+    --at-csv-bg-color: rgb(240, 106, 5);
+    --at-csv-bg-hover-color: rgb(218, 96, 2);
+
+    --at-pdf-bg-color: rgb(87, 144, 2);
+    --at-pdf-bg-hover-color: rgb(44, 141, 2);
+
+    --at-csv-text-color: rgb(255, 255, 255);
+    --at-pdf-text-color: rgb(255, 255, 255);
+
+    --at-transaction-bg-color: rgb(232, 232, 232);
+    --at-transaction-category-color: rgb(90, 65, 35);
+    --at-transaction-description-color: rgb(120, 90, 50);
+    --at-transaction-date-color: rgb(110, 80, 40);
+    --at-transaction-negative-color: rgb(200, 40, 30);
+    --at-transaction-positive-color: rgb(3, 150, 3);
+    --at-delete-button-color: rgb(80, 80, 80);
+
+
+    --at-pagination-button-bg-color: rgb(243, 244, 246);
+    --at-pagination-text-color: rgb(40, 40, 40);
 }
 
 
@@ -109,4 +144,39 @@
     --sbc-subscriptions-color: rgb(193, 161, 3);
     --sbc-education-color: rgb(210, 4, 138);
     --sbc-other-color: rgb(110, 127, 154);
+
+    /* All Transactions */
+    /* all transactions --> at */
+    --at-text-color: rgb(250, 235, 215);
+
+    --at-border-color: rgb(130, 130, 130);
+    --at-bottom-border-color: rgb(192, 197, 184);
+    --at-button-bg-color: rgb(62, 62, 62);
+    --at-button-text-color: rgb(251, 253, 255);
+    
+    --at-search-text-color: rgb(237, 239, 231);
+    --at-search-hover-color: rgb(62, 62, 62);
+
+    --at-reset-hover: rgb(184, 184, 184);
+
+    --at-csv-bg-color: rgb(240, 106, 5);
+    --at-csv-bg-hover-color: rgb(218, 96, 2);
+
+    --at-pdf-bg-color: rgb(87, 144, 2);
+    --at-pdf-bg-hover-color: rgb(44, 141, 2);
+
+    --at-csv-text-color: rgb(255, 255, 255);
+    --at-pdf-text-color: rgb(255, 255, 255);
+
+    --at-transaction-bg-color: rgb(58, 58, 58);
+    --at-transaction-category-color: rgb(255, 243, 225);
+    --at-transaction-description-color: rgb(254, 214, 155);
+    --at-transaction-date-color: rgb(255, 234, 203);
+    --at-transaction-negative-color: rgb(255, 77, 64);
+    --at-transaction-positive-color: rgb(3, 181, 3);
+    --at-delete-button-color: rgb(255, 255, 255);
+
+
+    --at-pagination-button-bg-color: rgb(243, 244, 246);
+    --at-pagination-text-color: rgb(243, 244, 246);
 }

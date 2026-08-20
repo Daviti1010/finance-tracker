@@ -4,7 +4,7 @@
     justify-content: space-between;
     gap: 16px;
     padding: 16px 0;
-    border-bottom: 1px solid #C9CFC0;
+    border-bottom: 1px solid var(--at-bottom-border-color);
     flex-shrink: 0;
 }
 
@@ -12,7 +12,7 @@
     font-family: var(--font-display, "Fraunces", serif);
     font-weight: 500;
     font-size: 20px;
-    color: antiquewhite;
+    color: var(--at-text-color);
     margin: 15px 20px 30px;
     flex-shrink: 0;
 }
@@ -24,9 +24,9 @@
     width: 200px;
     margin-top: -10px;
 
-    color: rgb(251, 253, 255);
-    background: #3e3e3e;
-    border: 2px solid rgb(130, 130, 130);
+    color: var(--at-button-text-color);
+    background: var(--at-button-bg-color);
+    border: 2px solid var(--at-border-color);
     padding: 9px 10px;
     box-sizing: border-box;
     cursor: pointer;
@@ -44,8 +44,7 @@
 
 #search-btn,
 #reset-transactions-btn {
-    background: rgb(73, 73, 73);
-    color: var(--paper, #EDEFE7);
+    color: var(--at-search-text-color);
     padding: 8px 16px;
     flex-shrink: 0;
     margin: -10px 25px 0px 0px;
@@ -53,6 +52,7 @@
 }
 
 #search-btn {
+    background: var(--main-bg-color);
     border: 2px solid rgb(130, 130, 130);
     border-radius: 3px;
     transition: 0.15s ease;
@@ -60,10 +60,11 @@
 
 #search-btn:hover {
     opacity: 0.85;
-    background-color: #3e3e3e;
+    background-color: var(--at-search-hover-color);
 }
 
 #reset-transactions-btn {
+    background: var(--main-bg-color);
     transition: 0.05s ease;
     border: none;
     margin-right: -50px;
@@ -71,7 +72,7 @@
 }
 
 #reset-transactions-btn:hover {
-    color: #b8b8b8;
+    color: var(--at-reset-hover);
 }
 
 @media (max-width: 1024px) {
