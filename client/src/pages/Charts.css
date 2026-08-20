@@ -7,7 +7,7 @@
 }
 
 .back-to-dashboard {
-    color: #fcd7a8;
+    color: var(--ch-to-dashboard);
     text-decoration: none;
     margin: 25px 0 0 25px;
 }
@@ -23,14 +23,14 @@
     padding: 0.5rem 1rem;
     border: none;
     border-radius: 8px;
-    background-color: #f3f4f6;
+    background-color: var(--ch-pagination-button-bg-color);
     cursor: pointer;
     font-weight: 500;
     transition: background-color 0.15s ease;
 }
 
 .year-nav-button:hover:not(:disabled) {
-    background-color: #e5e7eb;
+    background-color: rgb(229, 231, 235);
 }
 
 .year-nav-button:disabled {
@@ -43,11 +43,12 @@
     font-weight: 700;
     min-width: 4ch;
     text-align: center;
-    color: #f3f4f6;
+    color: var(--ch-pagination-text-color);
 }
 
 .no-data-message {
-    color: #6b7280;
+    color: var(--ch-data-message-color);
     font-style: italic;
-    padding: 2rem 0;
+    padding: 2rem 1rem;
+    font-size: larger;
 }

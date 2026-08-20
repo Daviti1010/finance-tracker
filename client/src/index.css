@@ -87,6 +87,15 @@
 
     --at-pagination-button-bg-color: rgb(243, 244, 246);
     --at-pagination-text-color: rgb(40, 40, 40);
+
+    
+    /* Charts */
+    /* charts --> ch */
+    --ch-to-dashboard: rgb(46, 42, 38);
+    --ch-pagination-button-bg-color: rgb(220, 220, 222);
+    --ch-pagination-text-color: rgb(40, 40, 40);
+
+    --ch-data-message-color: rgb(70, 75, 84);
 }
 
 
@@ -179,4 +188,13 @@
 
     --at-pagination-button-bg-color: rgb(243, 244, 246);
     --at-pagination-text-color: rgb(243, 244, 246);
+
+
+    /* Charts */
+    /* charts --> ch */
+    --ch-to-dashboard: rgb(252, 215, 168);
+    --ch-pagination-button-bg-color: rgb(243, 244, 246);
+    --ch-pagination-text-color: rgb(243, 244, 246);
+
+    --ch-data-message-color: rgb(152, 161, 177);
 }
