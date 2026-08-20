@@ -114,6 +114,20 @@
 
     --message-over-limit-color: rgb(200, 40, 40);
     --message-under-limit-color: rgb(14, 162, 36);
+
+
+    /* Links Page */
+    /* advisor form --> adv */
+    --adv-form-bg-color: rgb(204, 199, 204);
+    --adv-form-text-color: rgb(40, 40, 35);
+    --adv-form-input-bg-color: rgb(255, 255, 255);
+    --adv-form-input-border-color: rgb(137, 137, 137);
+    --adv-input-text: rgb(11, 20, 29);
+
+    --adv-submit-button-bg-color: rgb(240, 240, 240);
+    --adv-submit-button-hover-color: rgb(208, 208, 208);
+    --adv-submit-text-color: rgb(40, 40, 35);
+    --adv-submit-border-color: rgb(110, 110, 110);
 }
 
 
@@ -233,4 +247,18 @@
 
     --message-over-limit-color: rgb(255, 107, 107);
     --message-under-limit-color: rgb(31, 255, 57);
+
+
+    /* Links Page */
+    /* advisor form --> adv */
+    --adv-form-bg-color: rgb(50, 50, 50);
+    --adv-form-text-color: rgb(229, 229, 229);
+    --adv-form-input-bg-color: rgb(50, 50, 50);
+    --adv-form-input-border-color: rgb(130, 130, 130);
+    --adv-input-text: rgb(240, 248, 255);
+
+    --adv-submit-button-bg-color: rgb(50, 50, 50);
+    --adv-submit-button-hover-color: rgb(60, 60, 60);
+    --adv-submit-text-color: rgb(212, 209, 209);
+    --adv-submit-border-color: rgb(130, 130, 130);
 }
