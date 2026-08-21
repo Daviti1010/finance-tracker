@@ -209,7 +209,7 @@
 }
 
 .sent-requests-first-div {
-    border: 0.5px solid rgb(130, 130, 130);
+    border: 0.5px solid var(--src-border-color);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -225,7 +225,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 0.5px solid rgb(130, 130, 130);
+    border-bottom: 0.5px solid var(--src-border-color);
     background: transparent;
 }
 
@@ -259,19 +259,19 @@
 
 .incoming-requests-container {
     max-width: 700px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     margin: 20px auto 0;
 }
 
 .incoming-requests-first-div {
-    border: 0.5px solid rgb(130, 130, 130);
+    border: 0.5px solid var(--irc-border-color);
     border-radius: 12px;
     overflow: hidden;
 }
 
 #pending-response-text {
     font-size: 16px;
-    color: #c3c2b7;
+    color: var(--irc-text-color);
     margin: 0 0 8px;
 }
 
@@ -280,12 +280,12 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 0.5px solid rgb(130, 130, 130);
+    border-bottom: 0.5px solid var(--irc-border-color);
     background: transparent;
 }
 
 .awaiting-response {
-    color: white;
+    color: var(--irc-email-color);
 }
 
 .incoming-reqs-div-right {
@@ -295,8 +295,8 @@
         padding: 8px 16px;
         font-size: 14px;
         background: transparent;
-        color: #ffffff;
-        border: 0.5px solid rgb(130, 130, 130);
+        color: var(--irc-cancel-color);
+        border: 0.5px solid var(--irc-cancel-border-color);
         border-radius: 7px;
         cursor: pointer;
         transition: background 0.15s, transform 0.1s;
@@ -304,18 +304,18 @@
     }
 
     button:hover {
-        background-color: #363636;
+        background-color: var(--irc-cancel-hover-color);
     }
 }
 
 #accept-btn {
-    background: #173415;
-    color: #0fb50f;
-    border-color: #074506;
+    background: var(--irc-accept-bg-color);
+    color: var(--irc-accept-color);
+    border-color: var(--irc-accept-border-color);
 }
 
 #accept-btn:hover {
-    background-color: #014e01;
+    background-color: var(--irc-accept-hover-color);
 }
 
 

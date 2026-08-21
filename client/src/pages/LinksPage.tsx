@@ -218,7 +218,7 @@ export function LinksPage() {
 
         <div className="incoming-requests-container">
             <p id="pending-response-text">Pending — awaiting for your response ({incomingRequests.length})</p>
-            <div className="sent-requests-first-div">
+            <div className="incoming-requests-first-div">
                 {incomingRequests.map((req) => (
                     <div className="incoming-reqs-div" key={req.id}>
                         <p className="awaiting-response">Request from {req.advisorEmail} — {req.status}</p>
