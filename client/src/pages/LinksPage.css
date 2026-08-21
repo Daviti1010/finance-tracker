@@ -216,7 +216,7 @@
 
 #sent-response-text {
     font-size: 16px;
-    color: #c3c2b7;
+    color: var(--src-text-color);
     margin: 0 0 8px;
 }
 
@@ -230,7 +230,7 @@
 }
 
 .sent-requests {
-    color: white;
+    color: var(--src-email-color);
 }
 
 .outgoing-reqs-div-right {
@@ -240,8 +240,8 @@
         padding: 8px 16px;
         font-size: 14px;
         background: transparent;
-        color: #ffffff;
-        border: 0.5px solid rgb(130, 130, 130);
+        color: var(--src-cancel-color);
+        border: 0.5px solid var(--src-cancel-border-color);
         border-radius: 7px;
         cursor: pointer;
         transition: background 0.15s, transform 0.1s;
@@ -249,7 +249,7 @@
     }
 
     button:hover {
-        background-color: #363636;
+        background-color: var(--src-cancel-hover-color);
     }
 
 }
