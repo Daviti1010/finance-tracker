@@ -18,11 +18,11 @@ import './App.css'
 function App() {
   // const [count, setCount] = useState(0)
   const location = useLocation();
-  const hideChatbotOnPages = ["/login", "/register", "/forgot-password"];
+  const showChatbotOnPages = ["/dashboard", "/charts"]
 
-  let showChatbot = true;
-  if (hideChatbotOnPages.includes(location.pathname)) {
-    showChatbot = false;
+  let showChatbot = false;
+  if (showChatbotOnPages.includes(location.pathname)) {
+    showChatbot = true;
   }
 
 
