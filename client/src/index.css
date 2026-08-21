@@ -183,6 +183,9 @@
     --ma-revoke-color: rgb(20, 20, 20);
     --ma-revoke-hover-color: rgb(237, 237, 237);
     --ma-revoke-border-color: rgb(130, 130, 130);
+    
+    /* Page Not Found --> pnf */
+    --pnf-text-color: rgb(25, 25, 25);
 }
 
 
@@ -371,4 +374,7 @@
     --ma-revoke-color: rgb(255, 255, 255);
     --ma-revoke-hover-color: rgb(54, 54, 54);
     --ma-revoke-border-color: rgb(130, 130, 130);
+
+    /* Page Not Found --> pnf */
+    --pnf-text-color: rgb(245, 222, 179);
 }

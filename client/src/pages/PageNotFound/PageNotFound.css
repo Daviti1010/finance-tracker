@@ -2,5 +2,5 @@
   margin-top: 150px;
   text-align: center;
   font-size: 48px;
-  color: wheat;
+  color: var(--pnf-text-color);
 }
