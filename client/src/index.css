@@ -171,6 +171,18 @@
     --mc-revoke-color: rgb(20, 20, 20);
     --mc-revoke-hover-color: rgb(237, 237, 237);
     --mc-revoke-border-color: rgb(130, 130, 130);
+
+
+    /* my advisors --> ma */
+    --ma-text-color: rgb(80, 80, 80);
+
+    --ma-email-color: rgb(20, 20, 20);
+
+    --ma-border-color: rgb(130, 130, 130);
+
+    --ma-revoke-color: rgb(20, 20, 20);
+    --ma-revoke-hover-color: rgb(237, 237, 237);
+    --ma-revoke-border-color: rgb(130, 130, 130);
 }
 
 
@@ -347,4 +359,16 @@
     --mc-revoke-color: rgb(255, 255, 255);
     --mc-revoke-hover-color: rgb(54, 54, 54);
     --mc-revoke-border-color: rgb(130, 130, 130);
+
+    
+    /* my advisors --> ma */
+    --ma-text-color: rgb(195, 194, 183);
+
+    --ma-email-color: rgb(255, 255, 255);
+
+    --ma-border-color: rgb(130, 130, 130);
+
+    --ma-revoke-color: rgb(255, 255, 255);
+    --ma-revoke-hover-color: rgb(54, 54, 54);
+    --ma-revoke-border-color: rgb(130, 130, 130);
 }

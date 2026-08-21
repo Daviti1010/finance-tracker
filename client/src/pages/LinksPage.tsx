@@ -265,7 +265,7 @@ export function LinksPage() {
                             <p>{link.advisorEmail}</p>
                         </span>
 
-                        <div className="clients-div-right">
+                        <div className="advisors-div-right">
                             <button className="revoke-btn" onClick={() => handleRevoke(link.id)}>Revoke</button>
                         </div>
                     </div>
