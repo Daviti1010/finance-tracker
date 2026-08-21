@@ -158,6 +158,19 @@
     --irc-accept-border-color: rgb(7, 69, 6);
     --irc-accept-hover-color: rgb(60, 140, 60);
 
+
+    /* my clients --> mc */
+    --mc-text-color: rgb(80, 80, 80);
+
+    --mc-email-color: rgb(20, 20, 20);
+
+    --mc-view-transactions-color: rgb(0, 104, 229);
+
+    --mc-border-color: rgb(130, 130, 130);
+
+    --mc-revoke-color: rgb(20, 20, 20);
+    --mc-revoke-hover-color: rgb(237, 237, 237);
+    --mc-revoke-border-color: rgb(130, 130, 130);
 }
 
 
@@ -320,4 +333,18 @@
     --irc-accept-bg-color: rgb(33, 78, 30);
     --irc-accept-border-color: rgb(7, 69, 6);
     --irc-accept-hover-color: rgb(1, 70, 1);
+
+
+    /* my clients --> mc */
+    --mc-text-color: rgb(195, 194, 183);
+
+    --mc-email-color: rgb(255, 255, 255);
+
+    --mc-view-transactions-color: rgb(96, 158, 232);
+
+    --mc-border-color: rgb(130, 130, 130);
+
+    --mc-revoke-color: rgb(255, 255, 255);
+    --mc-revoke-hover-color: rgb(54, 54, 54);
+    --mc-revoke-border-color: rgb(130, 130, 130);
 }

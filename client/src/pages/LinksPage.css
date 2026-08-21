@@ -54,17 +54,17 @@
 
 .my-clients-div {
     max-width: 700px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
     margin: 20px auto 0;
 
     h3 {
         font-size: 16px;
-        color: #c3c2b7;
+        color: var(--mc-text-color);
         margin: 0 0 8px;
     }
 
     p {
-        color: white;
+        color: var(--mc-email-color);
         margin-left: 5px;
     }
 
@@ -75,7 +75,7 @@
 }
 
 .my-clients-first-div {
-    border: 0.5px solid rgb(130, 130, 130);
+    border: 0.5px solid var(--mc-border-color);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -85,7 +85,7 @@
     align-items: center;
     justify-content: space-between;
     padding: 12px 16px;
-    border-bottom: 0.5px solid rgb(130, 130, 130);
+    border-bottom: 0.5px solid var(--mc-border-color);
     background: transparent;
 }
 
@@ -100,7 +100,7 @@
 
     a {
         text-decoration: none;
-        color: #6da7ec;
+        color: var(--mc-view-transactions-color);
     }
 
 }
@@ -109,8 +109,8 @@
     padding: 8px 16px;
     font-size: 14px;
     background: transparent;
-    color: #ffffff;
-    border: 0.5px solid rgb(130, 130, 130);
+    color: var(--mc-revoke-color);
+    border: 0.5px solid var(--mc-revoke-border-color);
     border-radius: 7px;
     cursor: pointer;
     transition: background 0.15s, transform 0.1s;
@@ -118,7 +118,7 @@
 }
 
 .revoke-btn:hover {
-    background-color: #363636;
+    background-color: var(--mc-revoke-hover-color);
 }
 
 
@@ -193,7 +193,7 @@
 }
 
 .span-icon-user {
-    color: white;
+    color: var(--mc-email-color);
 }
 
 .span-icon-arrow {
