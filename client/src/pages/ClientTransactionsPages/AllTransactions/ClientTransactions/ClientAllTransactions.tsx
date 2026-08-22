@@ -1,13 +1,31 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import type { Dispatch, SetStateAction } from "react"
 import type { Transaction } from "../../../../types"
 
 interface ClientAllTransactionProps {
-  displayedTransactions: Transaction[]
+    displayedTransactions: Transaction[]
+    setCurrentPage: Dispatch<SetStateAction<number>>
+    currentPage: number
 }
 
-export function ClientAllTransactions({displayedTransactions}: ClientAllTransactionProps) {
+export function ClientAllTransactions({displayedTransactions, setCurrentPage, currentPage}: ClientAllTransactionProps) {
 
     const [expandedTransactionId, setExpandedTransactionId] = useState<number | null>(null);
+
+    const itemsPerPage = 15;
+    const totalPages = Math.ceil(displayedTransactions.length / itemsPerPage);
+    const safePage = Math.min(currentPage, totalPages || 1);
+
+    const paginatedTransactions = displayedTransactions.slice(
+        (safePage - 1) * itemsPerPage,
+        safePage * itemsPerPage
+    )
+
+    const paginationRef = useRef<HTMLDivElement>(null);
+    
+    useEffect(() => {
+        paginationRef.current?.scrollIntoView();
+    }, [safePage]);
     
     const toggleExpand = (id: number) => {
         setExpandedTransactionId(prev => (prev === id ? null : id));
@@ -24,7 +42,7 @@ export function ClientAllTransactions({displayedTransactions}: ClientAllTransact
     return (
         <div className="all-transactions">
             <div className="list">
-                {displayedTransactions.map((t) => (
+                {paginatedTransactions.map((t) => (
                     <div key={t.id} className="transaction" onClick={() => toggleExpand(t.id)}>
                         <div className="transaction-left-side">
                             <img 
@@ -53,6 +71,26 @@ export function ClientAllTransactions({displayedTransactions}: ClientAllTransact
                     </div>
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <div className="pagination-div" ref={paginationRef}>
+                    <button className="pagination-button"
+                    onClick={() => {
+                        setCurrentPage(safePage - 1)
+                    }}
+                    disabled={safePage === 1}
+                    >← Prev</button>
+
+                    <p className="pagination-current">{`Page ${safePage} of ${totalPages}`}</p>
+
+                    <button className="pagination-button"
+                    onClick={() => {
+                        setCurrentPage(safePage + 1)
+                    }}
+                    disabled={safePage === totalPages}
+                    >Next →</button>
+                </div>
+            )}
         </div>
     )
 }

@@ -16,11 +16,14 @@ interface UpperPartProps {
     setFilterType: Dispatch<SetStateAction<string>>
     filterCategory: string
     setFilterCategory: Dispatch<SetStateAction<string>>
+    setCurrentPage: Dispatch<SetStateAction<number>>
 }
 
 
-export function ClientTransactionsUpperPart({clientIdNum, expenseCategories, incomeCategories, setDisplayedTransactions,
-     fetchClientTransactions, filterType, setFilterType, filterCategory, setFilterCategory}: UpperPartProps) {
+export function ClientTransactionsUpperPart({
+    clientIdNum, expenseCategories, incomeCategories,
+    setDisplayedTransactions, fetchClientTransactions, filterType, setFilterType,
+    filterCategory, setFilterCategory, setCurrentPage}: UpperPartProps) {
 
 
     const filterCategoryOptions = [
@@ -51,6 +54,7 @@ export function ClientTransactionsUpperPart({clientIdNum, expenseCategories, inc
         setFilterType("all")
         setFilterCategory("all")
         fetchClientTransactions()
+        setCurrentPage(1)
     }
 
 

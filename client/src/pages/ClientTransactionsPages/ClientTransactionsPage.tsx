@@ -20,6 +20,8 @@ export function ClientTransactionsPage() {
     const [filterType, setFilterType] = useState("all");
     const [filterCategory, setFilterCategory] = useState("all")
 
+    const [currentPage, setCurrentPage] = useState(1);
+
     const incomeCategories = [
         { value: "salary", label: "Salary" },
         { value: "freelance", label: "Freelance" },
@@ -88,10 +90,13 @@ export function ClientTransactionsPage() {
                 setFilterType={setFilterType} 
                 filterCategory={filterCategory} 
                 setFilterCategory={setFilterCategory}
+                setCurrentPage={setCurrentPage}
             />
 
             <ClientAllTransactions 
                 displayedTransactions={displayedTransactions}
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
             />
 
         </div>
