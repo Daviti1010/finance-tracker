@@ -24,7 +24,7 @@ export function LinksPage() {
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
         setInputValue(e.target.value);
-        console.log(e.target.value)
+        // console.log(e.target.value)
     }
 
     const handleSubmit = async (e:  React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +34,7 @@ export function LinksPage() {
             const data = await response.json();
 
             if (data.success) {
-                console.log("Success!")
+                // console.log("Success!")
                 setInputValue('');
                 fetchOutgoingRequests();
             } else {
