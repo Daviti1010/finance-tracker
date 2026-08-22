@@ -112,56 +112,57 @@ export function Header() {
                 </div>
 
                 {isMenuOpen && (
-                <>
+                    <>
                     <div className="mobile-nav-overlay" onClick={() => setIsMenuOpen(false)} />
                         <div className="mobile-nav">
                             <div className='right-part'>
-                                <div className='profile'>
-                                    <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
+                                <div className="user-controls">
+                                    <div className='profile'>
+                                        <div className='profile-text'> <FontAwesomeIcon icon={faCircleUser} /> {username}</div>
+                                    </div>
+
+                                    <div className='links'>
+                                        {location.pathname === '/dashboard' ? (
+                                            <Link to="/links">
+                                                <FontAwesomeIcon icon={faLink} className="link-icon" />
+                                                {" "} View Links
+                                            </Link>
+                                        ) : isClientTransactions ? (
+                                            <Link to="/links">
+                                                <FontAwesomeIcon icon={faLink} className="link-icon" />
+                                                {" "} View Links
+                                            </Link>
+                                        ) : (
+                                            <Link to="/dashboard">
+                                                <FontAwesomeIcon icon={faHouse} className="link-icon" />
+                                                {" "} Go to Dashboard
+                                            </Link>
+                                        )}
+                                    </div>
+
+                                    <div className='logout'>
+                                        <button className='logout-btn' onClick={clearToken}> <FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
+                                    </div>
                                 </div>
 
-                                <div className='links'>
-                                    {location.pathname === '/dashboard' ? (
-                                        <Link to="/links">
-                                            <FontAwesomeIcon icon={faLink} className="link-icon" />
-                                            {" "} View Links
-                                        </Link>
-                                    ) : isClientTransactions ? (
-                                        <Link to="/links">
-                                            <FontAwesomeIcon icon={faLink} className="link-icon" />
-                                            {" "} View Links
-                                        </Link>
-                                    ) : (
-                                        <Link to="/dashboard">
-                                            <FontAwesomeIcon icon={faHouse} className="link-icon" />
-                                            {" "} Go to Dashboard
-                                        </Link>
-                                    )}
+                                <div className="switch-mode">
+                                    <label className="switch">
+                                        <input
+                                            type="checkbox"
+                                            checked={theme === "dark"}
+                                            onChange={toggleTheme}
+                                        />
+                                        <span className="slider round">
+                                            {theme === "dark" && <img src="/sun.svg" alt="" className="icon icon-sun" />}
+                                            {theme === "light" && <img src="/moon.svg" alt="" className="icon icon-moon" />}
+                                        </span>
+                                    </label>
                                 </div>
 
-                            <div className='logout'>
-                                <button className='logout-btn' onClick={clearToken}> <FontAwesomeIcon icon={faRightFromBracket} /> Logout</button>
                             </div>
-
-                            <div className="switch-mode">
-                                <label className="switch">
-                                    <input
-                                        type="checkbox"
-                                        checked={theme === "dark"}
-                                        onChange={toggleTheme}
-                                    />
-                                    <span className="slider round">
-                                        {theme === "dark" && <img src="/sun.svg" alt="" className="icon icon-sun" />}
-                                        {theme === "light" && <img src="/moon.svg" alt="" className="icon icon-moon" />}
-                                    </span>
-                                </label>
-                            </div>
-
                         </div>
-                    </div>
-                </>
+                    </>
                 )}
-
             </div>
           </header>
         </>

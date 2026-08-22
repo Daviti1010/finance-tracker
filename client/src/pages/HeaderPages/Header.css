@@ -215,11 +215,12 @@ input:checked ~ .slider-icon {
 
   .right-part {
     gap: 35px;
-    margin-right: -30px;
+    margin-right: -45px;
   }
 
   .left-part {
-    gap: 35px;
+    gap: 25px;
+    margin-left: -20px;
   }
 
 }
@@ -228,10 +229,6 @@ input:checked ~ .slider-icon {
 @media (max-width: 600px) {
   .desktop-nav {
     display: none;
-  }
-
-  .profile {
-    padding-right: 35px;
   }
 
   .profile-hdr {
@@ -248,7 +245,7 @@ input:checked ~ .slider-icon {
   }
 
   .hamburger-button {
-    display: block;
+    display: flex;
     z-index: 1002;
     background: none;
     border: none;
@@ -259,13 +256,22 @@ input:checked ~ .slider-icon {
 
   .right-part {
     flex-direction: column;
-    margin: auto 0;
+    margin: 300px auto;
+  }
+
+  .user-controls {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 40px;
-    margin-right: -30px;
   }
 
   .logout-btn {
     background-color: var(--main-bg-color);
+  }
+
+  .switch-mode {
+    margin: 30px auto;
   }
 
   .left-part {
