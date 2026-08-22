@@ -53,7 +53,11 @@ export function Header() {
           <header className='header'>
             <div className='header-container'>
                 <div className='left-part'>
-                    <div className='left-part-text'>Finance Tracker</div>
+                    <div className='left-part-text'>                           
+                        <Link to="/dashboard">
+                            Finance Tracker
+                        </Link>
+                    </div>
 
                     <div className='desktop-links'>
                         {location.pathname === '/dashboard' ? (

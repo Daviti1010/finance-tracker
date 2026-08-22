@@ -11,8 +11,9 @@
     gap: 50px;
 }
 
-.left-part-text {
+.left-part-text a{
     color: var(--header-text-color);
+    text-decoration: none;
     /* font-weight: 550; */
 }
 
