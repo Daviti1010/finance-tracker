@@ -150,7 +150,10 @@ export function Header() {
                                         checked={theme === "dark"}
                                         onChange={toggleTheme}
                                     />
-                                    <span className="slider round"></span>
+                                    <span className="slider round">
+                                        {theme === "dark" && <img src="/sun.svg" alt="" className="icon icon-sun" />}
+                                        {theme === "light" && <img src="/moon.svg" alt="" className="icon icon-moon" />}
+                                    </span>
                                 </label>
                             </div>
 
