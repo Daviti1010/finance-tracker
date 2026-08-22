@@ -1,4 +1,4 @@
-import { useState } from "react";
+// import { useState } from "react";
 import type { Dispatch, SetStateAction } from "react"
 import { getClientTransactions } from "../../../../api";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,39 +7,21 @@ import type { Transaction } from '../../../../types';
 
 
 interface UpperPartProps {
+    expenseCategories: { value: string; label: string }[]
+    incomeCategories: { value: string; label: string }[]
     clientIdNum: number;
     setDisplayedTransactions: Dispatch<SetStateAction<Transaction[]>>
     fetchClientTransactions: () => Promise<void>
+    filterType: string
+    setFilterType: Dispatch<SetStateAction<string>>
+    filterCategory: string
+    setFilterCategory: Dispatch<SetStateAction<string>>
 }
 
 
-export function ClientTransactionsUpperPart({clientIdNum, setDisplayedTransactions, fetchClientTransactions}: UpperPartProps) {
+export function ClientTransactionsUpperPart({clientIdNum, expenseCategories, incomeCategories, setDisplayedTransactions,
+     fetchClientTransactions, filterType, setFilterType, filterCategory, setFilterCategory}: UpperPartProps) {
 
-
-    const [filterType, setFilterType] = useState("expense");
-    const [filterCategory, setFilterCategory] = useState("all")
-
-
-    const incomeCategories = [
-        { value: "salary", label: "Salary" },
-        { value: "freelance", label: "Freelance" },
-        { value: "investments", label: "Investments" },
-        { value: "gifts", label: "Gifts" },
-        { value: "other", label: "Other" },
-    ]
-
-    const expenseCategories = [
-        { value: "food", label: "Food & Groceries" },
-        { value: "rent", label: "Rent / Housing" },
-        { value: "transport", label: "Transport" },
-        { value: "utilities", label: "Utilities" },
-        { value: "entertainment", label: "Entertainment" },
-        { value: "shopping", label: "Shopping" },
-        { value: "health", label: "Health & Fitness" },
-        { value: "subscriptions", label: "Subscriptions" },
-        { value: "education", label: "Education" },
-        { value: "other", label: "Other" },
-    ]
 
     const filterCategoryOptions = [
         { value: "all", label: "All categories" },
@@ -66,7 +48,7 @@ export function ClientTransactionsUpperPart({clientIdNum, setDisplayedTransactio
     }
 
     function handleReset() {
-        setFilterType("expense")
+        setFilterType("all")
         setFilterCategory("all")
         fetchClientTransactions()
     }
@@ -86,6 +68,7 @@ export function ClientTransactionsUpperPart({clientIdNum, setDisplayedTransactio
                     setFilterCategory("all")
                 }}
             >
+                <option value="all">All Types</option>
                 <option value="expense">Expense</option>
                 <option value="income">Income</option>
             </select>
@@ -93,6 +76,7 @@ export function ClientTransactionsUpperPart({clientIdNum, setDisplayedTransactio
             <select name="select-category"
                 id="select-category"
                 value={filterCategory} 
+                disabled={filterType === "all"}
                 onChange={(e) => setFilterCategory(e.target.value)}>
 
                 {filterCategoryOptions.map((categ) => (
