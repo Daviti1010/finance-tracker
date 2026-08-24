@@ -1,7 +1,7 @@
-import dotenv from 'dotenv';
+// import dotenv from 'dotenv';
 import pg from 'pg';
 
-dotenv.config()
+// dotenv.config()
 
 const pool = new pg.Pool({
   user: process.env.USER,
@@ -12,4 +12,5 @@ const pool = new pg.Pool({
   ssl: false
 })
 
+console.log("Connecting to database:", process.env.DATABASE);
 export default pool
