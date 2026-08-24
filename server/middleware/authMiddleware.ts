@@ -28,6 +28,9 @@ async function authMiddleware(req: any, res: any, next: any) {
 
             const currentTokenVersion = result.rows[0].token_version;
 
+            // console.log("Decoded token version:", decoded.tokenVersion);
+            // console.log("Database token version:", currentTokenVersion);
+
             if (decoded.tokenVersion !== currentTokenVersion) {
                 return res.status(401).json({ success: false, message: "Session expired, please log in again" });
             }

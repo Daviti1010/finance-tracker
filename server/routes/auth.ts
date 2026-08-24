@@ -81,7 +81,7 @@ router.post("/register", async (req, res) => {
         console.log("Hashed Password:", hash);
 
         const result = await pool.query(
-            "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username",
+            "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, token_version",
             [name, email, hash]
         );
 
@@ -89,7 +89,9 @@ router.post("/register", async (req, res) => {
         const newUserId = newUser.id;
         console.log(`User registered with ID: ${newUserId}`);
 
-        const newUserInfo = { id: newUser.id, name: newUser.username }
+        // console.log("User object from DB:", newUser);
+
+        const newUserInfo = { id: newUser.id, name: newUser.username, tokenVersion: newUser.token_version ?? 0 }
 
         const accessToken = generateToken(newUserInfo)
 
