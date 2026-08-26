@@ -5,6 +5,7 @@ dotenv.config({ path: '.env.test' });
 
 export default defineConfig({
   test: {
+    fileParallelism: false,
     environment: "node",
     globals: true,
     setupFiles: ["./tests/setup.ts"],
