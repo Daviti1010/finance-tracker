@@ -3,14 +3,18 @@ import request from "supertest";
 import app from "../app";
 
 
+async function createUserAndGetToken(email: string) {
+    const res = await request(app)
+        .post("/auth/register")
+        .send({ name: "test", email, password: "123456!n" });
+    return res.body.accessToken;
+}
+
+
 describe("transactions", () => {
     it("adding user transactions successfully", async () => {
     
-        const registerRes = await request(app)
-            .post("/auth/register")
-            .send({ name: "transactions-test", email: "transactions-test@example.com", password: "123456!n" });
-
-        const token = registerRes.body.accessToken;
+        const token = await createUserAndGetToken("transactions-test@example.com")
 
         const res = await request(app)
             .post("/transactions")
