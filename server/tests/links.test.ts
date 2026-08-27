@@ -80,4 +80,16 @@ describe("GET /api/links/incoming", () => {
         expect(res.body.data[0].advisorEmail).toBe("advisor-test@example.com");
         expect(res.body.data[0].status).toBe("pending");
     })
+
+    it("returns empty array when no one has requested this client", async () => {
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const res = await request(app)
+            .get("/api/links/incoming")
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toEqual([]);
+    })
 })
