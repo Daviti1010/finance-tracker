@@ -22,4 +22,16 @@ describe("POST /api/links", () => {
         expect(res.status).toBe(201);
         expect(res.body).toEqual({ success: true, message: "Link request sent." });
     })
+
+    it("rejects request with missing clientEmail", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+
+        const res = await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({})
+
+        expect(res.status).toBe(400);
+        expect(res.body).toEqual({ success: false, message: "Client email is required" });
+    })
 })
