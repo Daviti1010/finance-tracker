@@ -54,3 +54,24 @@ describe("POST /transactions", () => {
     });
 
 });
+
+describe("Delete /transactions", () => {
+    it("successfully deletes a transaction", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        const transactionA = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "A's transaction", date: "2026-08-20" });
+
+        const transactionId = transactionA.body.id;
+
+        const res = await request(app)
+            .delete(`/transactions/${transactionId}`)
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Successfully deleted");
+    });
+
+});
