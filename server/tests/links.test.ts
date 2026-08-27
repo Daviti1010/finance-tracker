@@ -59,3 +59,25 @@ describe("POST /api/links", () => {
         expect(res.body).toEqual({ success: true, message: "Link request sent" });
     })
 })
+
+describe("GET /api/links/incoming", () => {
+    it("returns requests sent to this client", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({ clientEmail: "client-test@example.com" });
+
+        const res = await request(app)
+            .get("/api/links/incoming")
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toHaveLength(1);
+        expect(res.body.data[0].advisorEmail).toBe("advisor-test@example.com");
+        expect(res.body.data[0].status).toBe("pending");
+    })
+})
