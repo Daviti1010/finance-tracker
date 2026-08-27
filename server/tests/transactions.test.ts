@@ -74,4 +74,23 @@ describe("Delete /transactions", () => {
         expect(res.body.message).toBe("Successfully deleted");
     });
 
+    it("rejects deleting another user's transaction", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+        const tokenB = await createUserAndGetToken("transactions-test2@example.com")
+
+        const transactionA = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "A's transaction", date: "2026-08-20" });
+
+        const transactionId = transactionA.body.id;
+
+        const res = await request(app)
+            .delete(`/transactions/${transactionId}`)
+            .set("Authorization", `Bearer ${tokenB}`)
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Error");
+    });
+
 });
