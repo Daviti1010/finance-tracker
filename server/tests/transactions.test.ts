@@ -235,4 +235,16 @@ describe("Delete /transactions", () => {
         expect(res.body.message).toBe("Error");
     });
 
+    it("returns an error for non-existent ID", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        const res = await request(app)
+            .delete(`/transactions/9999`)
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Error");
+    })
+
+
 });
