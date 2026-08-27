@@ -39,8 +39,8 @@ router.post("/", authMiddleware, async (req: any, res: any) => {
         return res.status(400).json({success: false, message: "Invalid information" })
     }
 
-    if (amount <= 0) {
-        return res.status(400).json({success: false, message: "Invalid number" })
+    if (typeof amount !== "number" || isNaN(amount) || amount <= 0) {
+        return res.status(400).json({ success: false, message: "Invalid number" });
     }
 
     const today = new Date().toISOString().split("T")[0]

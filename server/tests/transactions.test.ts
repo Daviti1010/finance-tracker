@@ -183,6 +183,18 @@ describe("POST /transactions", () => {
         expect(res.body.message).toBe("Invalid information");
     });
 
+    it("rejects negative/non-numeric amount", async () => {
+        const token = await createUserAndGetToken("transactions-test@example.com")
+
+        const res = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ type: "expense", amount: "50", category: "other", description: "something", date: "2026-08-20" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Invalid number");
+    });
+
 });
 
 describe("Delete /transactions", () => {
