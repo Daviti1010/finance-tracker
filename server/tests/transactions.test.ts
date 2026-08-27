@@ -35,6 +35,18 @@ describe("GET /transactions", () => {
         expect(res.body[0].description).toBe("A's transaction");
     });
 
+    it("returns empty array when the user has no transactions", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        const res = await request(app)
+            .get("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveLength(0);
+        expect(res.body).toEqual([]);
+    })
+
 });
 
 describe("POST /transactions", () => {
