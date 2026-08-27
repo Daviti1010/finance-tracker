@@ -92,4 +92,29 @@ describe("GET /api/links/incoming", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data).toEqual([]);
     })
+
+    it("client only gets requests sent to them", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com")
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com")
+
+        await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({ clientEmail: "client-test1@example.com" });
+
+        await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({ clientEmail: "client-test2@example.com" });
+
+        const res = await request(app)
+            .get("/api/links/incoming")
+            .set("Authorization", `Bearer ${clientToken1}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toHaveLength(1);
+        expect(res.body.data[0].advisorEmail).toBe("advisor-test@example.com");
+    })
 })
