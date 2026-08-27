@@ -111,18 +111,64 @@ describe("GET /transactions", () => {
 
 describe("POST /transactions", () => {
     it("adding user transactions successfully", async () => {
-    
         const token = await createUserAndGetToken("transactions-test@example.com")
 
         const res = await request(app)
             .post("/transactions")
             .set("Authorization", `Bearer ${token}`)
             .send({ type: "expense", amount: 50, category: "other", description: "something", date: "2026-08-20" });
-
         
         expect(res.status).toBe(201);
         expect(res.body).toHaveProperty("id");
         expect(Number(res.body.amount)).toBe(50);
+    });
+
+    it("rejects with missing type field", async () => {
+        const token = await createUserAndGetToken("transactions-test@example.com")
+
+        const res = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ amount: 50, category: "other", description: "something", date: "2026-08-20" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Missing a field");
+    });
+
+    it("rejects with missing amount field", async () => {
+        const token = await createUserAndGetToken("transactions-test@example.com")
+
+        const res = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ type: "expense", category: "other", description: "something", date: "2026-08-20" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Missing a field");
+    });
+
+    it("rejects with missing category field", async () => {
+        const token = await createUserAndGetToken("transactions-test@example.com")
+
+        const res = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ type: "expense", amount: 50, description: "something", date: "2026-08-20" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Missing a field");
+    });
+
+    it("rejects with missing date field", async () => {
+        const token = await createUserAndGetToken("transactions-test@example.com")
+
+        const res = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${token}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "something" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Missing a field");
     });
 
 });
