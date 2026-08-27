@@ -246,5 +246,33 @@ describe("Delete /transactions", () => {
         expect(res.body.message).toBe("Error");
     })
 
+    it("deleted transaction no longer appears in GET", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        const transactionA = await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "A's transaction", date: "2026-08-20" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "income", amount: 100, category: "salary", description: "A's other transaction", date: "2026-08-21" });
+
+
+        const transactionId = transactionA.body.id;
+
+        await request(app)
+            .delete(`/transactions/${transactionId}`)
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        const res = await request(app)
+            .get("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveLength(1);
+        expect(res.body.some((t: any) => t.id === transactionId)).toBe(false);
+    })
 
 });
