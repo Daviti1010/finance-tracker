@@ -34,4 +34,16 @@ describe("POST /api/links", () => {
         expect(res.status).toBe(400);
         expect(res.body).toEqual({ success: false, message: "Client email is required" });
     })
+
+    it("rejects self-request", async() => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+
+        const res = await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({ clientEmail: "advisor-test@example.com" });
+
+        expect(res.status).toBe(400);
+        expect(res.body).toEqual({ success: false, message: "Unable to do this action" });
+    })
 })
