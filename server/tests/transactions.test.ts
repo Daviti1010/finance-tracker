@@ -3,10 +3,10 @@ import request from "supertest";
 import app from "../app";
 
 
-async function createUserAndGetToken(email: string) {
+async function createUserAndGetToken(email: string, name?: string) {
     const res = await request(app)
         .post("/auth/register")
-        .send({ name: "test", email, password: "123456!n" });
+        .send({ name: name ?? email.split("@")[0], email, password: "123456!n" });
     return res.body.accessToken;
 }
 
