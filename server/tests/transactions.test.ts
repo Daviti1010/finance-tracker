@@ -47,6 +47,33 @@ describe("GET /transactions", () => {
         expect(res.body).toEqual([]);
     })
 
+    it("filters by type only", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "A's 1st transaction", date: "2026-08-20" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 500, category: "rent", description: "A's 2nd transaction", date: "2026-08-20" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "income", amount: 70, category: "salary", description: "A's 3rd transaction", date: "2026-08-21" });
+
+        const res = await request(app)
+            .get("/transactions?type=expense&category=all")
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveLength(2);
+        expect(res.body.every((t: any) => t.type === "expense")).toBe(true);
+    })
+
 });
 
 describe("POST /transactions", () => {
