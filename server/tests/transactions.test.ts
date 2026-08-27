@@ -74,6 +74,39 @@ describe("GET /transactions", () => {
         expect(res.body.every((t: any) => t.type === "expense")).toBe(true);
     })
 
+    it("filters by type and category", async () => {
+        const tokenA = await createUserAndGetToken("transactions-test1@example.com")
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "A's 1st transaction", date: "2026-08-20" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 500, category: "rent", description: "A's 2nd transaction", date: "2026-08-20" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "income", amount: 70, category: "salary", description: "A's 3rd transaction", date: "2026-08-21" });
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${tokenA}`)
+            .send({ type: "expense", amount: 100, category: "education", description: "A's 4th transaction", date: "2026-08-25" });
+
+
+        const res = await request(app)
+            .get("/transactions?type=expense&category=rent")
+            .set("Authorization", `Bearer ${tokenA}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body).toHaveLength(1);
+        expect(res.body.every((t: any) => t.type === "expense" && t.category === "rent")).toBe(true);
+    })
+
 });
 
 describe("POST /transactions", () => {
