@@ -170,4 +170,23 @@ describe("GET /api/links/outgoing", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data).toHaveLength(0);
     })
+
+    it("does not return other advisors' outgoing requests", async () => {
+        const advisorToken1 = await createUserAndGetToken("advisor-test1@example.com")
+        const advisorToken2 = await createUserAndGetToken("advisor-test2@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com")
+
+        await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken1}`)
+            .send({ clientEmail: "client-test1@example.com" });
+
+        const res = await request(app)
+            .get("/api/links/outgoing")
+            .set("Authorization", `Bearer ${advisorToken2}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
