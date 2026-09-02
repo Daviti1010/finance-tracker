@@ -135,6 +135,13 @@ describe("GET /api/links/incoming", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data).toHaveLength(0);
     })
+
+    it("rejects GET /incoming without a token", async () => {
+        const res = await request(app)
+            .get("/api/links/incoming")
+
+        expect(res.status).toBe(401);
+    })
 })
 
 
@@ -206,5 +213,12 @@ describe("GET /api/links/outgoing", () => {
         expect(res.status).toBe(200);
         expect(res.body.success).toBe(true);
         expect(res.body.data).toHaveLength(0);
+    })
+
+    it("rejects GET /outgoing without a token", async () => {
+        const res = await request(app)
+            .get("/api/links/outgoing")
+
+        expect(res.status).toBe(401);
     })
 })
