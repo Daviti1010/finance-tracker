@@ -189,4 +189,22 @@ describe("GET /api/links/outgoing", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data).toHaveLength(0);
     })
+
+    it("client does not see their own incoming requests as outgoing", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com")
+
+        await request(app)
+            .post("/api/links")
+            .set("Authorization", `Bearer ${advisorToken}`)
+            .send({ clientEmail: "client-test1@example.com" });
+
+        const res = await request(app)
+            .get("/api/links/outgoing")
+            .set("Authorization", `Bearer ${clientToken1}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
