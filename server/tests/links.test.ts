@@ -158,4 +158,16 @@ describe("GET /api/links/outgoing", () => {
         expect(res.body.data[0].clientEmail).toBe("client-test1@example.com");
         expect(res.body.data[0].status).toBe("pending");
     })
+
+    it("returns empty array when this advisor has sent nothing", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+
+        const res = await request(app)
+            .get("/api/links/outgoing")
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
