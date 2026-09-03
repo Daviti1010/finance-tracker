@@ -59,7 +59,9 @@ export async function getLinkStatus(advisorId: number, clientId: number): Promis
   
     try {
       const result = await pool.query(`SELECT status FROM advisor_client_links 
-        WHERE advisor_id = $1 AND client_id = $2`,
+        WHERE advisor_id = $1 AND client_id = $2
+          ORDER BY updated_at DESC
+          LIMIT 1`,
         [advisorId, clientId])
         
       return mapLinkRow(result.rows[0])?.status ?? null;
