@@ -401,4 +401,26 @@ describe("PATCH /:id/revoke", () => {
         expect(res.status).toBe(404);
         expect(res.body.message).toBe("Not found");
     })
+
+    it("rejects revoke attempt by unrelated client and unrelated advisor", async () => {
+        const advisorToken1 = await createUserAndGetToken("advisor-test1@example.com")
+        const advisorToken2 = await createUserAndGetToken("advisor-test2@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com");
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken1, clientToken1, "client-test1@example.com")
+
+        const clientRes = await request(app)
+            .patch(`/api/links/${linkId}/revoke`)
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        const advisorRes = await request(app)
+            .patch(`/api/links/${linkId}/revoke`)
+            .set("Authorization", `Bearer ${advisorToken2}`)
+
+        expect(clientRes.status).toBe(403);
+        expect(clientRes.body.message).toBe("User error");
+        expect(advisorRes.status).toBe(403);
+        expect(advisorRes.body.message).toBe("User error");
+    })
 })
