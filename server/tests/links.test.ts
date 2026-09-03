@@ -9,6 +9,22 @@ async function createUserAndGetToken(email: string, name?: string) {
     return res.body.accessToken;
 }
 
+async function createLinkAndGetId(advisorToken: string, clientToken: string, clientEmail: string) {
+    await request(app)
+        .post("/api/links")
+        .set("Authorization", `Bearer ${advisorToken}`)
+        .send({ clientEmail });
+
+    const incomingRes = await request(app)
+        .get("/api/links/incoming")
+        .set("Authorization", `Bearer ${clientToken}`)
+
+    const linkId = incomingRes.body.data[0].id;
+
+    return linkId
+}
+
+
 describe("POST /api/links", () => {
     it("advisor successfully sends a link request to a client", async () => {
         const advisorToken = await createUserAndGetToken("advisor-test@example.com")
@@ -220,5 +236,21 @@ describe("GET /api/links/outgoing", () => {
             .get("/api/links/outgoing")
 
         expect(res.status).toBe(401);
+    })
+})
+
+describe("PATCH /:id/accept", () => {
+    it("client successfully accepts a request", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        const res = await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data.status).toBe("accepted");
     })
 })
