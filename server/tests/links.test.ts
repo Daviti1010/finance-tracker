@@ -264,4 +264,15 @@ describe("PATCH /:id/accept", () => {
         expect(res.status).toBe(400);
         expect(res.body.message).toBe("Invalid link id");
     })
+
+    it("rejects non-existent link id", async () => {
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const res = await request(app)
+            .patch(`/api/links/99999999/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(404);
+        expect(res.body.message).toBe("Link not found");
+    })
 })
