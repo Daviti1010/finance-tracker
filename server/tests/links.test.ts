@@ -291,4 +291,21 @@ describe("PATCH /:id/accept", () => {
         expect(res.body.message).toBe("Not authorized to accept this request");
     })
 
+    it("rejects accepting an already-accepted request", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        const res = await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("This request cannot be accepted");
+    })
 })
