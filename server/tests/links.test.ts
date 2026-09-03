@@ -253,4 +253,15 @@ describe("PATCH /:id/accept", () => {
         expect(res.status).toBe(200);
         expect(res.body.data.status).toBe("accepted");
     })
+
+    it("rejects non-numeric link id", async () => {
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const res = await request(app)
+            .patch(`/api/links/abcd/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(400);
+        expect(res.body.message).toBe("Invalid link id");
+    })
 })
