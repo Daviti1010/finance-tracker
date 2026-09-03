@@ -345,4 +345,38 @@ describe("PATCH /:id/revoke", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.data.status).toBe("revoked");
     })
+
+    it("client successfully revokes accepted request", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        const res = await request(app)
+            .patch(`/api/links/${linkId}/revoke`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data.status).toBe("revoked");
+    })
+
+    it("client successfully revokes a pending incoming request", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        const res = await request(app)
+            .patch(`/api/links/${linkId}/revoke`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.data.status).toBe("revoked");
+    })
 })
