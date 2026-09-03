@@ -275,4 +275,20 @@ describe("PATCH /:id/accept", () => {
         expect(res.status).toBe(404);
         expect(res.body.message).toBe("Link not found");
     })
+
+    it("rejects accept attempt by someone who isn't the target client", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com");
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken1, "client-test1@example.com")
+
+        const res = await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body.message).toBe("Not authorized to accept this request");
+    })
+
 })
