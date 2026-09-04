@@ -493,4 +493,18 @@ describe("GET /clients", () => {
         expect(emails).toContain("client-test1@example.com");
         expect(emails).toContain("client-test2@example.com");
     })
+
+    it("does not include pending-only links", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        const res = await request(app)
+            .get("/api/links/clients")
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
