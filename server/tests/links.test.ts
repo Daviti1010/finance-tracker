@@ -464,3 +464,33 @@ describe("PATCH /:id/revoke", () => {
         expect(res.body.message).toBe("This request cannot be accepted");
     })
 })
+
+
+describe("GET /clients", () => {
+    it("returns advisor's accepted clients", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com");
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com");
+
+        const linkId1 = await createLinkAndGetId(advisorToken, clientToken1, "client-test1@example.com")
+        const linkId2 = await createLinkAndGetId(advisorToken, clientToken2, "client-test2@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId1}/accept`)
+            .set("Authorization", `Bearer ${clientToken1}`)
+
+        await request(app)
+            .patch(`/api/links/${linkId2}/accept`)
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        const res = await request(app)
+            .get("/api/links/clients")
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(2);
+        const emails = res.body.data.map((c: any) => c.clientEmail);
+        expect(emails).toContain("client-test1@example.com");
+        expect(emails).toContain("client-test2@example.com");
+    })
+})
