@@ -130,4 +130,17 @@ describe("GET /:clientId/transactions", () => {
         expect(res.status).toBe(403);
         expect(res.body).toEqual({ error: 'Not authorized to view this data' });
     })
+
+    it("a user can access their own transactions via this route", async () => {
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const decoded: any = jwt.decode(clientToken);
+        const clientId = decoded.id;
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/transactions`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+    })
 })
