@@ -585,4 +585,16 @@ describe("GET /advisors", () => {
         expect(res.status).toBe(200);
         expect(res.body.data).toHaveLength(0);
     })
+
+    it("returns empty array when client has no advisors", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const res = await request(app)
+            .get("/api/links/advisors")
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
