@@ -179,4 +179,19 @@ describe("GET /:clientId/starting-balance", () => {
         expect(res.status).toBe(403);
         expect(res.body).toEqual({ error: 'Not authorized to view this data' });
     })
+    
+    it("a client cannot view another client's starting balance", async () => {
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com")
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com")
+
+        const decoded: any = jwt.decode(clientToken1);
+        const clientId = decoded.id;
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/starting-balance`)
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: 'Not authorized to view this data' });
+    })
 })
