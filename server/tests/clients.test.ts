@@ -144,3 +144,24 @@ describe("GET /:clientId/transactions", () => {
         expect(res.status).toBe(200);
     })
 })
+
+
+describe("GET /:clientId/starting-balance", () => {
+    it("advisor with accepted link can access client's starting balance", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const { linkId, clientId } = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/starting-balance`)
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.startingBalance).toEqual(0);
+    })
+})
