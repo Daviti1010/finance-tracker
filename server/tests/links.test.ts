@@ -597,4 +597,23 @@ describe("GET /advisors", () => {
         expect(res.status).toBe(200);
         expect(res.body.data).toHaveLength(0);
     })
+
+    it("does not return other clients' advisors", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com");
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com");
+
+        const linkId = await createLinkAndGetId(advisorToken, clientToken1, "client-test1@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken1}`)
+
+        const res = await request(app)
+            .get("/api/links/advisors")
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(0);
+    })
 })
