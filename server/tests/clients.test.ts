@@ -164,4 +164,19 @@ describe("GET /:clientId/starting-balance", () => {
         expect(res.status).toBe(200);
         expect(res.body.startingBalance).toEqual(0);
     })
+
+    it("advisor with no link cannot access", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const decoded: any = jwt.decode(clientToken);
+        const clientId = decoded.id;
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/starting-balance`)
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: 'Not authorized to view this data' });
+    })
 })
