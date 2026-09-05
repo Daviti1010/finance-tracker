@@ -63,8 +63,13 @@ export async function getLinkStatus(advisorId: number, clientId: number): Promis
           ORDER BY updated_at DESC
           LIMIT 1`,
         [advisorId, clientId])
+
+      const row = result.rows[0];
+      if (!row) return null;
+
+      return mapLinkRow(row).status;
         
-      return mapLinkRow(result.rows[0])?.status ?? null;
+      // return mapLinkRow(result.rows[0])?.status ?? null;
       
     } catch (err) {
       console.error(err);
