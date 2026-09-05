@@ -93,4 +93,26 @@ describe("GET /:clientId/transactions", () => {
         expect(res.status).toBe(403);
         expect(res.body).toEqual({ error: 'Not authorized to view this data' });
     })
+
+    it("advisor whose link was revoked after being accepted, loses access", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const { linkId, clientId } = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        await request(app)
+            .patch(`/api/links/${linkId}/revoke`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/transactions`)
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: 'Not authorized to view this data' });
+    })
 })
