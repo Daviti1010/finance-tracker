@@ -29,7 +29,7 @@ router.get("/:clientId/starting-balance", authMiddleware, requireClientAccess, a
 
     try {
         const user = await getUserById(clientId);
-        return res.status(200).json({ startingBalance: user?.starting_balance ?? null });
+        return res.status(200).json({ startingBalance: user?.starting_balance != null ? Number(user.starting_balance) : null  });
 
     } catch (err) {
         console.error(err);
