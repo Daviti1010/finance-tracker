@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
+import jwt from "jsonwebtoken";
 import app from "../app";
 
 async function createUserAndGetToken(email: string, name?: string) {
@@ -59,6 +60,26 @@ describe("GET /:clientId/transactions", () => {
         const clientToken = await createUserAndGetToken("client-test@example.com")
 
         const { clientId } = await createLinkAndGetId(advisorToken, clientToken, "client-test@example.com")
+
+        await request(app)
+            .post("/transactions")
+            .set("Authorization", `Bearer ${clientToken}`)
+            .send({ type: "expense", amount: 50, category: "other", description: "something", date: "2026-08-20" });
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/transactions`)
+            .set("Authorization", `Bearer ${advisorToken}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: 'Not authorized to view this data' });
+    })
+
+    it("advisor with no link at all cannot access", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken = await createUserAndGetToken("client-test@example.com")
+
+        const decoded: any = jwt.decode(clientToken);
+        const clientId = decoded.id;
 
         await request(app)
             .post("/transactions")
