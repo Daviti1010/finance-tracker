@@ -115,4 +115,19 @@ describe("GET /:clientId/transactions", () => {
         expect(res.status).toBe(403);
         expect(res.body).toEqual({ error: 'Not authorized to view this data' });
     })
+
+    it("a client cannot use this route to view another client's transactions", async () => {
+        const advisorToken = await createUserAndGetToken("advisor-test@example.com")
+        const clientToken1 = await createUserAndGetToken("client-test1@example.com")
+        const clientToken2 = await createUserAndGetToken("client-test2@example.com")
+
+        const { clientId } = await createLinkAndGetId(advisorToken, clientToken1, "client-test1@example.com")
+
+        const res = await request(app)
+            .get(`/clients/${clientId}/transactions`)
+            .set("Authorization", `Bearer ${clientToken2}`)
+
+        expect(res.status).toBe(403);
+        expect(res.body).toEqual({ error: 'Not authorized to view this data' });
+    })
 })
