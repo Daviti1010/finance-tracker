@@ -9,7 +9,7 @@ async function createUserAndGetToken(email: string, name?: string) {
     return res.body.accessToken;
 }
 
-async function createLinkAndGetId(advisorToken: string, clientToken: string, clientEmail: string) {
+async function createLinkAndGetId(advisorToken: string, clientToken: string, clientEmail: string, advisorEmail?: string) {
     await request(app)
         .post("/api/links")
         .set("Authorization", `Bearer ${advisorToken}`)
@@ -19,9 +19,12 @@ async function createLinkAndGetId(advisorToken: string, clientToken: string, cli
         .get("/api/links/incoming")
         .set("Authorization", `Bearer ${clientToken}`)
 
-    const linkId = incomingRes.body.data[0].id;
+    const match = advisorEmail
+        ? incomingRes.body.data.find((link: any) => link.advisorEmail === advisorEmail)
+        : incomingRes.body.data[0];
 
-    return linkId
+    const linkId = match.id;
+    return linkId;
 }
 
 
@@ -537,5 +540,35 @@ describe("GET /clients", () => {
 
         expect(res.status).toBe(200);
         expect(res.body.data).toHaveLength(0);
+    })
+})
+
+
+describe("GET /advisors", () => {
+    it("returns client's accepted advisors", async () => {
+        const advisorToken1 = await createUserAndGetToken("advisor-test1@example.com")
+        const advisorToken2 = await createUserAndGetToken("advisor-test2@example.com");
+        const clientToken = await createUserAndGetToken("client-test@example.com");
+
+        const linkId1 = await createLinkAndGetId(advisorToken1, clientToken, "client-test@example.com", "advisor-test1@example.com")
+        const linkId2 = await createLinkAndGetId(advisorToken2, clientToken, "client-test@example.com", "advisor-test2@example.com")
+
+        await request(app)
+            .patch(`/api/links/${linkId1}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        await request(app)
+            .patch(`/api/links/${linkId2}/accept`)
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        const res = await request(app)
+            .get("/api/links/advisors")
+            .set("Authorization", `Bearer ${clientToken}`)
+
+        expect(res.status).toBe(200);
+        expect(res.body.data).toHaveLength(2);
+        const emails = res.body.data.map((a: any) => a.advisorEmail);
+        expect(emails).toContain("advisor-test1@example.com");
+        expect(emails).toContain("advisor-test2@example.com");
     })
 })
