@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import request from "supertest";
 import app from "../app";
+import pool from "../db";
 
 vi.mock("../services/email", () => ({
     sendPasswordResetEmail: vi.fn().mockResolvedValue({ error: null }),
@@ -43,6 +44,27 @@ describe("POST /forgot-password", () => {
         expect(res.body.message).toBe("If that email exists, a code was sent.");
         expect(sendPasswordResetEmail).toHaveBeenCalledTimes(0);
     })
+
+    it("deletes any previous unused token before creating a new one", async () => {
+        await createUserAndGetToken("reset-test@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-test@example.com" });
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-test@example.com" });
+
+        const result = await pool.query(
+            `SELECT prt.* FROM password_reset_tokens prt
+            JOIN users u ON u.id = prt.user_id
+            WHERE u.email = $1`,
+            ["reset-test@example.com"]
+        );
+
+        expect(result.rows).toHaveLength(1);
+    });
 });
 
 describe("POST /check-code", () => {
