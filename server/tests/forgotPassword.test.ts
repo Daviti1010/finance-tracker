@@ -105,4 +105,21 @@ describe("POST /check-code", () => {
         expect(res.status).toBe(200);
         expect(res.body.valid).toBe(false);
     })
+
+    it("returns 'valid: false' for a non-existent email", async () => {
+        await createUserAndGetToken("check-code-invalid-1@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "check-code-invalid-1@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        const res = await request(app)
+            .post("/auth/check-code")
+            .send({ email: "check-code-invalid-123@example.com", code: rawCode });
+
+        expect(res.status).toBe(200);
+        expect(res.body.valid).toBe(false);
+    })
 })
