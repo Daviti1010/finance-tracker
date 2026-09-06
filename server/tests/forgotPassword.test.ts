@@ -133,4 +133,28 @@ describe("POST /check-code", () => {
         expect(res.status).toBe(200);
         expect(res.body.valid).toBe(false);
     });
+
+    it("returns 'valid: false' for an expired code", async () => {
+        await createUserAndGetToken("check-code-expired@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "check-code-expired@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        await pool.query(
+            `UPDATE password_reset_tokens
+            SET expires_at = $1
+            WHERE user_id = (SELECT id FROM users WHERE email = $2)`,
+            [new Date(Date.now() - 60 * 1000), "check-code-expired@example.com"]
+        );
+
+        const res = await request(app)
+            .post("/auth/check-code")
+            .send({ email: "check-code-expired@example.com", code: rawCode });
+
+        expect(res.status).toBe(200);
+        expect(res.body.valid).toBe(false);
+    });
 })
