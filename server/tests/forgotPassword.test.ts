@@ -226,4 +226,29 @@ describe("POST /reset-password", () => {
 
         expect(result.rows).toHaveLength(0);
     });
+
+    it("rejects an already-used code", async () => {
+        await createUserAndGetToken("reset-reused-code@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-reused-code@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        const firstAttempt = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-reused-code@example.com", code: rawCode, new_password: "firstPass123!" });
+
+        expect(firstAttempt.status).toBe(200);
+        expect(firstAttempt.body.success).toBe(true);
+
+        const secondAttempt = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-reused-code@example.com", code: rawCode, new_password: "secondPass123!" });
+
+        expect(secondAttempt.status).toBe(200);
+        expect(secondAttempt.body.success).toBeUndefined();
+        expect(secondAttempt.body.message).toBe("Invalid or expired code");
+    })
 })
