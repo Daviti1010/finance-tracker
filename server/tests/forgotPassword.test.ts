@@ -182,4 +182,25 @@ describe("POST /reset-password", () => {
         expect(res.body.success).toBe(true);
         expect(res.body.message).toBe("Password reset is successful");
     })
+
+    it("invalidates old JWTs after password reset", async () => {
+        const oldToken = await createUserAndGetToken("reset-invalidate@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-invalidate@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-invalidate@example.com", code: rawCode, new_password: "newPass123!" });
+
+        const res = await request(app)
+            .get("/api/links/advisors")
+            .set("Authorization", `Bearer ${oldToken}`);
+
+        expect(res.status).toBe(401);
+        expect(res.body.message).toBe("Session expired, please log in again")
+    });
 })
