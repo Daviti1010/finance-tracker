@@ -122,4 +122,15 @@ describe("POST /check-code", () => {
         expect(res.status).toBe(200);
         expect(res.body.valid).toBe(false);
     })
+
+    it("returns valid false when no token row exists", async () => {
+        await createUserAndGetToken("check-code-no-token@example.com");
+
+        const res = await request(app)
+            .post("/auth/check-code")
+            .send({ email: "check-code-no-token@example.com", code: "123456" });
+
+        expect(res.status).toBe(200);
+        expect(res.body.valid).toBe(false);
+    });
 })
