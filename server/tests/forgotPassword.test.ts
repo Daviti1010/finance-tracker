@@ -31,13 +31,25 @@ describe("POST /forgot-password", () => {
         expect(res.body.message).toBe("If that email exists, a code was sent.");
         expect(sendPasswordResetEmail).toHaveBeenCalledTimes(1);
     });
+
+    it("returns response for a nonexistent email", async () => {
+        await createUserAndGetToken("reset-test@example.com");
+
+        const res = await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "fake-reset-test@example.com" });
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("If that email exists, a code was sent.");
+        expect(sendPasswordResetEmail).toHaveBeenCalledTimes(0);
+    })
 });
 
 describe("POST /check-code", () => {
     beforeEach(() => {
         vi.clearAllMocks();
     });
-    
+
     it("extracts the real code from the mock", async () => {
         await createUserAndGetToken("reset-test@example.com");
 
