@@ -203,4 +203,27 @@ describe("POST /reset-password", () => {
         expect(res.status).toBe(401);
         expect(res.body.message).toBe("Session expired, please log in again")
     });
+    
+    it("deletes the token row after a successful reset", async () => {
+        await createUserAndGetToken("reset-token-deleted@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-token-deleted@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-token-deleted@example.com", code: rawCode, new_password: "newPass123!" });
+
+        const result = await pool.query(
+            `SELECT prt.* FROM password_reset_tokens prt
+            JOIN users u ON u.id = prt.user_id
+            WHERE u.email = $1`,
+            ["reset-token-deleted@example.com"]
+        );
+
+        expect(result.rows).toHaveLength(0);
+    });
 })
