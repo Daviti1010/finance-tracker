@@ -158,3 +158,28 @@ describe("POST /check-code", () => {
         expect(res.body.valid).toBe(false);
     });
 })
+
+
+describe("POST /reset-password", () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it("successfully resets password", async () => {
+        await createUserAndGetToken("reset-password-email@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-password-email@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        const res = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-password-email@example.com", code: rawCode, new_password: "123456!n" })
+
+        expect(res.status).toBe(200);
+        expect(res.body.success).toBe(true);
+        expect(res.body.message).toBe("Password reset is successful");
+    })
+})
