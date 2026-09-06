@@ -32,3 +32,26 @@ describe("POST /forgot-password", () => {
         expect(sendPasswordResetEmail).toHaveBeenCalledTimes(1);
     });
 });
+
+describe("POST /check-code", () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+    
+    it("extracts the real code from the mock", async () => {
+        await createUserAndGetToken("reset-test@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-test@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        const res = await request(app)
+            .post("/auth/check-code")
+            .send({ email: "reset-test@example.com", code: rawCode });
+
+        expect(res.status).toBe(200);
+        expect(res.body.valid).toBe(true);
+    });
+})
