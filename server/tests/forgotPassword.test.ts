@@ -266,4 +266,28 @@ describe("POST /reset-password", () => {
         expect(res.status).toBe(200);
         expect(res.body.message).toBe("Invalid or expired code");
     })
+
+    it("rejects an expired code", async () => {
+        await createUserAndGetToken("reset-password-expired@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "reset-password-expired@example.com" });
+
+        const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
+
+        await pool.query(
+            `UPDATE password_reset_tokens
+            SET expires_at = $1
+            WHERE user_id = (SELECT id FROM users WHERE email = $2)`,
+            [new Date(Date.now() - 60 * 1000), "reset-password-expired@example.com"]
+        );
+
+        const res = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "reset-password-expired@example.com", code: rawCode, new_password: "123456!n" });
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Invalid or expired code");
+    });
 })
