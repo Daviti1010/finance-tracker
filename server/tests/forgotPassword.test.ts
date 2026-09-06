@@ -251,4 +251,19 @@ describe("POST /reset-password", () => {
         expect(secondAttempt.body.success).toBeUndefined();
         expect(secondAttempt.body.message).toBe("Invalid or expired code");
     })
+
+    it("rejects wrong code", async () => {
+        await createUserAndGetToken("wrong-code-email@example.com");
+
+        await request(app)
+            .post("/auth/forgot-password")
+            .send({ email: "wrong-code-email@example.com" });
+
+        const res = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "wrong-code-email@example.com", code: "123456", new_password: "123456!n" })
+
+        expect(res.status).toBe(200);
+        expect(res.body.message).toBe("Invalid or expired code");
+    })
 })
