@@ -17,28 +17,28 @@ const router = express.Router();
 const salt_rounds = 10;
 
 
-const ForgotPasswordIpLimiter = rateLimit({
+export const ForgotPasswordIpLimiter = rateLimit({
   windowMs: 60 * 1000 * 15,
   max: 3,
   message: 'Too many password reset requests, please try again later.',
   keyGenerator: (req: any) => ipKeyGenerator(req.ip)
 });
 
-const ForgotPasswordEmailRateLimiter = rateLimit({
+export const ForgotPasswordEmailRateLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 3,
   message: 'Too many password reset requests for this account, please try again later.',
   keyGenerator: (req: any) => req.body?.email ?? 'unknown',
 });
 
-const ResetPasswordIpLimiter = rateLimit({
+export const ResetPasswordIpLimiter = rateLimit({
   windowMs: 60 * 1000 * 15,
   max: 3,
   message: 'Too many password reset requests, please try again later.',
   keyGenerator: (req: any) => ipKeyGenerator(req.ip)
 });
 
-const ResetPasswordEmailRateLimiter = rateLimit({
+export const ResetPasswordEmailRateLimiter = rateLimit({
   windowMs: 60 * 1000 * 15,
   max: 3,
   message: 'Too many password reset requests, please try again later.',

@@ -8,6 +8,7 @@ vi.mock("../services/email", () => ({
 }));
 
 import { sendPasswordResetEmail } from "../services/email";
+import { ForgotPasswordIpLimiter, ResetPasswordIpLimiter } from "../routes/auth";
 
 async function createUserAndGetToken(email: string, name?: string) {
     const res = await request(app)
@@ -19,6 +20,8 @@ async function createUserAndGetToken(email: string, name?: string) {
 describe("POST /forgot-password", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        ForgotPasswordIpLimiter.resetKey("127.0.0.1");
+        ResetPasswordIpLimiter.resetKey("127.0.0.1");
     });
 
     it("successfully sends a reset code for an existing email", async () => {
@@ -70,20 +73,22 @@ describe("POST /forgot-password", () => {
 describe("POST /check-code", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        ForgotPasswordIpLimiter.resetKey("127.0.0.1");
+        ResetPasswordIpLimiter.resetKey("127.0.0.1");
     });
 
     it("extracts the real code from the mock", async () => {
-        await createUserAndGetToken("reset-test@example.com");
-
+        await createUserAndGetToken("reset-test1@example.com");
+        
         await request(app)
             .post("/auth/forgot-password")
-            .send({ email: "reset-test@example.com" });
+            .send({ email: "reset-test1@example.com" });
 
         const rawCode = (sendPasswordResetEmail as any).mock.calls[0][1];
 
         const res = await request(app)
             .post("/auth/check-code")
-            .send({ email: "reset-test@example.com", code: rawCode });
+            .send({ email: "reset-test1@example.com", code: rawCode });
 
         expect(res.status).toBe(200);
         expect(res.body.valid).toBe(true);
@@ -163,6 +168,8 @@ describe("POST /check-code", () => {
 describe("POST /reset-password", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        ForgotPasswordIpLimiter.resetKey("127.0.0.1");
+        ResetPasswordIpLimiter.resetKey("127.0.0.1");
     });
 
     it("successfully resets password", async () => {
