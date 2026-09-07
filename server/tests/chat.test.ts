@@ -12,6 +12,13 @@ vi.mock("@google/genai", () => ({
     }),
 }));
 
+async function createUserAndGetToken(email: string, name?: string) {
+    const res = await request(app)
+        .post("/auth/register")
+        .send({ name: name ?? email.split("@")[0], email, password: "123456!n" });
+    return res.body.accessToken;
+}
+
 describe("chat", () => {
     it("rejects request with no token", async () => {
         const res = await request(app)
@@ -19,5 +26,17 @@ describe("chat", () => {
             .send({ message: "hello" });
 
         expect(res.status).toBe(401);
+    })
+
+    it("rejects empty message", async () => {
+        const userToken = await createUserAndGetToken("chat-test-1@example.com")
+
+        const res = await request(app)
+            .post("/api/chat")
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ message: "" });
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe("Message cannot be empty")
     })
 })
