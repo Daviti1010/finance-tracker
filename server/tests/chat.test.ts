@@ -72,4 +72,27 @@ describe("chat: rate limiting", () => {
             expect(res.status).toBe(200);
         }
     });
+
+    it("blocks the 8th request within the same window", async () => {
+        const userToken = await createUserAndGetToken("chat-limit-2@example.com");
+        const decoded: any = jwt.decode(userToken);
+        chatRateLimiter.resetKey(decoded.id);
+
+        for (let i = 0; i < 7; i++) {
+            const res = await request(app)
+                .post("/api/chat")
+                .set("Authorization", `Bearer ${userToken}`)
+                .send({ message: "a".repeat(100) });
+
+            expect(res.status).toBe(200);
+        }
+
+        const res = await request(app)
+            .post("/api/chat")
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ message: "a".repeat(100) });
+
+        expect(res.status).toBe(429);
+        expect(res.text).toBe("Too many chat requests, please try again later.");
+    });
 })
