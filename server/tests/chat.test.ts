@@ -95,4 +95,39 @@ describe("chat: rate limiting", () => {
         expect(res.status).toBe(429);
         expect(res.text).toBe("Too many chat requests, please try again later.");
     });
+
+    it("rate limit is per-user, not shared", async () => {
+        const userToken1 = await createUserAndGetToken("chat-limit-3@example.com");
+        const userToken2 = await createUserAndGetToken("chat-limit-4@example.com");
+
+        const decoded1: any = jwt.decode(userToken1);
+        const decoded2: any = jwt.decode(userToken2);
+        chatRateLimiter.resetKey(decoded1.id);
+        chatRateLimiter.resetKey(decoded2.id);
+
+        for (let i = 0; i < 7; i++) {
+            const res1 = await request(app)
+                .post("/api/chat")
+                .set("Authorization", `Bearer ${userToken1}`)
+                .send({ message: "a".repeat(100) });
+
+            expect(res1.status).toBe(200);
+        }
+
+        const res1 = await request(app)
+            .post("/api/chat")
+            .set("Authorization", `Bearer ${userToken1}`)
+            .send({ message: "a".repeat(100) });
+
+        expect(res1.status).toBe(429);
+        expect(res1.text).toBe("Too many chat requests, please try again later.");
+
+        
+        const res2 = await request(app)
+            .post("/api/chat")
+            .set("Authorization", `Bearer ${userToken2}`)
+            .send({ message: "a".repeat(100) });
+
+        expect(res2.status).toBe(200);
+    });
 })
