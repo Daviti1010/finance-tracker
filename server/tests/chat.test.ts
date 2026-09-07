@@ -39,4 +39,16 @@ describe("chat", () => {
         expect(res.status).toBe(400);
         expect(res.body.error).toBe("Message cannot be empty")
     })
+
+    it("rejects message over 500 characters", async () => {
+        const userToken = await createUserAndGetToken("chat-test-2@example.com")
+
+        const res = await request(app)
+            .post("/api/chat")
+            .set("Authorization", `Bearer ${userToken}`)
+            .send({ message: "a".repeat(501) });
+
+        expect(res.status).toBe(400);
+        expect(res.body.error).toBe("Message is too long (max 500 characters)")
+    })
 })
