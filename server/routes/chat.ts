@@ -11,7 +11,7 @@ const router = express.Router();
 
 const ai = new GoogleGenAI({});
 
-const chatRateLimiter = rateLimit({
+export const chatRateLimiter = rateLimit({
   windowMs: 60 * 1000,
   max: 7,
   message: 'Too many chat requests, please try again later.',
