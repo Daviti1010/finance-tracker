@@ -78,7 +78,7 @@ router.post("/register", async (req, res) => {
 
         const hash = await bcrypt.hash(password, salt_rounds);
 
-        console.log("Hashed Password:", hash);
+        // console.log("Hashed Password:", hash);
 
         const result = await pool.query(
             "INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id, username, token_version",
@@ -86,8 +86,8 @@ router.post("/register", async (req, res) => {
         );
 
         const newUser = result.rows[0];
-        const newUserId = newUser.id;
-        console.log(`User registered with ID: ${newUserId}`);
+        // const newUserId = newUser.id;
+        // console.log(`User registered with ID: ${newUserId}`);
 
         // console.log("User object from DB:", newUser);
 
