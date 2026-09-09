@@ -40,7 +40,7 @@ jobs:
 
       - name: Set up database schema
         working-directory: ./server
-        run: psql -h localhost -U postgres -d finance_tracker_test -f schema.sql
+        run: psql -h localhost -U postgres -d finance_tracker_test -f db/schema.sql
         env:
           PGPASSWORD: postgres
 
