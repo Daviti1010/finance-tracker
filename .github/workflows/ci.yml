@@ -54,3 +54,4 @@ jobs:
           PASSWORD: postgres
           DATABASE: finance_tracker_test
           JWT_SECRET: test_secret_value
+          RESEND_API_KEY: re_test_placeholder_key
