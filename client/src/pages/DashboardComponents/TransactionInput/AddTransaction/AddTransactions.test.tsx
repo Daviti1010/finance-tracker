@@ -61,4 +61,13 @@ describe("Add transaction", () => {
             date: "2026-09-10",
         });
     })
+
+    it("does not call addTransaction when required fields are empty", async () => {
+        const user = userEvent.setup();
+        render(<AddTransaction {...defaultProps} />);
+
+        await user.click(screen.getByRole("button", { name: /add transaction/i }));
+
+        expect(addTransaction).not.toHaveBeenCalled();
+    });
 })
