@@ -116,7 +116,7 @@ export function AddTransaction({expenseCategories, incomeCategories, setAllTrans
           <input
             type="text"
             name="amount"
-            id="input-amount"
+            id="amount"
             placeholder="$0.00"
             value={amount}
             onChange={(e) => {
