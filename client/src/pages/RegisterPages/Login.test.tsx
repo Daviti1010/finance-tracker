@@ -1,7 +1,15 @@
 import { it, expect, describe, vi, beforeEach } from 'vitest';
 import { render, screen } from "@testing-library/react";
-import { Login } from './Login';
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
+import { Login } from './Login';
+
+
+
+
+vi.mock("../../api", () => ({
+  login: vi.fn(),
+}));
 
 
 describe("Login", () => {
@@ -14,5 +22,14 @@ describe("Login", () => {
 
         expect(screen.getByLabelText(/email/i)).toHaveValue("");
         expect(screen.getByLabelText(/password/i)).toHaveValue("");
+    })
+
+    it("shows a validation error for empty fields before submitting", async () => {
+        const user = userEvent.setup();
+        render(<MemoryRouter><Login /></MemoryRouter>);
+
+        await user.click(screen.getByRole("button", { name: /Log In/i }));
+
+        expect(screen.getByText(/all fields are required/i)).toBeInTheDocument();
     })
 })
