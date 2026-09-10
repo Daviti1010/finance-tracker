@@ -11,10 +11,21 @@ vi.mock("../../api", () => ({
   login: vi.fn(),
 }));
 
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 
 describe("Login", () => {
     beforeEach(() => {
         vi.clearAllMocks();
+        localStorage.clear();
     });
 
     it("renders with empty fields by default", async () => {
@@ -46,5 +57,27 @@ describe("Login", () => {
         await user.click(screen.getByRole("button", { name: /Log In/i }));
 
         expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
+    })
+
+    it("on successful login, stores the token / redirects appropriately", async () => {
+        const user = userEvent.setup();
+
+        (login as Mock).mockResolvedValue({
+            json: async () => ({ success: true, accessToken: "Token" }),
+        });
+
+        render(<MemoryRouter><Login /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user1@gmail.com");
+        await user.type(screen.getByLabelText(/password/i), "user12345!");
+        await user.click(screen.getByRole("button", { name: /Log In/i }));
+
+        await vi.waitFor(() => {
+            expect(localStorage.getItem("accessToken")).toBe("Token");
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 1600));
+
+        expect(mockNavigate).toHaveBeenCalledWith("/dashboard");
     })
 })
