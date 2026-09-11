@@ -8,6 +8,16 @@ beforeEach(() => {
     vi.clearAllMocks();
 });
 
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
 describe("Forgot Password", () => {
     beforeEach(() => {
         vi.clearAllMocks();
@@ -115,7 +125,7 @@ describe("Forgot Password", () => {
         expect(await screen.findByLabelText(/new password/i)).toBeInTheDocument();
     });
 
-    it("STEP 4: does not submit when password fields are empty", async () => {
+    it("STEP 4.1: does not submit when password fields are empty", async () => {
         const user = userEvent.setup();
 
         (globalThis.fetch as Mock)
@@ -143,4 +153,43 @@ describe("Forgot Password", () => {
         expect(await screen.findByText(/please meet all password requirements/i)).toBeInTheDocument();
         expect(globalThis.fetch).toHaveBeenCalledTimes(2);
     });
+
+    it("STEP 4.2: resetting password successfully", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            }) // sendCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            }) // checkCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, message: "Password reset is successful" }),
+            }); // resetPassword
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        await user.type(screen.getByLabelText(/new password/i), "password123!");
+        await user.type(screen.getByLabelText(/confirm password/i), "password123!");
+        await user.click(screen.getByRole("button", { name: /Submit New Password/i }));
+
+        await vi.waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(3);
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 1600));
+
+        expect(mockNavigate).toHaveBeenCalledWith("/login");
+    }, 10000);
 })
