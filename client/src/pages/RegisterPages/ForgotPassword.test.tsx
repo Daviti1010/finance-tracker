@@ -114,4 +114,33 @@ describe("Forgot Password", () => {
 
         expect(await screen.findByLabelText(/new password/i)).toBeInTheDocument();
     });
+
+    it("STEP 4: does not submit when password fields are empty", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            }) // sendCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            }); // checkCode
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        await screen.findByLabelText(/new password/i);
+        await user.click(screen.getByRole("button", { name: /Submit New Password/i }));
+
+        expect(await screen.findByText(/please meet all password requirements/i)).toBeInTheDocument();
+        expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    });
 })
