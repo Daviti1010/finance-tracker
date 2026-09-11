@@ -41,7 +41,7 @@ describe("Forgot Password", () => {
         expect(await screen.findByLabelText(/code/i)).toBeInTheDocument();
     });
 
-    it("STEP 2: shows error when code is empty", async () => {
+    it("STEP 2.1: shows error when code is empty", async () => {
         const user = userEvent.setup();
 
         vi.stubGlobal(
@@ -64,7 +64,7 @@ describe("Forgot Password", () => {
         expect(errorMessage).toBeInTheDocument();
     })
 
-    it("STEP 3: shows an error and stays on Step 2 when the code is invalid", async () => {
+    it("STEP 2.2: shows an error and stays on Step 2 when the code is invalid", async () => {
         const user = userEvent.setup();
 
         (globalThis.fetch as Mock)
@@ -89,4 +89,29 @@ describe("Forgot Password", () => {
         expect(await screen.findByText(/Invalid or expired code/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/code/i)).toBeInTheDocument();
     })
+
+    it("STEP 3: successfully confirming the code", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            })
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            });
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        expect(await screen.findByLabelText(/new password/i)).toBeInTheDocument();
+    });
 })
