@@ -58,7 +58,7 @@ export function AddTransaction({expenseCategories, incomeCategories, setAllTrans
             console.log(data);
 
             if (!response.ok) {
-                console.log(data.message)
+                // console.log(data.message)
                 return
             }
 

@@ -1,4 +1,4 @@
-import { it, expect, describe, vi, beforeEach } from 'vitest';
+import { it, expect, describe, vi, beforeEach, type Mock } from 'vitest';
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { AddTransaction } from './AddTransactions';
@@ -41,6 +41,10 @@ describe("Add transaction", () => {
     });
 
     it("calls addTransaction with correct payload on submit", async () => {
+        (addTransaction as Mock).mockResolvedValue({
+            json: async () => ({ success: true }),
+        });
+
         const user = userEvent.setup();
         render(<AddTransaction {...defaultProps} />);
     
@@ -48,7 +52,7 @@ describe("Add transaction", () => {
         await user.selectOptions(screen.getByLabelText(/category/i), "Food");
         await user.type(screen.getByLabelText(/amount/i), "42.50");
         await user.type(screen.getByLabelText(/description/i), "Coffee");
-        fireEvent.change(screen.getByLabelText(/date/i), "2026-09-10");
+        fireEvent.change(screen.getByLabelText(/date/i), formattedDate);
 
         await user.click(screen.getByRole("button", { name: /add transaction/i }));
 
@@ -58,7 +62,7 @@ describe("Add transaction", () => {
             amount: 42.5,
             category: "food",
             description: "Coffee",
-            date: "2026-09-10",
+            date: formattedDate,
         });
     })
 
