@@ -13,7 +13,7 @@ describe("Forgot Password", () => {
         vi.clearAllMocks();
     });
 
-    it("STEP 1: shows validation error when email is empty", async () => {
+    it("STEP 1.1: shows validation error when email is empty", async () => {
         const user = userEvent.setup();
         render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
 
@@ -21,6 +21,25 @@ describe("Forgot Password", () => {
 
         expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
     })
+
+    it("STEP 1.2: moves to Step 2 after successfully requesting a code", async () => {
+        const user = userEvent.setup();
+
+        vi.stubGlobal(
+            'fetch',
+            vi.fn().mockResolvedValue({
+                ok: true,
+                json: async () => ({}),
+            })
+        );
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        expect(await screen.findByLabelText(/code/i)).toBeInTheDocument();
+    });
 
     it("STEP 2: shows error when code is empty", async () => {
         const user = userEvent.setup();
