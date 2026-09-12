@@ -65,6 +65,7 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
             <p id="transactions-text">Transactions</p>
 
             <select
+                aria-label="Type"
                 name="select-income-or-expense"
                 id="select-income-or-expense"
                 value={filterType}
@@ -79,7 +80,9 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
                 <option value="income">Income</option>
             </select>
 
-            <select name="select-category"
+            <select 
+                aria-label="Category"
+                name="select-category"
                 id="select-category"
                 value={filterCategory} 
                 disabled={filterType === "all"}
