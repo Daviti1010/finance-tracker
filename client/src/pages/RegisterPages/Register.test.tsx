@@ -43,4 +43,18 @@ describe("Register", () => {
 
         expect(screen.getByRole("button", { name: /create account/i })).toBeEnabled();
     });
+
+    it("shows all fields required error when username and email are empty", async () => {
+        const user = userEvent.setup();
+        render(<MemoryRouter><Register /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/password/i), "Password123!");
+
+        const createButton = screen.getByRole("button", { name: /create account/i });
+        expect(createButton).toBeEnabled();
+
+        await user.click(createButton);
+
+        expect(screen.getByText(/all fields are required/i)).toBeInTheDocument();
+    });
 })
