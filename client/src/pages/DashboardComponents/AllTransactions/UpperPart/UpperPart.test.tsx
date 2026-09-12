@@ -100,4 +100,20 @@ describe("Filter Transactions", () => {
             { id: 1, type: "income", category: "salary", date: formattedDate }
         ]);
     })
+
+    it("resets filters and refetches all transactions on reset", async () => {
+        const user = userEvent.setup();
+        render(<TestWrapper />);
+
+        await user.selectOptions(screen.getByRole("combobox", { name: /type/i }), "expense");
+        await user.selectOptions(screen.getByRole("combobox", { name: /category/i }), "rent");
+        await user.click(screen.getByRole("button", { name: /search/i }));
+
+        await user.click(screen.getByRole("button", { name: /reset filters/i }));
+
+        expect(defaultProps.fetchTransactions).toHaveBeenCalled();
+        expect(defaultProps.setCurrentPage).toHaveBeenCalledWith(1);
+        expect(screen.getByRole("combobox", { name: /type/i })).toHaveValue("all");
+        expect(screen.getByRole("combobox", { name: /category/i })).toHaveValue("all"); 
+    });
 })
