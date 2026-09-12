@@ -1,6 +1,7 @@
 import { it, expect, describe, vi, beforeEach } from 'vitest';
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import userEvent from "@testing-library/user-event";
 import { Register } from './Register';
 
 
@@ -24,7 +25,6 @@ describe("Register", () => {
         // localStorage.clear();
     });
 
-
     it("renders with empty fields by default", async () => {
         render(<MemoryRouter><Register /></MemoryRouter>);
 
@@ -32,4 +32,15 @@ describe("Register", () => {
         expect(screen.getByLabelText(/email/i)).toHaveValue("");
         expect(screen.getByLabelText(/password/i)).toHaveValue("");
     })
+
+    it("disables create account button until password is valid", async () => {
+        const user = userEvent.setup();
+        render(<MemoryRouter><Register /></MemoryRouter>);
+
+        expect(screen.getByRole("button", { name: /create account/i })).toBeDisabled();
+
+        await user.type(screen.getByLabelText(/password/i), "ValidPass123!");
+
+        expect(screen.getByRole("button", { name: /create account/i })).toBeEnabled();
+    });
 })
