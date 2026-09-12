@@ -87,4 +87,17 @@ describe("Filter Transactions", () => {
             { id: 1, type: "expense", category: "all", date: formattedDate }
         ]);
     })
+
+    it("calls getTransactions with type and category together", async () => {
+        const user = userEvent.setup();
+        render(<TestWrapper />)
+
+        await user.selectOptions(screen.getByRole("combobox", { name: /type/i }), "income");
+        await user.selectOptions(screen.getByRole("combobox", { name: /category/i }), "salary");
+        await user.click(screen.getByRole("button", { name: /search/i }));
+
+        expect(defaultProps.setDisplayedTransactions).toHaveBeenCalledWith([
+            { id: 1, type: "income", category: "salary", date: formattedDate }
+        ]);
+    })
 })
