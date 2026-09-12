@@ -11,10 +11,10 @@ vi.mock("../../../../api", () => ({
     getTransactions: vi.fn(),
 }));
 
-const mockTransactionsResponse = {
-    ok: true,
-    json: async () => ([{ id: 1, type: "expense", category: "food", date: formattedDate }]),
-};
+// const mockTransactionsResponse = {
+//     ok: true,
+//     json: async () => ([{ id: 1, type: "expense", category: "food", date: formattedDate }]),
+// };
 
 const defaultProps = {
     expenseCategories: [
@@ -65,7 +65,14 @@ function TestWrapper(props: Partial<typeof defaultProps>) {
 
 beforeEach(() => {
     vi.clearAllMocks();
-    (getTransactions as Mock).mockResolvedValue(mockTransactionsResponse);
+    (getTransactions as Mock).mockImplementation((type?: string, category?: string) => {
+        return Promise.resolve({
+            ok: true,
+            json: async () => ([
+                { id: 1, type: type ?? "all", category: category ?? "all", date: formattedDate }
+            ]),
+        });
+    });
 });
 
 describe("Filter Transactions", () => {
@@ -76,6 +83,8 @@ describe("Filter Transactions", () => {
         await user.selectOptions(screen.getByRole("combobox", { name: /type/i }), "expense");
         await user.click(screen.getByRole("button", { name: /search/i }));
         
-        expect(getTransactions).toHaveBeenCalledWith("expense", "all");
+        expect(defaultProps.setDisplayedTransactions).toHaveBeenCalledWith([
+            { id: 1, type: "expense", category: "all", date: formattedDate }
+        ]);
     })
 })
