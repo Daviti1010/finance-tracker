@@ -94,7 +94,8 @@ export function UpperPart({expenseCategories, incomeCategories, setDisplayedTran
 
             </select>
 
-            <button onClick={handleReset} id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft} /></button>
+            <button onClick={handleReset} id="reset-transactions-btn"><FontAwesomeIcon icon={faArrowRotateLeft}
+              aria-label="Reset filters"/></button>
 
             <button id="search-btn" type="button" onClick={fetchFilteredTransactions}>Search</button>
         </div>
