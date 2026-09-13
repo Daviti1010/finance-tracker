@@ -9,7 +9,7 @@ import {
     getIncomingRequests,
     getOutgoingRequests,
     // acceptLinkRequest,
-    // revokeLink,
+    revokeLink,
     getMyClients,
     getMyAdvisors,
     getMe
@@ -87,5 +87,36 @@ describe("Links Page", () => {
         expect(await screen.findByText(/request from advisor@gmail.com — pending/i)).toBeInTheDocument();
         expect(screen.getByRole("button", { name: /accept/i })).toBeInTheDocument();
         expect(screen.getByRole("button", { name: /reject/i })).toBeInTheDocument();
+    });
+
+    it("removes the request from incoming and outgoing when rejected", async () => {
+        const user = userEvent.setup();
+
+        let incomingData: unknown[] = [
+            { id: 2, advisorEmail: "advisor@gmail.com", status: "pending" }
+        ];
+
+        (getIncomingRequests as Mock).mockImplementation(() =>
+            Promise.resolve(mockResponse(incomingData))
+        );
+
+        (revokeLink as Mock).mockImplementation(async () => {
+            incomingData = [];
+            return { json: async () => ({ success: true }) };
+        });
+
+        render(
+            <MemoryRouter>
+                <ThemeProvider>
+                    <LinksPage />
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        await screen.findByText(/request from advisor@gmail.com — pending/i);
+
+        await user.click(screen.getByRole("button", { name: /reject/i }));
+
+        expect(screen.queryByText(/request from advisor@gmail.com/i)).not.toBeInTheDocument();
     });
 })
