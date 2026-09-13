@@ -234,8 +234,8 @@ export function LinksPage() {
             <h3 id="my-clients">My clients ({acceptedClients.length})</h3>
             <div className="my-clients-first-div">
                 {acceptedClients.map((link) => (
-                    <div className="my-clients-second-div">
-                        <span className="client" key={link.id}>
+                    <div className="my-clients-second-div" key={link.id}>
+                        <span className="client">
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
                             <p>{link.clientEmail}</p>
 
@@ -257,8 +257,8 @@ export function LinksPage() {
             <h3 id="my-advisors">My Advisors ({acceptedAdvisors.length})</h3>
             <div className="my-advisors-first-div">
                 {acceptedAdvisors.map((link) => (
-                    <div className="my-advisors-second-div">
-                        <span className="advisor" key={link.id}>
+                    <div className="my-advisors-second-div" key={link.id}>
+                        <span className="advisor">
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
                             <p>{link.advisorEmail}</p>
                         </span>
