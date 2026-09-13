@@ -8,7 +8,7 @@ import {
     sendLinkRequest,
     getIncomingRequests,
     getOutgoingRequests,
-    // acceptLinkRequest,
+    acceptLinkRequest,
     revokeLink,
     getMyClients,
     getMyAdvisors,
@@ -118,5 +118,43 @@ describe("Links Page", () => {
         await user.click(screen.getByRole("button", { name: /reject/i }));
 
         expect(screen.queryByText(/request from advisor@gmail.com/i)).not.toBeInTheDocument();
+    });
+
+    it("moves an accepted link to My Clients", async () => {
+        const user = userEvent.setup();
+
+        let incomingData: unknown[] = [
+            { id: 3, advisorEmail: "advisor@gmail.com", status: "pending" }
+        ];
+        let advisorsData: unknown[] = [];
+
+        (getIncomingRequests as Mock).mockImplementation(() =>
+            Promise.resolve(mockResponse(incomingData))
+        );
+
+        (getMyAdvisors as Mock).mockImplementation(() =>
+            Promise.resolve(mockResponse(advisorsData))
+        );
+
+        (acceptLinkRequest as Mock).mockImplementation(async () => {
+            incomingData = [];
+            advisorsData = [{ id: 3, advisorEmail: "advisor@gmail.com", status: "accepted" }];
+            return { json: async () => ({ success: true }) };
+        });
+
+        render(
+            <MemoryRouter>
+                <ThemeProvider>
+                    <LinksPage />
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        await screen.findByText(/request from advisor@gmail.com — pending/i);
+
+        await user.click(screen.getByRole("button", { name: /accept/i }));
+
+        expect(await screen.findByText("advisor@gmail.com")).toBeInTheDocument();
+        expect(screen.queryByText(/request from advisor@gmail.com — pending/i)).not.toBeInTheDocument();
     });
 })
