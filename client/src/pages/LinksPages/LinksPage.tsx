@@ -200,16 +200,14 @@ export function LinksPage() {
                 <p id="sent-response-text">Sent — awaiting response ({outgoingRequests.length})</p>
                 <div className="sent-requests-first-div">
                         {outgoingRequests.map((req) => (
-                            <>
-                            <div className="outgoing-reqs-div">
-                                <p className="sent-requests" key={req.id}>Request to {req.clientEmail} — {req.status}</p>
+                            <div className="outgoing-reqs-div" key={req.id}>
+                                <p className="sent-requests">Request to {req.clientEmail} — {req.status}</p>
                             
                                 <div className="outgoing-reqs-div-right">
                                     <button onClick={() => handleRevoke(req.id)}>Cancel</button>
                                 </div>
 
                             </div>
-                            </>
                         ))}
                 </div>
                 </>
