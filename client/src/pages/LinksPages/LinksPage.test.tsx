@@ -70,4 +70,22 @@ describe("Links Page", () => {
 
         expect(await screen.findByText(/request to client@gmail.com — pending/i)).toBeInTheDocument();
     });
+
+    it("shows an incoming request with accept and reject buttons", async () => {
+        (getIncomingRequests as Mock).mockResolvedValue(mockResponse([
+            { id: 2, advisorEmail: "advisor@gmail.com", status: "pending" }
+        ]));
+
+        render(
+            <MemoryRouter>
+                <ThemeProvider>
+                    <LinksPage />
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        expect(await screen.findByText(/request from advisor@gmail.com — pending/i)).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /accept/i })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: /reject/i })).toBeInTheDocument();
+    });
 })
