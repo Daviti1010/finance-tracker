@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Header } from "./HeaderPages/Header"
-import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
-import type { AdvisorClientLink } from "../types";
+import { Header } from "../HeaderPages/Header"
+import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../../api"
+import type { AdvisorClientLink } from "../../types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons'
 import './LinksPage.css'
