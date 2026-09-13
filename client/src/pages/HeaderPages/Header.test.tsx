@@ -26,4 +26,21 @@ describe("Toggle Theme", () => {
         await user.click(checkbox);
         expect(checkbox).toBeChecked();
     })
+
+    it("shows the correct icon based on current theme", async () => {
+        const user = userEvent.setup();
+        render(
+            <MemoryRouter>
+                <ThemeProvider> 
+                    <Header /> 
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByAltText("")).toHaveClass("icon-moon");
+
+        await user.click(screen.getByRole("checkbox"));
+
+        expect(screen.getByAltText("")).toHaveClass("icon-sun");
+    });
 })
