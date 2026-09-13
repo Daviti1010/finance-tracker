@@ -43,4 +43,30 @@ describe("Toggle Theme", () => {
 
         expect(screen.getByAltText("")).toHaveClass("icon-sun");
     });
+
+    it("persists theme preference across a re-render", async () => {
+        const user = userEvent.setup();
+        const { unmount } = render(
+            <MemoryRouter>
+                <ThemeProvider> 
+                    <Header /> 
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        await user.click(screen.getByRole("checkbox"));
+        expect(localStorage.getItem("theme")).toBe("dark");
+
+        unmount();
+
+        render(
+            <MemoryRouter>
+                <ThemeProvider> 
+                    <Header /> 
+                </ThemeProvider>
+            </MemoryRouter>
+        );
+
+        expect(screen.getByRole("checkbox")).toBeChecked();
+    });
 })
