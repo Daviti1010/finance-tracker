@@ -55,3 +55,17 @@ jobs:
           DATABASE: finance_tracker_test
           JWT_SECRET: test_secret_value
           RESEND_API_KEY: re_test_placeholder_key
+
+  frontend-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install client dependencies
+        working-directory: ./client
+        run: npm install
+      - name: Run frontend tests
+        working-directory: ./client
+        run: npm test
