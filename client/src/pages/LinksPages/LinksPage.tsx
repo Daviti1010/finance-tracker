@@ -1,8 +1,8 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Header } from "./HeaderPages/Header"
-import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../api"
-import type { AdvisorClientLink } from "../types";
+import { Header } from "../HeaderPages/Header"
+import { getIncomingRequests, getOutgoingRequests, sendLinkRequest, revokeLink, acceptLinkRequest, getMyClients, getMyAdvisors } from "../../api"
+import type { AdvisorClientLink } from "../../types";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowRight, faUser } from '@fortawesome/free-solid-svg-icons'
 import './LinksPage.css'
@@ -200,16 +200,14 @@ export function LinksPage() {
                 <p id="sent-response-text">Sent — awaiting response ({outgoingRequests.length})</p>
                 <div className="sent-requests-first-div">
                         {outgoingRequests.map((req) => (
-                            <>
-                            <div className="outgoing-reqs-div">
-                                <p className="sent-requests" key={req.id}>Request to {req.clientEmail} — {req.status}</p>
+                            <div className="outgoing-reqs-div" key={req.id}>
+                                <p className="sent-requests">Request to {req.clientEmail} — {req.status}</p>
                             
                                 <div className="outgoing-reqs-div-right">
                                     <button onClick={() => handleRevoke(req.id)}>Cancel</button>
                                 </div>
 
                             </div>
-                            </>
                         ))}
                 </div>
                 </>
@@ -236,8 +234,8 @@ export function LinksPage() {
             <h3 id="my-clients">My clients ({acceptedClients.length})</h3>
             <div className="my-clients-first-div">
                 {acceptedClients.map((link) => (
-                    <div className="my-clients-second-div">
-                        <span className="client" key={link.id}>
+                    <div className="my-clients-second-div" key={link.id}>
+                        <span className="client">
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
                             <p>{link.clientEmail}</p>
 
@@ -259,8 +257,8 @@ export function LinksPage() {
             <h3 id="my-advisors">My Advisors ({acceptedAdvisors.length})</h3>
             <div className="my-advisors-first-div">
                 {acceptedAdvisors.map((link) => (
-                    <div className="my-advisors-second-div">
-                        <span className="advisor" key={link.id}>
+                    <div className="my-advisors-second-div" key={link.id}>
+                        <span className="advisor">
                             <FontAwesomeIcon icon={faUser} className="span-icon span-icon-user"/>
                             <p>{link.advisorEmail}</p>
                         </span>

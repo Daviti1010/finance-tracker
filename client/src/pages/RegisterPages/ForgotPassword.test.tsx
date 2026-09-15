@@ -1,0 +1,195 @@
+import { it, expect, describe, vi, beforeEach , type Mock} from 'vitest';
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
+import { ForgotPassword } from './ForgotPassword';
+
+beforeEach(() => {
+    vi.clearAllMocks();
+});
+
+const mockNavigate = vi.fn();
+
+vi.mock("react-router-dom", async () => {
+  const actual = await vi.importActual("react-router-dom");
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
+  };
+});
+
+describe("Forgot Password", () => {
+    beforeEach(() => {
+        vi.clearAllMocks();
+    });
+
+    it("STEP 1.1: shows validation error when email is empty", async () => {
+        const user = userEvent.setup();
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        expect(screen.getByText(/Please enter a valid email address/i)).toBeInTheDocument();
+    })
+
+    it("STEP 1.2: moves to Step 2 after successfully requesting a code", async () => {
+        const user = userEvent.setup();
+
+        vi.stubGlobal(
+            'fetch',
+            vi.fn().mockResolvedValue({
+                ok: true,
+                json: async () => ({}),
+            })
+        );
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        expect(await screen.findByLabelText(/code/i)).toBeInTheDocument();
+    });
+
+    it("STEP 2.1: shows error when code is empty", async () => {
+        const user = userEvent.setup();
+
+        vi.stubGlobal(
+            'fetch',
+            vi.fn().mockResolvedValue({
+                ok: true,
+                json: async () => ({ message: 'Success' }),
+            })
+        );
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+        
+        const confirmButton = await screen.findByRole('button', { name: /confirm code|checking/i });
+        await user.click(confirmButton);  
+
+        const errorMessage = await screen.findByText(/code needs to be 6 digit/i);
+        expect(errorMessage).toBeInTheDocument();
+    })
+
+    it("STEP 2.2: shows an error and stays on Step 2 when the code is invalid", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            }) // response for sendCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: false, message: "Invalid or expired code" }),
+            }); // response for checkCode
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "999999");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        expect(await screen.findByText(/Invalid or expired code/i)).toBeInTheDocument();
+        expect(screen.getByLabelText(/code/i)).toBeInTheDocument();
+    })
+
+    it("STEP 3: successfully confirming the code", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            })
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            });
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        expect(await screen.findByLabelText(/new password/i)).toBeInTheDocument();
+    });
+
+    it("STEP 4.1: does not submit when password fields are empty", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            }) // sendCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            }); // checkCode
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        await screen.findByLabelText(/new password/i);
+        await user.click(screen.getByRole("button", { name: /Submit New Password/i }));
+
+        expect(await screen.findByText(/please meet all password requirements/i)).toBeInTheDocument();
+        expect(globalThis.fetch).toHaveBeenCalledTimes(2);
+    });
+
+    it("STEP 4.2: resetting password successfully", async () => {
+        const user = userEvent.setup();
+
+        (globalThis.fetch as Mock)
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({}),
+            }) // sendCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ valid: true }),
+            }) // checkCode
+            .mockResolvedValueOnce({
+                ok: true,
+                json: async () => ({ success: true, message: "Password reset is successful" }),
+            }); // resetPassword
+
+        render(<MemoryRouter><ForgotPassword /></MemoryRouter>);
+
+        await user.type(screen.getByLabelText(/email/i), "user12345@gmail.com");
+        await user.click(screen.getByRole("button", { name: /Send Recovery Code To Email/i }));
+
+        const codeInput = await screen.findByLabelText(/code/i);
+        await user.type(codeInput, "123456");
+        await user.click(screen.getByRole("button", { name: /confirm code/i }));
+
+        await user.type(screen.getByLabelText(/new password/i), "password123!");
+        await user.type(screen.getByLabelText(/confirm password/i), "password123!");
+        await user.click(screen.getByRole("button", { name: /Submit New Password/i }));
+
+        await vi.waitFor(() => {
+            expect(globalThis.fetch).toHaveBeenCalledTimes(3);
+        });
+
+        await new Promise((resolve) => setTimeout(resolve, 1600));
+
+        expect(mockNavigate).toHaveBeenCalledWith("/login");
+    }, 10000);
+})

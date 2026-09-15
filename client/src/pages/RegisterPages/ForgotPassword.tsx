@@ -318,7 +318,7 @@ export function ForgotPassword() {
                 {showPasswordInputs && (
                     <>
                         <div className="field">
-                            <label htmlFor="password">New Password</label>
+                            <label htmlFor="new-password">New Password</label>
                             <div className="password-wrapper">
                                 <input value={password} onChange={enteringPassword}
                                     type={showNewPassword ? "text" : "password"} id="new-password" name="new_password" placeholder="New Password" />
@@ -338,7 +338,7 @@ export function ForgotPassword() {
                         </div>
 
                         <div className="field">
-                            <label htmlFor="password">Confirm Password</label>
+                            <label htmlFor="confirm-password">Confirm Password</label>
                             <div className="password-wrapper">
                                 <input value={confirmPassword} onChange={enteringConfirmPassword}
                                     type={showConfirmPassword ? "text" : "password"} id="confirm-password" name="confirm_new_password" placeholder="New Password" />

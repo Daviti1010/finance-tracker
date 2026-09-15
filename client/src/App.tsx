@@ -5,7 +5,7 @@ import { Register } from "./pages/RegisterPages/Register";
 import { ForgotPassword } from "./pages/RegisterPages/ForgotPassword";
 import { Dashboard } from "./pages/DashboardComponents/Dashboard";
 import { PageNotFound } from "./pages/PageNotFound/PageNotFound";
-import { LinksPage } from "./pages/LinksPage";
+import { LinksPage } from "./pages/LinksPages/LinksPage";
 import { ChartsPage } from "./pages/Charts";
 import { ClientTransactionsPage } from './pages/ClientTransactionsPages/ClientTransactionsPage';
 import { Chatbot } from "./pages/Chatbot";

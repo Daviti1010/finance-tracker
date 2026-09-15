@@ -58,7 +58,7 @@ export function AddTransaction({expenseCategories, incomeCategories, setAllTrans
             console.log(data);
 
             if (!response.ok) {
-                console.log(data.message)
+                // console.log(data.message)
                 return
             }
 
@@ -116,7 +116,7 @@ export function AddTransaction({expenseCategories, incomeCategories, setAllTrans
           <input
             type="text"
             name="amount"
-            id="input-amount"
+            id="amount"
             placeholder="$0.00"
             value={amount}
             onChange={(e) => {

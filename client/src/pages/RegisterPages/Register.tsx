@@ -1,5 +1,4 @@
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import React, { useState, useRef } from 'react';
 import { checkUsername, register, login } from '../../api'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
