@@ -58,3 +58,23 @@ access, and automated testing.
 
 **Appearance**
 - Dark mode with theme preference saved via localStorage
+
+  ## Architecture Overview
+
+The project is structured as a monorepo with two main folders:
+
+- **`client/`** — React + TypeScript frontend, built with Vite
+- **`server/`** — Node.js + Express backend, using raw SQL queries against PostgreSQL (no ORM)
+
+### Authentication Flow
+1. On login, the server issues a JWT signed with the user's ID and a `tokenVersion` value.
+2. Every protected route is guarded by middleware that verifies the token's signature, confirms the user still exists, and checks that `tokenVersion` matches the current value stored in the database.
+3. Resetting a password increments `tokenVersion` server-side, which instantly invalidates every previously issued token — even ones that haven't expired yet.
+
+### Advisor-Client Access Control
+The app supports two informal roles — **advisor** and **client** — without a fixed role column. Instead, relationships are modeled as rows in an `advisor_client_links` table:
+
+1. An advisor sends a link request to a client by email.
+2. The client can **accept** or **revoke** the request. Only an accepted link grants access.
+3. A dedicated `requireClientAccess` middleware checks for an accepted link before allowing an advisor to view a client's transactions or financial summary — enforced entirely at the API level, independent of the frontend.
+4. Links can be revoked and later re-requested, with the system tracking each request as its own record rather than overwriting history.
