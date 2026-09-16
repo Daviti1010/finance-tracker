@@ -6,6 +6,10 @@ built-in advisor-client access control system — built to explore
 production-grade patterns like JWT authentication, role-based data 
 access, and automated testing.
 
+[![CI](https://github.com/Daviti1010/finance-tracker/actions/workflows/ci.yml/badge.svg)](https://github.com/Daviti1010/finance-tracker/actions)
+<br>
+*Backend and frontend test suites run automatically on every pull request via GitHub Actions.*
+
 ## Tech Stack
 
 **Frontend**
@@ -78,3 +82,16 @@ The app supports two informal roles — **advisor** and **client** — without a
 2. The client can **accept** or **revoke** the request. Only an accepted link grants access.
 3. A dedicated `requireClientAccess` middleware checks for an accepted link before allowing an advisor to view a client's transactions or financial summary — enforced entirely at the API level, independent of the frontend.
 4. Links can be revoked and later re-requested, with the system tracking each request as its own record rather than overwriting history.
+
+## Testing
+
+The backend and frontend both have automated test coverage, run automatically on every pull request via GitHub Actions.
+
+**Backend** — Vitest + Supertest, testing against a dedicated PostgreSQL test database:
+- Authentication (registration, login, and all four token-rejection paths: missing, malformed, deleted-user, and stale-session tokens)
+- Transaction CRUD, ownership enforcement, and filtering
+- The full advisor-client RBAC lifecycle — link requests, accept/revoke, and access-control enforcement on protected routes
+- Session invalidation after password reset
+- Per-user chatbot rate limiting
+
+**Frontend** — Vitest + React Testing Library, covering key components with real logic (forms, filters, multi-step flows).
