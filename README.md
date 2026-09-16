@@ -95,3 +95,63 @@ The backend and frontend both have automated test coverage, run automatically on
 - Per-user chatbot rate limiting
 
 **Frontend** — Vitest + React Testing Library, covering key components with real logic (forms, filters, multi-step flows).
+
+## Setup & Installation
+
+### Prerequisites
+- Node.js (v22 or later)
+- PostgreSQL
+
+### 1. Clone the repository
+```bash
+git clone https://github.com/Daviti1010/finance-tracker.git
+cd finance-tracker
+```
+
+### 2. Set up the database
+Create a PostgreSQL database, then run the schema:
+```bash
+psql -U <your_user> -d <your_database> -f server/db/schema.sql
+```
+
+### 3. Backend setup
+```bash
+cd server
+npm install
+```
+Create a `.env` file in `server/` with the following variables (see `.env.example` for reference):
+- USER=your_postgres_user
+- HOST=localhost
+- DATABASE=your_database_name
+- PASSWORD=your_postgres_password
+- PORT=5432
+- JWT_SECRET=your_jwt_secret
+- GEMINI_API_KEY=your_gemini_api_key
+- RESEND_API_KEY=your_resend_api_key
+- EMAIL=your_sender_email_address
+
+Run the server:
+```bash
+npm run dev
+```
+
+### 4. Frontend setup
+```bash
+cd client
+npm install
+npm run dev
+```
+
+The app should now be running locally, with the frontend available at whatever port Vite reports (typically `http://localhost:5173`).
+
+### Running tests
+**Backend** — create a separate test database and a corresponding `.env.test` (or equivalent) pointing to it, then:
+```bash
+cd server
+npm test
+```
+**Frontend**
+```bash
+cd client
+npm test
+```
