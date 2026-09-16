@@ -28,3 +28,33 @@ access, and automated testing.
 
 **Other**
 - pdfkit (PDF export)
+
+## Key Features
+
+**Authentication & Security**
+- JWT-based authentication with bcrypt password hashing
+- Session invalidation via token versioning (logs out all sessions on password reset)
+- "Forgot password" flow with time-limited, single-use verification codes sent via email
+
+**Transaction Management**
+- Full CRUD for income/expense transactions
+- Filtering by type, category, and combinations thereof
+- CSV and PDF export, with support for filtered exports
+
+**Dashboard & Insights**
+- Income vs. expense visualization by month, with year navigation
+- Starting balance tracking and running balance calculations
+
+**AI Financial Assistant**
+- Chatbot powered by Google's Gemini API, scoped to personal finance topics
+- Per-user rate limiting to prevent abuse
+- Responses informed by the user's actual recent transaction history
+
+**Advisor-Client Access Control**
+- Relational linking system allowing advisors to request access to a client's data
+- Clients must explicitly accept requests before any access is granted
+- Either party can revoke access at any time, with re-requesting supported afterward
+- Full role-based access enforcement at the API level, not just the UI
+
+**Appearance**
+- Dark mode with theme preference saved via localStorage
