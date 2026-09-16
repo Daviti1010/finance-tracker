@@ -155,3 +155,36 @@ npm test
 cd client
 npm test
 ```
+
+## API Overview
+
+A selection of key endpoints — the full set covers standard auth and transaction CRUD as well.
+
+### Advisor-Client Access Control
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/api/links` | Advisor sends a link request to a client by email |
+| `GET` | `/api/links/incoming` | Client views requests sent to them |
+| `GET` | `/api/links/outgoing` | Advisor views requests they've sent |
+| `PATCH` | `/api/links/:id/accept` | Client accepts a pending request |
+| `PATCH` | `/api/links/:id/revoke` | Either party revokes an active or pending link |
+| `GET` | `/api/links/clients` | Advisor views their accepted clients |
+| `GET` | `/api/links/advisors` | Client views their accepted advisors |
+| `GET` | `/clients/:clientId/transactions` | Advisor views a linked client's transactions (requires an accepted link) |
+
+### Authentication
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `POST` | `/auth/register` | Create a new account |
+| `POST` | `/auth/login` | Log in and receive a JWT |
+| `POST` | `/auth/forgot-password` | Request a password reset code |
+| `POST` | `/auth/reset-password` | Reset password using the emailed code |
+
+### Transactions
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET` | `/transactions` | List transactions, with optional `type`/`category` filters |
+| `POST` | `/transactions` | Create a transaction |
+| `DELETE` | `/transactions/:id` | Delete a transaction |
+| `GET` | `/transactions/export/csv` | Export transactions as CSV |
+| `GET` | `/transactions/export/pdf` | Export transactions as PDF |
